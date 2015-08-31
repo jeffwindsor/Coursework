@@ -1,0 +1,10 @@
+C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsTextbookTrack\bin\Debug\RosalindBioinformaticsTextbookTrack.XML
+C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsTextbookTrack\bin\Debug\RosalindBioinformaticsTextbookTrack.dll
+C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsTextbookTrack\bin\Debug\RosalindBioinformaticsTextbookTrack.pdb
+C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsTextbookTrack\bin\Debug\FSharp.Core.dll
+C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsTextbookTrack\bin\Debug\FSharp.Core.xml
+C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsTextbookTrack\obj\Debug\RosalindBioinformaticsTextbookTrack.dll
+C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsTextbookTrack\obj\Debug\RosalindBioinformaticsTextbookTrack.pdb
+C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsTextbookTrack\bin\Debug\Bioinformatics.dll
+C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsTextbookTrack\bin\Debug\Bioinformatics.pdb
+C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsTextbookTrack\bin\Debug\Bioinformatics.xml

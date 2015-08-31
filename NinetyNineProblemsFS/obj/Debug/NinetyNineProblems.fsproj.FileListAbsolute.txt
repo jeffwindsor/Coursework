@@ -1,0 +1,10 @@
+C:\Users\Dev\Documents\GitHub\Homework\NinetyNineProblems\bin\Debug\NinetyNineProblems.dll.config
+C:\Users\Dev\Documents\GitHub\Homework\NinetyNineProblems\bin\Debug\NinetyNineProblems.XML
+C:\Users\Dev\Documents\GitHub\Homework\NinetyNineProblems\bin\Debug\NinetyNineProblems.dll
+C:\Users\Dev\Documents\GitHub\Homework\NinetyNineProblems\bin\Debug\NinetyNineProblems.pdb
+C:\Users\Dev\Documents\GitHub\Homework\NinetyNineProblems\bin\Debug\FSharp.Core.dll
+C:\Users\Dev\Documents\GitHub\Homework\NinetyNineProblems\bin\Debug\Unquote.dll
+C:\Users\Dev\Documents\GitHub\Homework\NinetyNineProblems\bin\Debug\FSharp.Core.xml
+C:\Users\Dev\Documents\GitHub\Homework\NinetyNineProblems\bin\Debug\Unquote.xml
+C:\Users\Dev\Documents\GitHub\Homework\NinetyNineProblems\obj\Debug\NinetyNineProblems.dll
+C:\Users\Dev\Documents\GitHub\Homework\NinetyNineProblems\obj\Debug\NinetyNineProblems.pdb

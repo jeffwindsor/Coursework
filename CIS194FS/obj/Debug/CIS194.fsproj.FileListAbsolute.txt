@@ -1,0 +1,15 @@
+c:\users\dev\documents\visual studio 2015\Projects\CIS194\CIS194\bin\Debug\CIS194.XML
+c:\users\dev\documents\visual studio 2015\Projects\CIS194\CIS194\bin\Debug\CIS194.dll
+c:\users\dev\documents\visual studio 2015\Projects\CIS194\CIS194\bin\Debug\CIS194.pdb
+c:\users\dev\documents\visual studio 2015\Projects\CIS194\CIS194\bin\Debug\FSharp.Core.dll
+c:\users\dev\documents\visual studio 2015\Projects\CIS194\CIS194\bin\Debug\FSharp.Core.xml
+c:\users\dev\documents\visual studio 2015\Projects\CIS194\CIS194\obj\Debug\CIS194.dll
+c:\users\dev\documents\visual studio 2015\Projects\CIS194\CIS194\obj\Debug\CIS194.pdb
+C:\Users\Dev\Documents\GitHub\Homework\CIS194\bin\Debug\CIS194.XML
+C:\Users\Dev\Documents\GitHub\Homework\CIS194\bin\Debug\CIS194.dll
+C:\Users\Dev\Documents\GitHub\Homework\CIS194\bin\Debug\CIS194.pdb
+C:\Users\Dev\Documents\GitHub\Homework\CIS194\bin\Debug\FSharp.Core.dll
+C:\Users\Dev\Documents\GitHub\Homework\CIS194\bin\Debug\FSharp.Core.xml
+C:\Users\Dev\Documents\GitHub\Homework\CIS194\obj\Debug\CIS194.dll
+C:\Users\Dev\Documents\GitHub\Homework\CIS194\obj\Debug\CIS194.pdb
+C:\Users\Dev\Documents\GitHub\Homework\CIS194\bin\Debug\CIS194.dll.config

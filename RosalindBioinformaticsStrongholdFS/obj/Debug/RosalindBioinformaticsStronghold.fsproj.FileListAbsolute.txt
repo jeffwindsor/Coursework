@@ -1,0 +1,7 @@
+C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsStronghold\bin\Debug\RosalindBioinformaticsStronghold.XML
+C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsStronghold\bin\Debug\RosalindBioinformaticsStronghold.dll
+C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsStronghold\bin\Debug\RosalindBioinformaticsStronghold.pdb
+C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsStronghold\bin\Debug\FSharp.Core.dll
+C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsStronghold\bin\Debug\FSharp.Core.xml
+C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsStronghold\obj\Debug\RosalindBioinformaticsStronghold.dll
+C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsStronghold\obj\Debug\RosalindBioinformaticsStronghold.pdb
