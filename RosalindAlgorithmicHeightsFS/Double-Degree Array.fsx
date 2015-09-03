@@ -1,6 +1,6 @@
 ﻿#load "..\Collections.fs"
 #load "..\Files.fs"
-open Rosalind
+open Bioinformatics
 
 let lines = 
     @"AlgorithmicHeights\Double-Degree Array.txt"

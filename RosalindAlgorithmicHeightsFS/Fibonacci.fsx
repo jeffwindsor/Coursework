@@ -1,7 +1,7 @@
 ﻿#load "..\Collections.fs"
 
 24
-|> Rosalind.Seq.Fibonacci.item
+|> Bioinformatics.Seq.Fibonacci.item
 |> printfn "%i"
 
 //46368

@@ -1,6 +1,6 @@
 ﻿#load "Files.fs"
 #load "Collections.fs"
-open Rosalind
+open Bioinformatics
 
 type Node = {Id: string; Prefix:string; Suffix:string; All:string}
 let overlap (a, b) =

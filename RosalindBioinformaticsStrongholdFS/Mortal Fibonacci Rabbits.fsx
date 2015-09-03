@@ -1,5 +1,5 @@
 ﻿#load "Collections.fs"
-open Rosalind
+open Bioinformatics
 
 // Adults die after (m) cycles
 // New Borns become adults after one cycle

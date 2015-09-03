@@ -1,7 +1,7 @@
 ﻿#load "..\Files.fs"
 #load "..\Cellular.fs"
 #load "..\Collections.fs"
-open Rosalind
+open Bioinformatics
 open Dna
 
     type Node = { Nuc: Nucleotide; mutable MaxId:int; Edges: Node option array}

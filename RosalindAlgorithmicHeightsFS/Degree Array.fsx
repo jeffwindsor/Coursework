@@ -1,6 +1,6 @@
 ﻿#load "..\Collections.fs"
 #load "..\Files.fs"
-open Rosalind
+open Bioinformatics
 
 let addEdge (verticies: int array) a b =
     verticies.[a-1] <- verticies.[a-1] + 1

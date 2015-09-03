@@ -1,6 +1,6 @@
 ﻿#load "Collections.fs"
 #load "Cellular.fs"
-open Rosalind
+open Bioinformatics
 
 let answer = 
     Nucleotides.Dna.lex >> Nucleotides.Dna.toReverseComplement

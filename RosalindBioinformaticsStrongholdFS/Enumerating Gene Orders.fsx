@@ -1,5 +1,5 @@
 ﻿#load "Collections.fs"
-open Rosalind
+open Bioinformatics
 
 let n = 7
 

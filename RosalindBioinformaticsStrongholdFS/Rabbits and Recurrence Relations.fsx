@@ -1,5 +1,5 @@
 ﻿#load "Collections.fs"
-open Rosalind
+open Bioinformatics
 
 // Adults Breed (k) new borns each cycle
 // New Borns become adults after one cycle

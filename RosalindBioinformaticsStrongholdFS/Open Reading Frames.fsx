@@ -1,7 +1,7 @@
 ﻿#load "Files.fs"
 #load "Collections.fs"
 #load "Cellular.fs"
-open Rosalind
+open Bioinformatics
 open Nucleotides
  
 // Transcribe each DNA strand: original and reverse compliment

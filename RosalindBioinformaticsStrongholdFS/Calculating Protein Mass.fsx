@@ -1,5 +1,5 @@
 ﻿#load "Cellular.fs"
-open Rosalind
+open Bioinformatics
 
 let answer aas = aas |> AminoAcids.lex |> Seq.map AminoAcids.toMonoisotopicMass |> Seq.sum
 

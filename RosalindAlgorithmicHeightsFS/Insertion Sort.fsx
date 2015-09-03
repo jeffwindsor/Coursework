@@ -1,6 +1,6 @@
 ﻿#load "..\Collections.fs"
 #load "..\Files.fs"
-open Rosalind
+open Bioinformatics
 
 let insertionSortSwapCount (arr : 'a []) =
     let mutable c = 0

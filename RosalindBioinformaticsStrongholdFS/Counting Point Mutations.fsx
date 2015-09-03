@@ -1,6 +1,6 @@
 ﻿#load "Collections.fs"
 #load "Cellular.fs"
-open Rosalind
+open Bioinformatics
 
 let countPointMutations dna1 dna2 =
     Seq.filteri2 (fun i x y -> if x = y then None else Some(i)) dna1 dna2

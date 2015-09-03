@@ -1,7 +1,7 @@
 ﻿#load "Files.fs"
 #load "Collections.fs"
 #load "Cellular.fs"
-open Rosalind
+open Bioinformatics
 
 // Palindromes from 4 to 12 chars
 // Idea: start at char 4 compare left and right 

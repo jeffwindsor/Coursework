@@ -1,6 +1,6 @@
 ﻿#load "Files.fs"
 #load "Cellular.fs"
-open Rosalind
+open Bioinformatics
 open Nucleotides
 
 let gcPercent ns =
