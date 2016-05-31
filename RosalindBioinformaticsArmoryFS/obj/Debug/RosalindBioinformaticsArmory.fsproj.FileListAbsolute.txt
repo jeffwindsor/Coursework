@@ -1,7 +1,0 @@
-C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsArmory\bin\Debug\RosalindBioinformaticsArmory.XML
-C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsArmory\bin\Debug\RosalindBioinformaticsArmory.dll
-C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsArmory\bin\Debug\RosalindBioinformaticsArmory.pdb
-C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsArmory\bin\Debug\FSharp.Core.dll
-C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsArmory\bin\Debug\FSharp.Core.xml
-C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsArmory\obj\Debug\RosalindBioinformaticsArmory.dll
-C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindBioinformaticsArmory\obj\Debug\RosalindBioinformaticsArmory.pdb

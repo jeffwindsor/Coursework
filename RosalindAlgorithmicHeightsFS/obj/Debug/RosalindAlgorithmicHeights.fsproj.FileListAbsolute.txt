@@ -1,7 +1,0 @@
-C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindAlgorithmicHeights\bin\Debug\RosalindAlgorithmicHeights.XML
-C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindAlgorithmicHeights\bin\Debug\RosalindAlgorithmicHeights.dll
-C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindAlgorithmicHeights\bin\Debug\RosalindAlgorithmicHeights.pdb
-C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindAlgorithmicHeights\bin\Debug\FSharp.Core.dll
-C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindAlgorithmicHeights\bin\Debug\FSharp.Core.xml
-C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindAlgorithmicHeights\obj\Debug\RosalindAlgorithmicHeights.dll
-C:\Users\Dev\Documents\Source\CourseraBioinformatics\RosalindAlgorithmicHeights\obj\Debug\RosalindAlgorithmicHeights.pdb

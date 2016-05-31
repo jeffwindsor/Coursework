@@ -1,0 +1,25 @@
+INDEX VERSION 1.126+/home/jeff/Documents/Coursework/Scala_S2013/workspace/.metadata/.plugins/org.eclipse.jdt.core
+1609788100.index
+1319732789.index
+3640646894.index
+774564975.index
+313852606.index
+1814655393.index
+1961235293.index
+207581026.index
+75204508.index
+2895934474.index
+1001232132.index
+954478507.index
+3397726703.index
+2913048097.index
+919246033.index
+534805504.index
+2031085872.index
+2042173001.index
+1453598739.index
+1993881207.index
+1279675953.index
+1869927734.index
+3296295421.index
+1159935248.index
