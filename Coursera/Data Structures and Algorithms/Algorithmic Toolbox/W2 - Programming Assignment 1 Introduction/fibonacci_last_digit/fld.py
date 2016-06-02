@@ -1,5 +1,7 @@
 # Uses python3
-def fib(n):
+import sys
+
+def fld(n):
     if (n < 2):
         return n
     else:
@@ -7,12 +9,12 @@ def fib(n):
         b = 1
         t = 0
         for x in range(2, n + 1):
-            t = a + b
-            #print(x," : ",a," ",b," ",t)
+            t = (a + b) % 10
             a = b
             b = t
         return b
 
 if __name__ == '__main__':
-	n = int(input())
-	print(fib(n))
+    input = sys.stdin.read()
+    n = int(input)
+    print(fld(n))

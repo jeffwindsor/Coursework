@@ -1,4 +1,6 @@
 # Uses python3
+import sys
+
 def fib(n):
     if (n < 2):
         return n
@@ -13,6 +15,12 @@ def fib(n):
             b = t
         return b
 
+def fh(n, m):
+    nprime = n % fib(m*2)
+    return nprime
+    #return fib(nprime) % m
+
 if __name__ == '__main__':
-	n = int(input())
-	print(fib(n))
+    input = sys.stdin.read();
+    n, m = map(int, input.split())
+    print(fh(n, m))
