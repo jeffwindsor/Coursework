@@ -1,17 +1,10 @@
 # Uses python3
-import sys
+from fk import fk
 
-def get_optimal_value(capacity, weights, values):
-    value = 0.
-    # write your code here
+def test(name, actual, expected):
+    actual = "{:.4f}".format(actual)
+    print(name, " : ", actual == expected, "[ ", actual, " : " ,expected, " ]")
 
-    return value
-
-
-if __name__ == "__main__":
-    data = list(map(int, sys.stdin.read().split()))
-    n, capacity = data[0:2]
-    values = data[2:(2 * n + 2):2]
-    weights = data[3:(2 * n + 2):2]
-    opt_value = get_optimal_value(capacity, weights, values)
-    print("{:.10f}".format(opt_value))
+test("Sample 1", fk(50, [20,50,30],[60,100,120]), "180.0000")
+test("Sample 2", fk(10, [30], [500]), "166.6667")
+test("Cae 2 of 13", fk(1000, [30], [500]), "500.0000")
