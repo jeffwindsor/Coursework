@@ -4,20 +4,22 @@ from collections import namedtuple
 
 Segment = namedtuple('Segment', 'start end')
 
-def maxSegment():
-    return Segment(-1,1000000001)
-
 def optimal_points(segments):
     points = []
 
-    window = maxSegment()
+    window = Segment(-1, 1000000001)
     for s in sorted(segments):
         if(s.start <= window.end):
-            window.start = max(window.start, s.start)
-            window.end = min(window.end, s.end)
+            #print( window, " + ", s, " => Close Window to ", Segment(max(window.start, s.start), min(window.end, s.end)))
+            window = Segment(max(window.start, s.start), min(window.end, s.end))
         else:
+            #print( window, " + ", s, " => Append Point ", window.end)
             points.append(window.end)
-            window = maxSegment()
+            window = s
+    
+    #Append last valid point
+    if(window.start != -1):
+        points.append(window.end)
 
     return points
 
