@@ -7,7 +7,6 @@ def binary_search(xs, x):
             return - 1
         mid = ((high - low) // 2) + low
         midv = xs[mid]
-        print("  ", low," : ",mid," : ",high)
         if(key == midv):
             return mid
         elif(key < midv):
