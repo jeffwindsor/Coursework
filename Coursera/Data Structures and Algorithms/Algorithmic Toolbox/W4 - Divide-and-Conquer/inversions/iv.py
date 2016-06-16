@@ -1,6 +1,12 @@
 # Uses python3
 import sys
 
+def merge(b,c):
+    pass
+
+def merge_sort(a):
+    pass
+
 def get_number_of_inversions(a, b, left, right):
     number_of_inversions = 0
     if right - left <= 1:
