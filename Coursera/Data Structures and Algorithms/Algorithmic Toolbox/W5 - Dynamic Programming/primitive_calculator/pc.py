@@ -12,7 +12,6 @@ def optimal_sequence(n):
 
     sequence = []
     while n > 1:
-        print(n)
         sequence.append(n)
         if memo[n - 1] == memo[n] - 1:
             n = n - 1
