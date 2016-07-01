@@ -1,32 +1,31 @@
 # Uses python3
 import sys
 
-def mergeSort(a, inversions):
-    if len(a)<2: return a
+def merge_sort_and_count(A):
+    if len(A) == 1:
+        return 0
 
     m = int(len(a)/2)
-    return merge(mergeSort(a[:m], inversions), mergeSort(a[m:], inversions))
+    (lc, L) = merge_sort_and_count(A[:m])
+    (rc, R) = merge_sort_and_count(A[m:])
+    (ac, A) = merge_and_count(L,R)
+    return lc+rc+ac, A
 
-def merge(l,r, inversions):
-    result=[]
-    i=j=0
-    while i<len(l) and j<len(r):
-        if l[i] < r[j]:
-            result.append(l[i])
-            i+=1
+def merge_and_count(A,B):
+    C = []
+    count=i=j=0
+    la = len(A)
+    lb= len(B)
+    while la > i and lb < j:
+        C.extend(min(A[i],B[j]))
+        if B[j] < A[i]:
+            count += len(A)
+            j += 1
         else:
-            result.append(r[j])
-            j+=1
-    while (i<len(l)):
-        result.append(l[i])
-        i+=1
-    while (j<len(r)):
-        result.append(r[j])
-        j+=1
-    return result
+            i += 1
 
-
-
+    C.append(A if A else B)
+    return count, C
 
 def get_number_of_inversions(a, b, left, right):
     number_of_inversions = 0
