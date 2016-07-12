@@ -110,5 +110,64 @@ class FunSetSuite extends FunSuite {
     }
   }
 
+  test("intersect returns the set of all elements that are both in `s` or `t`") {
+    new TestSets {
+      val s = intersect(union(s1,s2), union(s1,s3))
+      assert(contains(s, 1), "intersect 1")
+      assert(!contains(s, 2), "intersect 2")
+      assert(!contains(s, 3), "intersect 3")
+    }
+  }
+
+  test("diff returns the set of all elements of `s` that are not in `t`") {
+    new TestSets {
+      val s = diff(union(s1,s2), union(s1,s3))
+      assert(!contains(s, 1), "diff 1")
+      assert(contains(s, 2), "diff 2")
+      assert(!contains(s, 3), "diff 3")
+    }
+  }
+
+  trait BoundedSets{
+    val smallerSet = (elem:Int) => -100 <= elem && elem <= 100
+  }
+  test("For All") {
+    new BoundedSets {
+      //println("For All")
+      val p = (elem:Int) => elem % 1 == 0
+      assert(forall(smallerSet,p),"For All smaller")
+    }
+  }
+  test("For All not met") {
+    new BoundedSets {
+      //println("For All not met")
+      val p = (elem:Int) => elem % 10 == 0
+      assert(!forall(smallerSet,p),"For All smaller")
+    }
+  }
+
+  test("Exists") {
+    new BoundedSets {
+      //println("Exists")
+      val p = (elem:Int) => elem == 100
+      assert(exists(smallerSet,p),"Exists smaller")
+    }
+  }
+  test("Exists not met") {
+    new BoundedSets {
+      //println("Exists not met")
+      val p = (elem:Int) => elem == 1001
+      assert(!exists(smallerSet,p),"")
+    }
+  }
+
+  test("map") {
+    new BoundedSets {
+      val s = (i:Int) => i==1 || i==3 || i==4 || i==5 || i==7 || i==1000
+      val f = (x:Int) => x - 1
+      val r = map(s,f)
+      assert(FunSets.toString(r) === "{0,2,3,4,6,999}")
+    }
+  }
 
 }

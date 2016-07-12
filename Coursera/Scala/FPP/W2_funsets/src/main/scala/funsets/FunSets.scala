@@ -48,7 +48,7 @@ object FunSets {
    * Returns the subset of `s` for which `p` holds.
    */
   def filter(s: Set, p: Int => Boolean): Set =
-    x => p(x) && s(x)
+    intersect(s, p)
 
   /**
    * The bounds for `forall` and `exists` are +/- 1000.
@@ -60,23 +60,31 @@ object FunSets {
    */
   def forall(s: Set, p: Int => Boolean): Boolean = {
     def iter(a: Int): Boolean = {
-      if (???) ???
-      else if (???) ???
-      else iter(???)
+      if (a > bound) true
+      else if (s(a) && !p(a)) false
+      else iter(a+1)
     }
-    iter(???)
+    iter(-bound)
   }
-  
+
   /**
    * Returns whether there exists a bounded integer within `s`
    * that satisfies `p`.
    */
-    def exists(s: Set, p: Int => Boolean): Boolean = ???
+  def exists(s: Set, p: Int => Boolean): Boolean ={
+    def iter(a: Int): Boolean = {
+      if (a > bound) false
+      else if (s(a) && p(a)) true
+      else iter(a+1)
+    }
+    iter(-bound)
+  }
   
   /**
    * Returns a set transformed by applying `f` to each element of `s`.
    */
-    def map(s: Set, f: Int => Int): Set = ???
+  def map(s: Set, f: Int => Int): Set =
+      x => exists(s, i => x == f(i))
   
   /**
    * Displays the contents of a set
