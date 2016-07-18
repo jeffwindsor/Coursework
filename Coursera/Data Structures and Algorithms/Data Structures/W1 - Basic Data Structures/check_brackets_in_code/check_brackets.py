@@ -16,9 +16,7 @@ class Bracket:
             return True
         return False
 
-if __name__ == "__main__":
-    text = sys.stdin.read()
-
+def brackets(text):
     opening_brackets_stack = []
     for i, next in enumerate(text):
         if next == '(' or next == '[' or next == '{':
@@ -29,4 +27,8 @@ if __name__ == "__main__":
             # Process closing bracket, write your code here
             pass
 
-    # Printing answer, write your code here
+def test_brackets()
+
+if __name__ == "__main__":
+    text = sys.stdin.read()
+    println brackets(text)
