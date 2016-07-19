@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace DataStructures
+namespace DataStructures.W1
 {
     public class Brackets
     {

@@ -7,7 +7,7 @@ namespace DataStructures
     {
         public static void Main(string[] args)
         {
-            Process(Tree.Process);
+            //Process(.Process);
         }
         private static void Process(Func<string[],string[]> process)
         {
