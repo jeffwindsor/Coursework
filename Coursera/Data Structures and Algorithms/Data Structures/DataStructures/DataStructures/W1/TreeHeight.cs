@@ -5,28 +5,6 @@ namespace DataStructures.W1
 {
     public class TreeHeight
     {
-        public int RootId { get; set; }
-        public TreeNode[] Nodes { get; set; }
-
-        public TreeHeight(int size, IReadOnlyList<int> parents)
-        {
-            Nodes = Enumerable
-                .Range(0, size)
-                .Select(i => new TreeNode())
-                .ToArray();
-
-            for (var childId = 0; childId < size; childId++)
-            {
-                var parentId = parents[childId];
-                if (parentId == -1) {RootId = childId;}
-                else
-                {
-                    Nodes[childId].Parent = parentId;
-                    Nodes[parentId].Children.Add(childId);
-                }
-            }
-        }
-
         public static string[] Process(string[] inputs)
         {
             var n = int.Parse(inputs[0]);
@@ -63,6 +41,32 @@ namespace DataStructures.W1
             }
         }
     }
+
+    public class Tree
+    {
+        public int RootId { get; set; }
+        public TreeNode[] Nodes { get; set; }
+
+        public Tree(int size, IReadOnlyList<int> parents)
+        {
+            Nodes = Enumerable
+                .Range(0, size)
+                .Select(i => new TreeNode())
+                .ToArray();
+
+            for (var childId = 0; childId < size; childId++)
+            {
+                var parentId = parents[childId];
+                if (parentId == -1) { RootId = childId; }
+                else
+                {
+                    Nodes[childId].Parent = parentId;
+                    Nodes[parentId].Children.Add(childId);
+                }
+            }
+        }
+    }
+
     public class TreeNode
     {
         public TreeNode()

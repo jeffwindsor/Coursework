@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -37,12 +37,12 @@ namespace DataStructures.W2
                 .Select(int.Parse)
                 .ToArray();
 
-            var heap = BuildHeap(n, data);
+            var heap = SwapsToBuildHeap(n, data);
             var countResult = new[] { heap.Swaps.Count.ToString() };
             var swapResults = heap.Swaps.Select((pair) => string.Format("{0} {1}", pair.Item1, pair.Item2));
             return countResult.Concat(swapResults).ToArray();
         }
-        public static BinaryHeap BuildHeap(int n, int[] data)
+        public static BinaryHeap SwapsToBuildHeap(int n, int[] data)
         {
             var current = data.Take(n).ToArray();
             var heap = new MinBinaryHeap(current);
@@ -134,9 +134,9 @@ namespace DataStructures.W2
             _size = source.Length;
         }
 
-        protected int ParentId(int i) { return ((i - 1) / 2); }
-        protected int LeftChildId(int i) { return 2 * i + 1; }
-        protected int RightChildId(int i) { return 2 * i + 2; }
+        protected int ParentId(int i) { return ((i + 1) / 2) - 1; }
+        protected int LeftChildId(int i) { return (2 * (i + 1)) - 1; }
+        protected int RightChildId(int i) { return (2 * (i + 1)); }
 
         protected int Value(int i) { return H[i]; }
 
