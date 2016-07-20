@@ -3,12 +3,12 @@ using System.Linq;
 
 namespace DataStructures.W1
 {
-    public class Tree
+    public class TreeHeight
     {
         public int RootId { get; set; }
         public TreeNode[] Nodes { get; set; }
 
-        public Tree(int size, IReadOnlyList<int> parents)
+        public TreeHeight(int size, IReadOnlyList<int> parents)
         {
             Nodes = Enumerable
                 .Range(0, size)

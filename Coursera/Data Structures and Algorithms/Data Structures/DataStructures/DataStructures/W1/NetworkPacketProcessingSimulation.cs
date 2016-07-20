@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace DataStructures.W1
 {
-    public class Network
+    public class NetworkPacketProcessingSimulation
     {
         public static char[] splitOn = new[] { ' ' };
 

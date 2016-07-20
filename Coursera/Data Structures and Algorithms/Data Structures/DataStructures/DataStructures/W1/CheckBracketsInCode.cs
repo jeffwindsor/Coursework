@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace DataStructures.W1
 {
-    public class Brackets
+    public class CheckBracketsInCode
     {
         public static string[] Process(string[] inputs)
         {
