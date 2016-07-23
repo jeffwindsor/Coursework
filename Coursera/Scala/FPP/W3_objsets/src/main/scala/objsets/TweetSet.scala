@@ -146,8 +146,10 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
   def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet =
     left.filterAcc(p, right.filterAcc(p, if (p(elem)) acc.incl(elem) else acc))
 
-  def union(that: TweetSet): TweetSet =
-    ((left union right) union that) incl elem
+  def union(that: TweetSet): TweetSet = {
+    val p = (t:Tweet) => true
+    that.filterAcc(p, right.filterAcc(p, left)).incl(elem)
+  }
 
   def contains(x: Tweet): Boolean =
     if (x.text < elem.text) left.contains(x)

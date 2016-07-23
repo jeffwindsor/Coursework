@@ -51,13 +51,13 @@ class TweetSetSuite extends FunSuite {
     }
   }
 
-/*
   test("filter: 321 on set5") {
     new TestSets {
-      assert(size(TweetReader.toTweetSet(TweetReader.gizmodoTweets).filter(tw => tw.retweets == 321)) === 0)
+      assert(size(TweetReader.allTweets.filter(tw => tw.retweets == 321)) === 1)
+      //assert(size(TweetReader.toTweetSet(TweetReader.gizmodoTweets).filter(tw => tw.retweets == 321)) === 0)
     }
   }
-*/
+
   test("union: set4c and set4d") {
     new TestSets {
       assert(size(set4c.union(set4d)) === 4)
