@@ -45,6 +45,19 @@ class TweetSetSuite extends FunSuite {
     }
   }
 
+  test("filter: 21 on set5") {
+    new TestSets {
+      assert(size(set5.filter(tw => tw.retweets == 21)) === 0)
+    }
+  }
+
+/*
+  test("filter: 321 on set5") {
+    new TestSets {
+      assert(size(TweetReader.toTweetSet(TweetReader.gizmodoTweets).filter(tw => tw.retweets == 321)) === 0)
+    }
+  }
+*/
   test("union: set4c and set4d") {
     new TestSets {
       assert(size(set4c.union(set4d)) === 4)
