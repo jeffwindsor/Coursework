@@ -4,27 +4,27 @@ using System.Linq;
 
 namespace DataStructures.W2
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            Process(JobQueue.Process);
-        }
-        private static void Process(Func<string[], string[]> process)
-        {
-            var input = new List<string>();
-            string s;
-            while ((s = Console.ReadLine()) != null)
-            {
-                input.Add(s);
-            }
+    //public class Program
+    //{
+    //    public static void Main(string[] args)
+    //    {
+    //        Process(JobQueue.Process);
+    //    }
+    //    private static void Process(Func<string[], string[]> process)
+    //    {
+    //        var input = new List<string>();
+    //        string s;
+    //        while ((s = Console.ReadLine()) != null)
+    //        {
+    //            input.Add(s);
+    //        }
 
-            foreach (var item in process(input.ToArray()))
-            {
-                Console.WriteLine(item);
-            }
-        }
-    }
+    //        foreach (var item in process(input.ToArray()))
+    //        {
+    //            Console.WriteLine(item);
+    //        }
+    //    }
+    //}
 
     public class JobQueue
     {
@@ -53,29 +53,25 @@ namespace DataStructures.W2
 
             //Process Results
             var results = new List<Job>();
+            int id;
             foreach (var processingTime in jobs)
             {
-                var job = queue.Max();
-                if (initials.Count > 0 && (job == null || job.EndOfProcessing > currentTime))
+                var q = queue.Max();
+                if (initials.Count > 0 && (q == null || q.EndOfProcessing > currentTime))
                 {   //Add job as un used initial thread
-                    queue.Insert(new Job(initials.Dequeue(), currentTime, processingTime));
+                    id = initials.Dequeue();
                 }
                 else
-                {
-                    results.Add(job);
+                {                   
                     queue.ExtractMax();
-                    currentTime = job.EndOfProcessing;
-                    queue.Insert(new Job(job.ThreadId, currentTime, processingTime));
+                    currentTime = q.EndOfProcessing;
+                    id = q.ThreadId;
                 }
+                var job = new Job(id, currentTime, processingTime);
+                results.Add(job);
+                queue.Insert(job);
             }
 
-            //Empty Queue
-            while (queue.Size > 0)
-            {
-                var job = queue.Max();
-                results.Add(job);
-                queue.ExtractMax();
-            }
             return results;
         }
 

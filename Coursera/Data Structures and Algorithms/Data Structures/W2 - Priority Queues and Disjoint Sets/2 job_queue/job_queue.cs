@@ -39,7 +39,7 @@ namespace DataStructures.W2
             if (jobStrings.Length != jobCount)
                 jobStrings = jobStrings.Take(jobCount).ToArray();
             var jobs = jobStrings.Select(long.Parse).ToArray();
-
+      
             return AssignJobs(threadCount, jobs)
                 .Select(pj => string.Format("{0} {1}", pj.ThreadId, pj.StartOfProcessing))
                 .ToArray();
@@ -48,42 +48,42 @@ namespace DataStructures.W2
         public static IEnumerable<Job> AssignJobs(int threadCount, long[] jobs)
         {
             long currentTime = 0;
-
-            //Create Priority Queue
-            var placeHolderJobs = Enumerable.Range(0, threadCount)
-                .Select(id => new Job(id, 0, 0, false))
-                .ToArray();
-            var queue = new MinBinaryHeap<Job>(placeHolderJobs);
+            var queue = new MinBinaryHeap<Job>(threadCount);
+            var initials = new Queue<int>(Enumerable.Range(0, threadCount));
 
             //Process Results
             var results = new List<Job>();
+            int id;
             foreach (var processingTime in jobs)
             {
-                var job = queue.ExtractMax();
+                var q = queue.Max();
+                if (initials.Count > 0 && (q == null || q.EndOfProcessing > currentTime))
+                {   //Add job as un used initial thread
+                    id = initials.Dequeue();
+                }
+                else
+                {                   
+                    queue.ExtractMax();
+                    currentTime = q.EndOfProcessing;
+                    id = q.ThreadId;
+                }
+                var job = new Job(id, currentTime, processingTime);
                 results.Add(job);
-                currentTime = job.EndOfProcessing;
-                queue.Insert(new Job(job.ThreadId, currentTime, processingTime));
+                queue.Insert(job);
             }
 
-            //Empty Queue
-            while (queue.Size > 0)
-            {
-                results.Add(queue.ExtractMax());
-            }
-            return results.Where(j => j.IsActualJob);
+            return results;
         }
 
         public class Job : IComparable<Job>
         {
-            public Job(int id, long currentTime, long procesingTime, bool isActualJob = true)
+            public Job(int id, long currentTime, long procesingTime)
             {
                 ThreadId = id;
                 StartOfProcessing = currentTime;
                 ProcessingTime = procesingTime;
                 EndOfProcessing = StartOfProcessing + ProcessingTime;
-                IsActualJob = isActualJob;
             }
-            public bool IsActualJob { get; private set; }
             public int ThreadId { get; private set; }
             public long StartOfProcessing { get; private set; }
             public long ProcessingTime { get; private set; }
@@ -100,14 +100,7 @@ namespace DataStructures.W2
 
         private class MinBinaryHeap<T> : BinaryHeap<T> where T : IComparable<T>
         {
-            public MinBinaryHeap(T[] source)
-                : base(source)
-            {
-                for (int i = source.Length / 2; i >= 0; i--)
-                {
-                    SiftDown(i);
-                }
-            }
+            public MinBinaryHeap(int size) : base(size) { }
 
             public override int SiftUp(int i)
             {
@@ -146,11 +139,11 @@ namespace DataStructures.W2
             protected int _size;
             private T[] H;
 
-            protected BinaryHeap(T[] source)
+            protected BinaryHeap(int size   )
             {
-                H = source;
-                _maxSize = source.Length;
-                _size = source.Length;
+                H = new T[size];
+                _maxSize = size;
+                _size = 0;
             }
 
             protected int ParentId(int i) { return ((i - 1) / 2); }
@@ -159,8 +152,7 @@ namespace DataStructures.W2
 
             protected T Value(int i) { return H[i]; }
 
-            public int Size
-            {
+            public int Size {
                 get { return _size; }
             }
             public abstract int SiftUp(int i);
@@ -176,14 +168,16 @@ namespace DataStructures.W2
                 SiftUp(_size - 1);
             }
 
-            public T ExtractMax()
+            public T Max()
+            {
+                return H[0];
+            }
+            public void ExtractMax()
             {
                 var result = H[0];
                 H[0] = H[_size - 1];
                 _size -= 1;
                 SiftDown(0);
-
-                return result;
             }
 
             //public void Remove(int i)

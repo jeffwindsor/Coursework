@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using System.Collections.Generic;
 
 namespace DataStructures.W2
 {
@@ -19,7 +18,7 @@ namespace DataStructures.W2
         public void JobQueueTests()
         {
             //JobQueueTestsGenerateLargeNumberOfLargeTimes(4);
-            TestFromFiles(5, 5, path + location_jobqueue, JobQueue.Process);
+            TestFromFiles(1, 5, path + location_jobqueue, JobQueue.Process);
 
             //Test for 1000 jobs 10x9
         }
