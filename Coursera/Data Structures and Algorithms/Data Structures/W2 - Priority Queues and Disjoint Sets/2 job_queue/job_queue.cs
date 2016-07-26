@@ -25,6 +25,7 @@ namespace DataStructures.W2
             }
         }
     }
+
     public class JobQueue
     {
         public static string[] Process(string[] inputs)
@@ -33,29 +34,30 @@ namespace DataStructures.W2
             var splits0 = inputs[0].Split(chars);
             var threadCount = int.Parse(splits0[0]);
             var jobCount = int.Parse(splits0[1]);
-            var jobs = inputs[1].Split(chars).Select(int.Parse).ToArray();
 
-            if (jobs.Length != jobCount) throw new ArgumentOutOfRangeException();
+            var jobStrings = inputs[1].Split(chars);
+            if (jobStrings.Length != jobCount)
+                jobStrings = jobStrings.Take(jobCount).ToArray();
+            var jobs = jobStrings.Select(long.Parse).ToArray();
 
             return AssignJobs(threadCount, jobs)
                 .Select(pj => string.Format("{0} {1}", pj.ThreadId, pj.StartOfProcessing))
                 .ToArray();
         }
 
-        public static IEnumerable<Job> AssignJobs(int threadCount, int[] jobs)
+        public static IEnumerable<Job> AssignJobs(int threadCount, long[] jobs)
         {
-            var currentTime = 0;
+            long currentTime = 0;
 
             //Create Priority Queue
-            var intialProcessingJobs = jobs
-                .Take(threadCount)
-                .Select((processingTime, id) => new Job(id, currentTime, processingTime))
+            var placeHolderJobs = Enumerable.Range(0, threadCount)
+                .Select(id => new Job(id, 0, 0, false))
                 .ToArray();
-            var queue = new MinBinaryHeap<Job>(intialProcessingJobs);
+            var queue = new MinBinaryHeap<Job>(placeHolderJobs);
 
             //Process Results
             var results = new List<Job>();
-            foreach (var processingTime in jobs.Skip(threadCount))
+            foreach (var processingTime in jobs)
             {
                 var job = queue.ExtractMax();
                 results.Add(job);
@@ -68,26 +70,24 @@ namespace DataStructures.W2
             {
                 results.Add(queue.ExtractMax());
             }
-            return results;
+            return results.Where(j => j.IsActualJob);
         }
-
-        //ThreadCount
-        //Jobs
-        //List ThreadId(0 based) - Start of Processing
 
         public class Job : IComparable<Job>
         {
-            public Job(int id, int currentTime, int procesingTime)
+            public Job(int id, long currentTime, long procesingTime, bool isActualJob = true)
             {
                 ThreadId = id;
                 StartOfProcessing = currentTime;
                 ProcessingTime = procesingTime;
                 EndOfProcessing = StartOfProcessing + ProcessingTime;
+                IsActualJob = isActualJob;
             }
+            public bool IsActualJob { get; private set; }
             public int ThreadId { get; private set; }
-            public int StartOfProcessing { get; private set; }
-            public int ProcessingTime { get; private set; }
-            public int EndOfProcessing { get; private set; }
+            public long StartOfProcessing { get; private set; }
+            public long ProcessingTime { get; private set; }
+            public long EndOfProcessing { get; private set; }
 
             public int CompareTo(Job other)
             {
@@ -100,7 +100,8 @@ namespace DataStructures.W2
 
         private class MinBinaryHeap<T> : BinaryHeap<T> where T : IComparable<T>
         {
-            public MinBinaryHeap(T[] source) : base(source)
+            public MinBinaryHeap(T[] source)
+                : base(source)
             {
                 for (int i = source.Length / 2; i >= 0; i--)
                 {
@@ -158,7 +159,8 @@ namespace DataStructures.W2
 
             protected T Value(int i) { return H[i]; }
 
-            public int Size {
+            public int Size
+            {
                 get { return _size; }
             }
             public abstract int SiftUp(int i);
