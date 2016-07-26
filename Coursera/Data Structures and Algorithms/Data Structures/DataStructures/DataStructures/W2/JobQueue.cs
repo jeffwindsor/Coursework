@@ -58,15 +58,19 @@ namespace DataStructures.W2
             {
                 var q = queue.Max();
                 if (initials.Count > 0 && (q == null || q.EndOfProcessing > currentTime))
-                {   //Add job as un used initial thread
+                {
+                    //Process job on unused thread
+                    //Do not Dequeue max since it does not exist or has not finished processing yet
                     id = initials.Dequeue();
                 }
                 else
-                {                   
+                {
+                    //Dequeue Max and use that thread to process new job
                     queue.ExtractMax();
                     currentTime = q.EndOfProcessing;
                     id = q.ThreadId;
                 }
+                //adding job now since reporting on start time not end of processing time
                 var job = new Job(id, currentTime, processingTime);
                 results.Add(job);
                 queue.Insert(job);

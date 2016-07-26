@@ -11,23 +11,20 @@ namespace DataStructures.W2
         [Test]
         public void MakeHeapTests()
         {
-            TestFromFiles(1, 2, path + "1 make_heap", MakeHeap.Process);
+            TestDirectory(path + "1 make_heap", MakeHeap.Process);
         }
 
         [Test]
         public void JobQueueTests()
         {
-            //JobQueueTestsGenerateLargeNumberOfLargeTimes(4);
-            TestFromFiles(1, 5, path + location_jobqueue, JobQueue.Process);
-
-            //Test for 1000 jobs 10x9
+            TestDirectory(path + location_jobqueue, JobQueue.Process);
         }
 
         [Test]
         public void MergingTablesTests()
         {
-            
-            //TestFromFiles(1, 22, path + "3 merging_tables", Network.Process);
+
+            TestDirectory(path + "3 merging_tables", MergingTables.Process);
         }
 
         const long JobQueueTests_max_t = 1000000000;
@@ -43,7 +40,7 @@ namespace DataStructures.W2
                 .Select( i => i * JobQueueTests_max_t)
                 .Select(i => string.Format("0 {0}", i));
 
-            WriteTestFiles(id, path + location_jobqueue, joblines, answerlines);
+            WriteTestFiles(id.ToString(), path + location_jobqueue, joblines, answerlines);
         }
         
     }
