@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using FluentAssertions;
-using NUnit.Framework;
 
 namespace DataStructures
 {
@@ -20,15 +19,18 @@ namespace DataStructures
             var name = string.Format(@"C:\Github\Coursework\Coursera\Data Structures and Algorithms\Data Structures\{0}\tests\{1:D2}", location, i);
             var input = File.ReadAllLines(name);
             var expected = File.ReadAllLines(name + ".a");
-            Console.WriteLine("[{0:D2}] {1} => {2}", i, input.FirstOrDefault(), expected.FirstOrDefault());
-            var actual = getActual(input);
+            Console.WriteLine("[File {0:D2}]", i);
 
+            var actual = getActual(input);
             actual.Length.Should().Be(expected.Length);
+            for (int a = 0; a < actual.Length; a++)
+            {
+                Console.WriteLine("{0} : {1}", actual[a], expected[a]);
+            }
             for (int a = 0; a < actual.Length; a++)
             {
                 actual[a].Should().Be(expected[a]);
             }
-            
         }
     }
 }

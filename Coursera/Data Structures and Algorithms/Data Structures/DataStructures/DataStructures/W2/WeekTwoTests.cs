@@ -10,19 +10,19 @@ namespace DataStructures.W2
         [Test]
         public void MakeHeapTests()
         {
-            TestFromFiles(1, 2, path + "make_heap", MakeHeap.Process);
+            TestFromFiles(1, 2, path + "1 make_heap", MakeHeap.Process);
         }
 
         [Test]
         public void JobQueueTests()
         {
-            //TestFromFiles(1, 54, path + "job_queue", JobQueue.Process);
+            TestFromFiles(1, 2, path + "2 job_queue", JobQueue.Process);
         }
 
         [Test]
         public void MergingTablesTests()
         {
-            //TestFromFiles(1, 22, path + "merging_tables", Network.Process);
+            //TestFromFiles(1, 22, path + "3 merging_tables", Network.Process);
         }
     }
 }
