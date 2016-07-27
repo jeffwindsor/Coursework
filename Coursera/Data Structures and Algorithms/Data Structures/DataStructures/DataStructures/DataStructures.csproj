@@ -85,14 +85,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BaseTests.cs" />
     <Compile Include="W1\NetworkPacketProcessingSimulation.cs" />
-    <Compile Include="W1\WeekOneTests.cs" />
+    <Compile Include="W1\Tests.cs" />
     <Compile Include="W1\TreeHeight.cs" />
-    <Compile Include="W2\BinaryHeap.cs" />
-    <Compile Include="W2\DisJointSets.cs" />
+    <Compile Include="BinaryHeap.cs" />
+    <Compile Include="DisJointSets.cs" />
     <Compile Include="W2\JobQueue.cs" />
     <Compile Include="W2\MakeHeap.cs" />
     <Compile Include="W2\MergingTables.cs" />
-    <Compile Include="W2\WeekTwoTests.cs" />
+    <Compile Include="W2\Tests.cs" />
+    <Compile Include="W3\Phonebook.cs" />
+    <Compile Include="W3\Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

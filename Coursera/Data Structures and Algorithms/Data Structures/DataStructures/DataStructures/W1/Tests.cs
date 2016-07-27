@@ -3,7 +3,7 @@
 namespace DataStructures.W1
 {
     [TestFixture]
-    public class WeekOneTests : BaseTests
+    public class Tests : BaseTests
     {
         [Test]
         public void CheckBracketsInCodeTests()
