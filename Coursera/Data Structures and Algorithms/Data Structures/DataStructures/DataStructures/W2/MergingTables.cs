@@ -41,28 +41,28 @@ namespace DataStructures.W2
 
             var queries = inputs.Skip(2).Take(queryCount).Select(l => {
                 var splits1 = l.Split(chars);
-                return new Query { Destination = int.Parse(splits1[0]) - 1, Source = int.Parse(splits1[1]) - 1 };
+                return new Query (int.Parse(splits1[0]), int.Parse(splits1[1]));
                 });
 
-            return Process(tableCount, queryCount, tableRowCounts, queries)
+            return Process(tableRowCounts, queries)
                 .Select(q => q.ToString())
                 .ToArray();
         }
 
-        public static IEnumerable<int> Process(int tableCount, int queryCount, int[] tableRowCounts, IEnumerable<Query> queries)
+        public static IEnumerable<int> Process(int[] tableRowCounts, IEnumerable<Query> queries)
         {
             var results = new List<int>();
             var set = new Tables(tableRowCounts);
 
-            //Console.WriteLine(set);
+            Console.WriteLine(set);
             foreach (var q in queries)
             {
-                //Console.WriteLine(q);                
+                Console.WriteLine(q);                
                 set.Union(q.Destination, q.Source);
-                //Console.WriteLine(set);
+                Console.WriteLine(set);
 
                 results.Add(set.MaxCount);
-                //Console.WriteLine(results.Last());
+                Console.WriteLine(results.Last());
 
             }
             return results;
@@ -70,6 +70,7 @@ namespace DataStructures.W2
 
         public class Query
         {
+            public Query(int d, int s) { Destination = d - 1; Source = s - 1; }
             public int Destination;
             public int Source;
             public override string ToString()
@@ -78,7 +79,7 @@ namespace DataStructures.W2
             }
         }
 
-        private class Tables : DisjointSets
+        public class Tables : DisjointSets
         {
             private int[] _counts;
             private int _maxcount;
@@ -105,7 +106,7 @@ namespace DataStructures.W2
             }
         }
 
-        private abstract class DisjointSets
+        public class DisjointSets
         {
             private int[] _parent;
             private int[] _rank;
@@ -116,7 +117,7 @@ namespace DataStructures.W2
                 _parent = range.Select(i => i).ToArray();
             }
 
-            protected abstract void Merge(int destination, int source);
+            protected virtual void Merge(int destination, int source) { }
             public void MakeSet(int i) { _parent[i] = i; }
             public int Find(int i)
             {
