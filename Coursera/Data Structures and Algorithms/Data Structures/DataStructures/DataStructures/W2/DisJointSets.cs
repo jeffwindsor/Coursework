@@ -14,19 +14,17 @@ namespace DataStructures.W2
             _rank = range.Select(_ => 0).ToArray();
             _parent = range.Select(i => i).ToArray();
         }
-
+        public void MakeSet(int i) { _parent[i] = i; }
         public int Find(int i)
         {
-            //Root found
-            if (i == _parent[i]) return i;
-
-            //Non Root - Path Compression
-            _parent[i] = Find(_parent[i]);
+            if (i != _parent[i])
+                _parent[i] = Find(_parent[i]);
             return _parent[i];
         }
-
         public void Union(int a, int b)
         {
+            a = Find(a);
+            b = Find(b);
             if (a == b) return;
 
             //smaller depth tree under larger depth tree

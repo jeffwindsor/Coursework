@@ -52,44 +52,103 @@ namespace DataStructures.W2
         public static IEnumerable<int> Process(int tableCount, int queryCount, int[] tableRowCounts, IEnumerable<Query> queries)
         {
             var results = new List<int>();
-            var set = new DisjointSets(tableRowCounts);
+            var set = new Tables(tableRowCounts);
+
+            //Console.WriteLine(set);
             foreach (var q in queries)
             {
+                //Console.WriteLine(q);                
                 set.Union(q.Destination, q.Source);
-                results.Add(set.Max());
+                //Console.WriteLine(set);
+
+                results.Add(set.MaxCount);
+                //Console.WriteLine(results.Last());
+
             }
             return results;
         }
 
-        public class Query { public int Destination; public int Source; }
-
-        private class DisjointSets
+        public class Query
         {
-            private int[] _rank;
-            private int[] _parent;
-            public DisjointSets(int[] ranks)
+            public int Destination;
+            public int Source;
+            public override string ToString()
             {
-                _parent = Enumerable.Range(0, ranks.Length).Select(i => i).ToArray();
-                _rank = ranks;
+                return string.Format("{0} <== {1}", Destination, Source);
+            }
+        }
+
+        private class Tables : DisjointSets
+        {
+            private int[] _counts;
+            private int _maxcount;
+            public Tables(int[] counts): base(counts.Length)
+            {
+                _counts = counts;
+                _maxcount = counts.Max();
+            }
+            public int MaxCount { get { return _maxcount; } }
+
+            protected override void Merge(int destination, int source)
+            {
+                _counts[destination] += _counts[source];
+                _counts[source] = 0;
+
+                _maxcount = Math.Max(_maxcount, _counts[destination]);
+            }
+            public override string ToString()
+            {
+                return string.Format("{2}{0}Rows:    [{1}]", 
+                    Environment.NewLine,
+                    string.Join(", ", _counts.Select(i => i.ToString())),
+                    base.ToString());
+            }
+        }
+
+        private abstract class DisjointSets
+        {
+            private int[] _parent;
+            private int[] _rank;
+            public DisjointSets(int size)
+            {
+                var range = Enumerable.Range(0, size);
+                _rank = range.Select(_ => 0).ToArray();
+                _parent = range.Select(i => i).ToArray();
             }
 
+            protected abstract void Merge(int destination, int source);
             public void MakeSet(int i) { _parent[i] = i; }
             public int Find(int i)
             {
                 if (i != _parent[i])
                     _parent[i] = Find(_parent[i]);
                 return _parent[i];
-            }
-            public int Max() { return _rank.Max(); }
-            public void Union(int destination, int source)
+            }            
+            public void Union(int a, int b)
             {
-                var pdestination = Find(destination);
-                var psource = Find(source);
-                if (pdestination == psource) return;
+                a = Find(a);
+                b = Find(b);
 
-                _rank[pdestination] += _rank[psource];
-                _rank[psource] = 0;
-                _parent[psource] = pdestination;
+                if (a == b) return;
+                //smaller depth tree under larger depth tree
+                if (_rank[a] > _rank[b])
+                {
+                    _parent[b] = a;
+                    Merge(a, b);
+                }
+                else
+                {
+                    _parent[a] = b;
+                    Merge(b, a);
+                    if (_rank[a] == _rank[b]) _rank[b] += 1;
+                }
+            }
+            public override string ToString()
+            {
+                return string.Format("Parents: [{1}]{0}Ranks:   [{2}]",
+                    Environment.NewLine, 
+                    string.Join(", ", _parent.Select(i => i.ToString())),
+                    string.Join(", ", _rank.Select(i => i.ToString())));
             }
         }
     }
