@@ -87,6 +87,8 @@
     <Compile Include="W1\NetworkPacketProcessingSimulation.cs" />
     <Compile Include="W1\WeekOneTests.cs" />
     <Compile Include="W1\TreeHeight.cs" />
+    <Compile Include="W2\BinaryHeap.cs" />
+    <Compile Include="W2\DisJointSets.cs" />
     <Compile Include="W2\JobQueue.cs" />
     <Compile Include="W2\MakeHeap.cs" />
     <Compile Include="W2\MergingTables.cs" />
