@@ -13,7 +13,7 @@ namespace DataStructures.W3
         [Test]
         public void PhonebookTests()
         {
-            //TestDirectory(location_phonebook, Phonebook.Process);
+            TestDirectory(location_phonebook, Phonebook.Process);
         }
 
         [Test]
