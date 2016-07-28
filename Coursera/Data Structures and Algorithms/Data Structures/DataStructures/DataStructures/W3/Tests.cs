@@ -17,9 +17,9 @@ namespace DataStructures.W3
         }
 
         [Test]
-        public void Hash_chainsTests()
+        public void HashChainsTests()
         {
-            //TestDirectory(location_hash_chains, HashChains.Process);
+            TestDirectory(location_hash_chains, HashChains.Process);
         }
 
         [Test]

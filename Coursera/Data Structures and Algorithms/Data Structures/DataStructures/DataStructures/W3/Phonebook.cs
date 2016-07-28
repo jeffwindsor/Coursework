@@ -5,28 +5,28 @@ using System.Text.RegularExpressions;
 
 namespace DataStructures.W3
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            Process(Phonebook.Process);
-        }
+    //public class Program
+    //{
+    //    public static void Main(string[] args)
+    //    {
+    //        Process(Phonebook.Process);
+    //    }
 
-        private static void Process(Func<string[], string[]> process)
-        {
-            var input = new List<string>();
-            string s;
-            while ((s = Console.ReadLine()) != null)
-            {
-                input.Add(s);
-            }
+    //    private static void Process(Func<string[], string[]> process)
+    //    {
+    //        var input = new List<string>();
+    //        string s;
+    //        while ((s = Console.ReadLine()) != null)
+    //        {
+    //            input.Add(s);
+    //        }
 
-            foreach (var item in process(input.ToArray()))
-            {
-                Console.WriteLine(item);
-            }
-        }
-    }
+    //        foreach (var item in process(input.ToArray()))
+    //        {
+    //            Console.WriteLine(item);
+    //        }
+    //    }
+    //}
 
     public class Phonebook
     {
@@ -42,7 +42,7 @@ namespace DataStructures.W3
             var queries = inputs.Skip(1).Take(queryCount).Select(l =>
             {
                 var splits = l.Split(chars);
-                return new Query(splits[0], splits[1], (splits.Length == 3) ? splits[2] : string.Empty);
+                return new Query(splits[0].ToLower(), splits[1], (splits.Length == 3) ? splits[2] : string.Empty);
             });
 
             return Process(queries)

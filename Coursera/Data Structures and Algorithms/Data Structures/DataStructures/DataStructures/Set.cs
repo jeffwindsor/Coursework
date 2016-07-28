@@ -39,11 +39,14 @@ namespace DataStructures
         }
 
 
+        private List<TValue> GetList(int i)
+        {
+            return _lists[i] ?? (_lists[i] = new List<TValue>());
+        }
         private List<TValue> GetList(TValue value)
         {
-            return _lists[_hashFunction(value)];
+            return GetList(_hashFunction(value));
         }
-
         private TValue FindValue(TValue value)
         {
             return FindValue(value, GetList(value));
