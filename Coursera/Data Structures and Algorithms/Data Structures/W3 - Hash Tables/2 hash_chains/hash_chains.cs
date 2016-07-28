@@ -58,7 +58,7 @@ namespace DataStructures.W3
             var results = new List<string>();
             foreach (var query in queries)
             {
-                Console.WriteLine("[{0}] {1} => ",query.Command,query.Value);
+                //Console.WriteLine("[{0}] {1} => ",query.Command,query.Value);
                 switch (query.Command)
                 {
                     case ADD:
@@ -94,7 +94,13 @@ namespace DataStructures.W3
 
             private static long HashFunction(long size, string value)
             {
-                return value.Select( (c,i) => (long)Math.Pow(x, i) * c).Sum() % p % size;
+                long hash = 0;
+                for (var i = value.Length - 1; i > -1; i--)
+                {
+                    hash = (hash*x + value[i])%p;
+                }
+                return hash % size;
+                //return value.Select( (c,i) => (long)Math.Pow(x, i) * c).Sum() % p % size;
             }
         }
 
