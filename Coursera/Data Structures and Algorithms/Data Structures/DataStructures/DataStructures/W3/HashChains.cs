@@ -90,9 +90,9 @@ namespace DataStructures.W3
             const long p = 1000000007;
             const long x = 263;
 
-            public HashTable(long size):base(size, o => HashFunction(size,o)){}
+            public HashTable(long size):base(size, o => PolyHashFunction(size,o)){}
 
-            private static long HashFunction(long size, string value)
+            private static long PolyHashFunction(long size, string value)
             {
                 long hash = 0;
                 for (var i = value.Length - 1; i > -1; i--)
@@ -100,7 +100,6 @@ namespace DataStructures.W3
                     hash = (hash*x + value[i])%p;
                 }
                 return hash % size;
-                //return value.Select( (c,i) => (long)Math.Pow(x, i) * c).Sum() % p % size;
             }
         }
 
