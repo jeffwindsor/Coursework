@@ -9,11 +9,12 @@ namespace DataStructures
     /// </summary>
     /// <typeparam name="TValue"></typeparam>
     public class Set<TValue>
-        where TValue : class, IEquatable<TValue>
+               where TValue : class, IEquatable<TValue>
     {
         private readonly List<TValue>[] _lists;
-        private readonly Func<TValue, int> _hashFunction;
-        public Set(int size, Func<TValue, int> hashFunction)
+        private readonly Func<TValue, long> _hashFunction;
+
+        public Set(long size, Func<TValue, long> hashFunction)
         {
             _lists = new List<TValue>[size];
             _hashFunction = hashFunction;
@@ -27,33 +28,43 @@ namespace DataStructures
         public void Add(TValue value)
         {
             var l = GetList(value);
-            if(FindValue(value,l) == null)
-                l.Add(value);
+            var v = FindValue(value, l);
+            if (v == null) l.Insert(0, value);
         }
 
         public void Remove(TValue value)
         {
             var l = GetList(value);
-            if (FindValue(value, l) == null)
-                l.Remove(value);
+            var v = FindValue(value, l);
+            if (v != null) l.Remove(value);
         }
 
-
-        private List<TValue> GetList(int i)
+        public List<TValue> GetList(long i)
         {
             return _lists[i] ?? (_lists[i] = new List<TValue>());
         }
+
         private List<TValue> GetList(TValue value)
         {
-            return GetList(_hashFunction(value));
+            var i = _hashFunction(value);
+            return GetList(i);
         }
+
         private TValue FindValue(TValue value)
         {
             return FindValue(value, GetList(value));
         }
+
         private static TValue FindValue(TValue value, IEnumerable<TValue> list)
         {
-            return list.FirstOrDefault(o => o.Equals(value));
+            return (list == null) ? null : list.FirstOrDefault(o => o.Equals(value));
+        }
+
+        public override string ToString()
+        {
+            var results = from i in Enumerable.Range(0, _lists.Length)
+                          select string.Format("[{0}] {1}", i, string.Join(" ", GetList(i)));
+            return string.Join(Environment.NewLine, results);
         }
     }
 }

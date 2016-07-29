@@ -84,6 +84,7 @@
     <Compile Include="W2\MergingTables.cs" />
     <Compile Include="W2\Tests.cs" />
     <Compile Include="W3\HashChains.cs" />
+    <Compile Include="W3\HashSubstring.cs" />
     <Compile Include="W3\Phonebook.cs" />
     <Compile Include="W3\Tests.cs" />
   </ItemGroup>

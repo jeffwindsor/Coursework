@@ -14,28 +14,28 @@ namespace DataStructures.W3
         const string DEL = "del";
         const string CHECK = "check";
 
-        public class Program
-        {
-            public static void Main(string[] args)
-            {
-                Process(HashChains.Process);
-            }
+        //public class Program
+        //{
+        //    public static void Main(string[] args)
+        //    {
+        //        Process(HashChains.Process);
+        //    }
 
-            private static void Process(Func<string[], string[]> process)
-            {
-                var input = new List<string>();
-                string s;
-                while ((s = Console.ReadLine()) != null)
-                {
-                    input.Add(s);
-                }
+        //    private static void Process(Func<string[], string[]> process)
+        //    {
+        //        var input = new List<string>();
+        //        string s;
+        //        while ((s = Console.ReadLine()) != null)
+        //        {
+        //            input.Add(s);
+        //        }
 
-                foreach (var item in process(input.ToArray()))
-                {
-                    Console.WriteLine(item);
-                }
-            }
-        }
+        //        foreach (var item in process(input.ToArray()))
+        //        {
+        //            Console.WriteLine(item);
+        //        }
+        //    }
+        //}
 
         public static string[] Process(string[] inputs)
         {

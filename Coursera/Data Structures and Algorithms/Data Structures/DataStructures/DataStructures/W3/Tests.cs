@@ -23,7 +23,7 @@ namespace DataStructures.W3
         }
 
         [Test]
-        public void Hash_substringTests()
+        public void HashSubstringTests()
         {
             //TestDirectory(location_hash_substring, MergingTables.Process);
         }
