@@ -60,10 +60,10 @@ namespace DataStructures
                 Console.WriteLine("{0} : {1}", actual[a], expected[a]);
             }
             //Validate
-            //for (int a = 0; a < actual.Length; a++)
-            //{
-            //    actual[a].Should().Be(expected[a]);
-            //}
+            for (int a = 0; a < actual.Length; a++)
+            {
+                actual[a].Should().Be(expected[a]);
+            }
         }
 
 

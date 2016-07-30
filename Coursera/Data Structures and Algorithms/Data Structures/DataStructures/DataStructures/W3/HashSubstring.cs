@@ -44,36 +44,57 @@ namespace DataStructures.W3
         {
             const long p = 1000000007;
             const long x = 263; //random from 1 ot p-1
-            Func<char[], long> hash = s => OptimizedPolyHashFunction(s, p, x);
 
-            var patternHash = hash(pattern);
-            var loopLength = text.Length - pattern.Length;
-            var substringLength = pattern.Length - 1;
-            var substring = new char[substringLength];
-
+            var patternHash = PolyHashFunction(pattern, 0, pattern.Length - 1, p , x);
+            var hashes = Hashes(text, pattern.Length, p, x);
+            
             var result = new List<int>();
-            for (int i = 0; i < loopLength; i++)
+            var loopLength = text.Length - pattern.Length;
+            for (int i = 0; i <= loopLength; i++)
             {
-                Array.Copy(text, i, substring, 0, substringLength);
-                if (patternHash != hash(substring)) continue;
-                if (pattern == substring) result.Add(i);
+                if (patternHash == hashes[i] && AreEqual(text, i, pattern))
+                {
+                    result.Add(i);
+                }
             }
             return result;
         }
-        public static bool AreEqual(char[] a, char[] b)
+        private static bool AreEqual(char[] value, int valueStartIndex, char[] other)
         {
-            if (a.Length != b.Length) return false;
-            for (int i = 0; i < a.Length; i++)
+            for (int i = 0; i < other.Length; i++)
             {
-                if (a[i] != b[i]) return false;
+                if (value[valueStartIndex + i] != other[i]) return false;
             }
             return true;
         }
 
-        private static long OptimizedPolyHashFunction(char[] value, long p, long x)
+        private static long[] Hashes(char[] text, int patternLength, long p, long x)
+        {
+            var lastIndex = text.Length - patternLength;
+            var hashes = new long[lastIndex + 1];
+            long y = 1;
+            for (int i = 1; i <= patternLength; i++)
+            {
+                y = SafeMod(y * x, p);
+            }
+
+            hashes[lastIndex] = PolyHashFunction(text, lastIndex, text.Length - 1, p, x);
+            for (int i = lastIndex - 1; i > -1; i--)
+            {
+                long v = (x * hashes[i + 1]) + text[i] - (y * text[i + patternLength]);
+                hashes[i] = SafeMod(v, p);
+            }
+            return hashes;
+        }
+        private static long SafeMod(long value, long mod)
+        {
+            return ((value % mod) + mod) % mod;
+        }
+
+        private static long PolyHashFunction(char[] value, int startIndex, int endIndex, long p, long x)
         {
             long hash = 0;
-            for (var i = value.Length - 1; i > -1; i--)
+            for (var i = endIndex; i >= startIndex ; i--)
             {
                 hash = (hash * x + value[i]) % p;
             }
