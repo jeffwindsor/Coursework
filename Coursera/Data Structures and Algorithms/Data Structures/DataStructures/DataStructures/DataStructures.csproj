@@ -99,6 +99,10 @@
     <Compile Include="W3\HashSubstring.cs" />
     <Compile Include="W3\Phonebook.cs" />
     <Compile Include="W3\Tests.cs" />
+    <Compile Include="W4and5\Rope.cs" />
+    <Compile Include="W4and5\SetRangeSum.cs" />
+    <Compile Include="W4and5\Tests.cs" />
+    <Compile Include="W4and5\TreeOrder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
