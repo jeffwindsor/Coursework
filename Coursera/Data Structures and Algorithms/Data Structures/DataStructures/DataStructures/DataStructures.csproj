@@ -81,6 +81,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BinarySearchTree.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Set.cs" />
     <Compile Include="W1\CheckBracketsInCode.cs" />
