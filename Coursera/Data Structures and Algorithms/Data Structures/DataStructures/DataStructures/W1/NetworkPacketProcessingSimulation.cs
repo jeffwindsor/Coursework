@@ -8,7 +8,7 @@ namespace DataStructures.W1
     {
         public static char[] splitOn = new[] { ' ' };
 
-        public static string[] Process(string[] inputs)
+        public static IList<string> Answer(IList<string> inputs)
         {
             var line0 = inputs[0].Split(splitOn);
             var size = int.Parse(line0[0]);

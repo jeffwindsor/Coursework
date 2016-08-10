@@ -8,7 +8,7 @@ namespace DataStructures.W2
     //{
     //    public static void Main(string[] args)
     //    {
-    //        Process(MakeHeap.Process);
+    //        Process(MakeHeap.Answer);
     //    }
     //    private static void Process(Func<string[], string[]> process)
     //    {
@@ -28,7 +28,7 @@ namespace DataStructures.W2
 
     public class MakeHeap
     {
-        public static string[] Process(string[] inputs)
+        public static IList<string> Answer(IList<string> inputs)
         {
             var n = int.Parse(inputs[0]);
             var data = inputs[1]

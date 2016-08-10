@@ -8,7 +8,7 @@ namespace DataStructures.W2
     //{
     //    public static void Main(string[] args)
     //    {
-    //        Process(JobQueue.Process);
+    //        Process(JobQueue.Answer);
     //    }
     //    private static void Process(Func<string[], string[]> process)
     //    {
@@ -28,7 +28,7 @@ namespace DataStructures.W2
 
     public class JobQueue
     {
-        public static string[] Process(string[] inputs)
+        public static IList<string> Answer(IList<string> inputs)
         {
             var chars = new[] { ' ' };
             var splits0 = inputs[0].Split(chars);

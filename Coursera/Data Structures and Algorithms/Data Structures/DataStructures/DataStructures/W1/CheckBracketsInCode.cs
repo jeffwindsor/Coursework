@@ -5,7 +5,7 @@ namespace DataStructures.W1
 {
     public class CheckBracketsInCode
     {
-        public static string[] Process(string[] inputs)
+        public static IList<string> Answer(IList<string> inputs)
         {
             var brackets = inputs[0].Select((v, i) => new Bracket {Value = v, Index = i + 1});
             return new[] { Check(brackets)};

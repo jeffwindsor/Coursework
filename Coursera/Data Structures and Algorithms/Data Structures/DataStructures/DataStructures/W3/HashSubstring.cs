@@ -6,30 +6,30 @@ namespace DataStructures.W3
 {
     public class HashSubstring
     {
-        public class Program
-        {
-            public static void Main(string[] args)
-            {
-                Process(HashSubstring.Process);
-            }
+        //public class Program
+        //{
+        //    //public static void Main(string[] args)
+        //    //{
+        //    //    Process(HashSubstring.Answer);
+        //    //}
 
-            private static void Process(Func<string[], string[]> process)
-            {
-                var input = new List<string>();
-                string s;
-                while ((s = Console.ReadLine()) != null)
-                {
-                    input.Add(s);
-                }
+        //    private static void Process(Func<string[], string[]> process)
+        //    {
+        //        var input = new List<string>();
+        //        string s;
+        //        while ((s = Console.ReadLine()) != null)
+        //        {
+        //            input.Add(s);
+        //        }
 
-                foreach (var item in process(input.ToArray()))
-                {
-                    Console.WriteLine(item);
-                }
-            }
-        }
+        //        foreach (var item in process(input.ToArray()))
+        //        {
+        //            Console.WriteLine(item);
+        //        }
+        //    }
+        //}
 
-        public static string[] Process(string[] inputs)
+        public static IList<string> Answer(IList<string> inputs)
         {
             var pattern = inputs[0].Trim().ToCharArray();
             var text = inputs[1].Trim().ToCharArray();

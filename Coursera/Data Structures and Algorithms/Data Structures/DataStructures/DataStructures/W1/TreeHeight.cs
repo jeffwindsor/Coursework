@@ -5,7 +5,7 @@ namespace DataStructures.W1
 {
     public class TreeHeight
     {
-        public static string[] Process(string[] inputs)
+        public static IList<string> Answer(IList<string> inputs)
         {
             var n = int.Parse(inputs[0]);
             var parents = inputs[1].Split(new[] { ' ' }).Select(int.Parse).ToArray();

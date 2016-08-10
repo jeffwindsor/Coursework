@@ -13,19 +13,19 @@ namespace DataStructures.W4and5
         [Test]
         public void TreeOrderTests()
         {
-           TestDirectory(location_phonebook, TreeOrder.ProcessInputs);
+           TestDirectory(location_phonebook, TreeOrder.Answer);
         }
 
         [Test]
         public void SetRangeSumTests()
         {
-            TestDirectory(location_hash_chains, SetRangeSum.Process);
+            TestDirectory(location_hash_chains, SetRangeSum.Answer);
         }
 
         [Test]
         public void RopeTests()
         {
-            TestDirectory(location_hash_substring, Rope.Process);
+            TestDirectory(location_hash_substring, Rope.Answer);
         }
     }
 }

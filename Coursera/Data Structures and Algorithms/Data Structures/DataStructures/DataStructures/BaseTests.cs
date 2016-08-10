@@ -23,10 +23,9 @@ namespace DataStructures
         {
             return string.Format(@"{0}\{1:D2}", CurrentTestPath(location), id);
         }
+        
 
-
-
-        protected static void TestDirectory(string location, Func<string[], string[]> getActual)
+        protected static void TestDirectory(string location, Func<IList<string>, IList<string>> getActual)
         {
             var dir = CurrentTestPath(location);
             var files = Directory.GetFiles(dir)
@@ -38,42 +37,40 @@ namespace DataStructures
             }            
         }
 
-        protected static void TestFromFiles(int start, int end, string location, Func<string[], string[]> getActual)
+        protected static void TestFromFiles(int start, int end, string location, Func<IList<string>, IList<string>> getActual)
         {
             for (var i = start; i <= end; i++)
             {
                 TestFromFile(CurrentTest(i, location), getActual);
             }
         }
-        protected static void TestFromFile(string test, Func<string[], string[]> getActual)
+
+        protected static void TestFromFile(string test, Func<IList<string>, IList<string>> getActual)
         {
             var input = File.ReadAllLines(test + input_ext);
             var expected = File.ReadAllLines(test + answer_ext);
             Console.WriteLine("[File {0}]", test);
 
             var actual = getActual(input);
-            actual.Length.Should().Be(expected.Length);
+            actual.Count.Should().Be(expected.Length);
 
             //Output
-            for (int a = 0; a < actual.Length; a++)
+            for (var a = 0; a < actual.Count; a++)
             {
                 Console.WriteLine("{0} : {1}", actual[a], expected[a]);
             }
             //Validate
-            for (int a = 0; a < actual.Length; a++)
+            for (var a = 0; a < actual.Count; a++)
             {
                 actual[a].Should().Be(expected[a]);
             }
         }
-
-
+        
         protected static void WriteTestFiles(string name, string location, IEnumerable<string> lines, IEnumerable<string> answerLines)
         {
             var l = CurrentTestPath(location);
             File.WriteAllLines(l + @"\" + name + input_ext, lines);
             File.WriteAllLines(l + @"\" + name + answer_ext, answerLines);
         }
-
-
     }
 }

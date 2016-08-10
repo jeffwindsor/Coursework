@@ -8,7 +8,7 @@ namespace DataStructures.W2
     //{
     //    public static void Main(string[] args)
     //    {
-    //        Process(MergingTables.Process);
+    //        Process(MergingTables.Answer);
     //    }
     //    private static void Process(Func<string[], string[]> process)
     //    {
@@ -28,7 +28,7 @@ namespace DataStructures.W2
 
     public class MergingTables
     {
-        public static string[] Process(string[] inputs)
+        public static IList<string> Answer(IList<string> inputs)
         {
             var chars = new[] { ' ' };
             var splits0 = inputs[0].Split(chars);

@@ -12,7 +12,7 @@ namespace DataStructures.W4and5
         //{
         //    public static void Main(string[] args)
         //    {
-        //        Process(SetRangeSum.Process);
+        //        Process(SetRangeSum.Answer);
         //    }
 
         //    private static void Process(Func<string[], string[]> process)
@@ -30,7 +30,7 @@ namespace DataStructures.W4and5
         //        }
         //    }
         //}
-        public static string[] Process(string[] inputs)
+        public static IList<string> Answer(IList<string> inputs)
         {
             throw new NotImplementedException();
         }

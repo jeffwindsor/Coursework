@@ -18,7 +18,7 @@ namespace DataStructures.W4and5
         }
 
         //Use this for test input
-        public static IEnumerable<string> Answer(string[] inputs)
+        public static IList<string> Answer(IList<string> inputs)
         {
             var n = int.Parse(inputs[0]);
             var nodes = Enumerable.Range(1, n)

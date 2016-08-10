@@ -18,7 +18,7 @@ namespace DataStructures.W3
         //{
         //    public static void Main(string[] args)
         //    {
-        //        Process(HashChains.Process);
+        //        Process(HashChains.Answer);
         //    }
 
         //    private static void Process(Func<string[], string[]> process)
@@ -37,7 +37,7 @@ namespace DataStructures.W3
         //    }
         //}
 
-        public static string[] Process(string[] inputs)
+        public static IList<string> Answer(IList<string> inputs)
         {
             var chars = new[] { ' ' };
             var size = long.Parse(inputs[0]);

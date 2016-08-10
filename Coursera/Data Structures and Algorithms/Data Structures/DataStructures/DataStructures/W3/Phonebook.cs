@@ -9,7 +9,7 @@ namespace DataStructures.W3
     //{
     //    public static void Main(string[] args)
     //    {
-    //        Process(Phonebook.Process);
+    //        Process(Phonebook.Answer);
     //    }
 
     //    private static void Process(Func<string[], string[]> process)
@@ -35,7 +35,7 @@ namespace DataStructures.W3
         const string FIND = "find";
         const string DEL = "del";
 
-        public static string[] Process(string[] inputs)
+        public static IList<string> Answer(IList<string> inputs)
         {
             var chars = new[] {' '};
             var queryCount = int.Parse(inputs[0]);
