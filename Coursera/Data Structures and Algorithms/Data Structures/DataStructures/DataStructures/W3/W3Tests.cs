@@ -3,7 +3,7 @@
 namespace DataStructures.W3
 {
     [TestFixture]
-    public class Tests : BaseTests
+    public class W3Tests : BaseTests
     {
         const string path = @"W3 - Hash Tables\";
         const string location_phonebook = path + "1 phone_book";

@@ -59,7 +59,7 @@ namespace DataStructures.W4and5
             return Traverse(PostOrderTraversal);
         }
 
-        public IEnumerable<long> Traverse(Action<int, List<long>> traversalAction)
+        private static IEnumerable<long> Traverse(Action<int, List<long>> traversalAction)
         {
             var results = new List<long>();
             traversalAction(0, results);

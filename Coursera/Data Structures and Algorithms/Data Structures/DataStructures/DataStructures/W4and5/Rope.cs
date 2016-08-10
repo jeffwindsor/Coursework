@@ -8,27 +8,15 @@ namespace DataStructures.W4and5
 {
     public class Rope
     {
-        //public class Program
+        //public static void Main(string[] args)
         //{
-        //    public static void Main(string[] args)
-        //    {
-        //        Process(Rope.Answer);
-        //    }
+        //    string s;
+        //    var inputs = new List<string>();
+        //    while ((s = Console.ReadLine()) != null)
+        //        inputs.Add(s);
 
-        //    private static void Process(Func<string[], string[]> process)
-        //    {
-        //        var input = new List<string>();
-        //        string s;
-        //        while ((s = Console.ReadLine()) != null)
-        //        {
-        //            input.Add(s);
-        //        }
-
-        //        foreach (var item in process(input.ToArray()))
-        //        {
-        //            Console.WriteLine(item);
-        //        }
-        //    }
+        //    foreach (var result in Answer(inputs.ToArray()))
+        //        Console.WriteLine(result);
         //}
         public static IList<string> Answer(IList<string> inputs)
         {

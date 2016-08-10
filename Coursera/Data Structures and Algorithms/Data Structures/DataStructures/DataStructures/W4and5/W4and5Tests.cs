@@ -3,7 +3,7 @@
 namespace DataStructures.W4and5
 {
     [TestFixture]
-    public class Tests : BaseTests
+    public class W4and5Tests : BaseTests
     {
         const string path = @"W4 - Binary Search Trees\";
         const string location_phonebook = path + "1tree_orders";

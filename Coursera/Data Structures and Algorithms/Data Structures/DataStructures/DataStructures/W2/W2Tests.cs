@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace DataStructures.W2
 {
     [TestFixture]
-    public class Tests : BaseTests
+    public class W2Tests : BaseTests
     {
         const string path = @"W2 - Priority Queues and Disjoint Sets\";
         const string location_jobqueue = "2 job_queue";
