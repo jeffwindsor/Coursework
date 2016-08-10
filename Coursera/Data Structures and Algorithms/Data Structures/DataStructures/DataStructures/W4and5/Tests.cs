@@ -13,7 +13,7 @@ namespace DataStructures.W4and5
         [Test]
         public void TreeOrderTests()
         {
-           TestDirectory(location_phonebook, TreeOrder.Process);
+           TestDirectory(location_phonebook, TreeOrder.ProcessInputs);
         }
 
         [Test]
