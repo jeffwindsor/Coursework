@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Mono.CompilerServices.SymbolWriter;
 
 namespace DataStructures.W4and5
 {
@@ -24,6 +23,9 @@ namespace DataStructures.W4and5
         private const string COMMAND_SUM = "s";
         private const long M = 1000000001;
 
+        private BinarySearchTreeNode _root;
+        private long _lastSum = 0;
+
         public static IList<string> Answer(IList<string> inputs)
         {
             var n = int.Parse(inputs[0]);
@@ -39,10 +41,33 @@ namespace DataStructures.W4and5
                     };
                 });
 
+
+            var outputLine = 0;
             var o = new SetRangeSum();
             var results = queries
-                .Select(q =>
+                .Select( (q,i) =>
                 {
+                    i += 2;  //for line number align in input file
+                    if (q.Action == COMMAND_SUM)
+                    {
+                        outputLine++;
+                        Console.WriteLine("[{5}:{6}] {0} [{1}:{2}] => [{3}:{4}]", q.Action, q.Value, q.RangeValue,
+                            o.GetAdjustedValue(q.Value), o.GetAdjustedValue(q.RangeValue), i, outputLine);
+                    }
+                    else if (q.Action == COMMAND_FIND)
+                    {
+                        outputLine++;
+                        Console.WriteLine("[{3}:{4}] {0} [{1}] => [{2}]", q.Action, q.Value, o.GetAdjustedValue(q.Value),
+                            i, outputLine);
+                    }
+                    else
+                    {
+                        Console.WriteLine("[{3}:-] {0} [{1}] => [{2}]", q.Action, q.Value, o.GetAdjustedValue(q.Value),
+                            i);
+                    }
+                    Console.WriteLine(BinarySearchTreeNodePrinter.Print(o._root));
+
+
                     switch (q.Action)
                     {
                         case COMMAND_ADD:
@@ -52,7 +77,7 @@ namespace DataStructures.W4and5
                             o.Delete(o.GetAdjustedValue(q.Value));
                             return string.Empty;
                         case COMMAND_FIND:
-                            return o.Find(o.GetAdjustedValue(q.Value)) ? "Found" : "Not found";
+                            return o.Exists(o.GetAdjustedValue(q.Value)) ? "Found" : "Not found";
                         case COMMAND_SUM:
                             return o.Sum(o.GetAdjustedValue(q.Value), o.GetAdjustedValue(q.RangeValue)).ToString();
                         default:
@@ -65,16 +90,11 @@ namespace DataStructures.W4and5
             return results.ToArray();
         }
 
-        private long _lastSum = 0;
-
         public long GetAdjustedValue(long source)
         {
             return (_lastSum + source)%M;
         }
         
-
-        private BinarySearchTreeNode _root = null;
-
         public void Insert(long key)
         {
             if (_root == null)
@@ -95,17 +115,14 @@ namespace DataStructures.W4and5
             _root = SplayTree.FindRoot(with);
         }
 
-        public bool Find(long key)
+        public bool Exists(long key)
         {
-            if (_root == null) return false;
-            return SplayTree.Find(key, _root).Key == key;
+            return SplayTree.Exists(key, _root);
         }
 
-        public long Sum(long left, long right)
+        public long Sum(long leftKey, long rightKey)
         {
-            if (_root == null) return 0;
-            //var range = SplayTree
-            //_lastSum = sum of range;
+            _lastSum = SplayTree.Sum(leftKey,rightKey,_root);
             return _lastSum;
         }
 
@@ -115,7 +132,6 @@ namespace DataStructures.W4and5
             public long Value { get; set; }
             public long RangeValue { get; set; }
         }
-
     }
 }
 

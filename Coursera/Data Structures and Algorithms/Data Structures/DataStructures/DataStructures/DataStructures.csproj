@@ -83,6 +83,7 @@
   <ItemGroup>
     <Compile Include="BinarySearchTreeAvl.cs" />
     <Compile Include="BinarySearchTree.cs" />
+    <Compile Include="BinarySearchTreeNodePrinter.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Set.cs" />
     <Compile Include="SplayTree.cs" />

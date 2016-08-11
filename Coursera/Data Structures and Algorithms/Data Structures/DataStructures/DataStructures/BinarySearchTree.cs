@@ -2,7 +2,6 @@
 
 namespace DataStructures
 {
-
     public class BinarySearchTreeNode
     {
         public long Key { get; set; }
@@ -10,6 +9,11 @@ namespace DataStructures
         public BinarySearchTreeNode Left { get; set; }
         public BinarySearchTreeNode Right { get; set; }
         public int Rank { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("{0}:{1}", Key, Rank);
+        }
     }
     public class BinarySearchTree
     {
@@ -22,14 +26,16 @@ namespace DataStructures
 
         public static IEnumerable<BinarySearchTreeNode> RangeSearch(long leftKey, long rightKey, BinarySearchTreeNode root)
         {
-            var rangeSearch = new List<BinarySearchTreeNode>();
+            var results = new List<BinarySearchTreeNode>();
             var node = Find(leftKey, root);
-            while (node.Key <= rightKey)
+            while (node != null && node.Key <= rightKey)
             {
-                if (node.Key >= leftKey) rangeSearch.Add(node);
+                if (node.Key >= leftKey)
+                    results.Add(node);
+
                 node = Next(node);
             }
-            return rangeSearch;
+            return results;
         }
 
         public static BinarySearchTreeNode Next(BinarySearchTreeNode node)

@@ -1,10 +1,16 @@
 ﻿using System;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace DataStructures
 {
     public class SplayTree
     {
+
+        public static bool Exists(long key, BinarySearchTreeNode root)
+        {
+            if (root == null) return false;
+            return Find(key, root).Key == key;
+        }
+
         public static BinarySearchTreeNode FindRoot(BinarySearchTreeNode node)
         {
             if (node == null) return null;
@@ -26,11 +32,29 @@ namespace DataStructures
             Find(key, root);  //causes splay
         }
 
-        public static BinarySearchTreeNode Delete(long key, BinarySearchTreeNode node)
+        public static BinarySearchTreeNode Delete(long key, BinarySearchTreeNode root)
         {
-            Splay(BinarySearchTree.Next(node));
-            Splay(node);
-            return BinarySearchTree.Delete(node);
+            if (!Exists(key, root)) return root;
+
+            Splay(BinarySearchTree.Next(root));
+            Splay(root);
+            return BinarySearchTree.Delete(root);
+        }
+
+        public static long Sum(long leftKey, long rightKey, BinarySearchTreeNode root)
+        {
+            if (root == null) return 0;
+
+            long results = 0;
+            var node = Find(leftKey, root);
+            while (node != null && node.Key <= rightKey)
+            {
+                if (node.Key >= leftKey)
+                    results += node.Key;
+
+                node = BinarySearchTree.Next(node);
+            }
+            return results;
         }
 
         public static Tuple<BinarySearchTreeNode, BinarySearchTreeNode> Split(long key, BinarySearchTreeNode root)

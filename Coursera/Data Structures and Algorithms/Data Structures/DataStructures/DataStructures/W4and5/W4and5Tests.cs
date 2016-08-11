@@ -10,7 +10,7 @@ namespace DataStructures.W4and5
         [TestCase("02")]
         public void TreeOrderTests(string file)
         {
-            TestFromRelativeFilePath(@"W4and5\testfiles\TreeOrders\" + file, TreeOrder.Answer);
+            TestFromRelativeFilePath(@"TreeOrders\" + file, TreeOrder.Answer);
         }
         
         [TestCase("01")]
@@ -21,7 +21,7 @@ namespace DataStructures.W4and5
         //[TestCase("83")]
         public void SetRangeSumTests(string file)
         {
-            TestFromRelativeFilePath(@"W4and5\testfiles\SetRangeSum\" + file, SetRangeSum.Answer);
+            TestFromRelativeFilePath(@"SetRangeSum\" + file, SetRangeSum.Answer);
         }
 
         [Test]
