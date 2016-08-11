@@ -11,19 +11,19 @@ namespace DataStructures.W2
         [Test]
         public void MakeHeapTests()
         {
-            TestDirectory(path + "1 make_heap", MakeHeap.Answer);
+            //TestDirectory(path + "1 make_heap", MakeHeap.Answer);
         }
 
         [Test]
         public void JobQueueTests()
         {
-            TestDirectory(path + location_jobqueue, JobQueue.Answer);
+            //TestDirectory(path + location_jobqueue, JobQueue.Answer);
         }
 
         [Test]
         public void MergingTablesTests()
         {
-            TestDirectory(path + "3 merging_tables", MergingTables.Answer);
+            //TestDirectory(path + "3 merging_tables", MergingTables.Answer);
         }
 
 

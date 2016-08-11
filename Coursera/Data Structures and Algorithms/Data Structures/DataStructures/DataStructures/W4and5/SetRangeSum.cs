@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Mono.CompilerServices.SymbolWriter;
 
 namespace DataStructures.W4and5
 {
@@ -17,10 +18,10 @@ namespace DataStructures.W4and5
         //        Console.WriteLine(result);
         //}
 
-        private const string Add = "+";
-        private const string Del = "-";
-        private const string Find = "?";
-        private const string Sum = "s";
+        private const string COMMAND_ADD = "+";
+        private const string COMMAND_DEL = "-";
+        private const string COMMAND_FIND = "?";
+        private const string COMMAND_SUM = "s";
         private const long M = 1000000001;
 
         public static IList<string> Answer(IList<string> inputs)
@@ -38,34 +39,76 @@ namespace DataStructures.W4and5
                     };
                 });
 
-
-            
             var o = new SetRangeSum();
-            var results = queries.Select(q => o.ProcessQuery(q));
+            var results = queries
+                .Select(q =>
+                {
+                    switch (q.Action)
+                    {
+                        case COMMAND_ADD:
+                            o.Insert(o.GetAdjustedValue(q.Value));
+                            return string.Empty;
+                        case COMMAND_DEL:
+                            o.Delete(o.GetAdjustedValue(q.Value));
+                            return string.Empty;
+                        case COMMAND_FIND:
+                            return o.Find(o.GetAdjustedValue(q.Value)) ? "Found" : "Not found";
+                        case COMMAND_SUM:
+                            return o.Sum(o.GetAdjustedValue(q.Value), o.GetAdjustedValue(q.RangeValue)).ToString();
+                        default:
+                            throw new ArgumentException("Action Unknown");
+                    }
+                })
+                .Where(r => !string.IsNullOrEmpty(r));
+
+
             return results.ToArray();
         }
 
-        private long _total = 0;
-        public string ProcessQuery(Query q)
+        private long _lastSum = 0;
+
+        public long GetAdjustedValue(long source)
         {
-            //switch (q.Action)
-            //{
-            //    case Add:
-            //        Insert(q.Value);
-            //        return 
-            //    case Del:
-            //        var f = Search(q.Value);
-            //        if(f.Key == q.Value) f.Delete();
-            //    case Find:
-            //        var f = Search(q.Value);
-            //        return (f.Key == q.Value) ? "Found" : "Not Found";
-            //    case Sum:
-            //    default:
-            //        throw new ArgumentException("Action Unknown");
-            //}
-            throw new NotImplementedException();
+            return (_lastSum + source)%M;
         }
         
+
+        private BinarySearchTreeNode _root = null;
+
+        public void Insert(long key)
+        {
+            if (_root == null)
+            {
+                _root = new BinarySearchTreeNode {Key = key};
+            }
+            else
+            {
+                SplayTree.Insert(key, _root);
+                _root = SplayTree.FindRoot(_root);
+            }
+        }
+
+        public void Delete(long key)
+        {
+            if (_root == null) return;
+            var with = SplayTree.Delete(key,_root);
+            _root = SplayTree.FindRoot(with);
+        }
+
+        public bool Find(long key)
+        {
+            if (_root == null) return false;
+            return SplayTree.Find(key, _root).Key == key;
+        }
+
+        public long Sum(long left, long right)
+        {
+            if (_root == null) return 0;
+            //var range = SplayTree
+            //_lastSum = sum of range;
+            return _lastSum;
+        }
+
         public class Query
         {
             public string Action { get; set; }

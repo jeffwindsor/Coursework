@@ -13,19 +13,19 @@ namespace DataStructures.W3
         [Test]
         public void PhonebookTests()
         {
-            TestDirectory(location_phonebook, Phonebook.Answer);
+            //TestDirectory(location_phonebook, Phonebook.Answer);
         }
 
         [Test]
         public void HashChainsTests()
         {
-            TestDirectory(location_hash_chains, HashChains.Answer);
+            //TestDirectory(location_hash_chains, HashChains.Answer);
         }
 
         [Test]
         public void HashSubstringTests()
         {
-            TestDirectory(location_hash_substring, HashSubstring.Answer);
+            //TestDirectory(location_hash_substring, HashSubstring.Answer);
         }
     }
 }

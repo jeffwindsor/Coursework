@@ -5,23 +5,32 @@ namespace DataStructures
 {
     public class SplayTree
     {
+        public static BinarySearchTreeNode FindRoot(BinarySearchTreeNode node)
+        {
+            if (node == null) return null;
+            while (node.Parent != null)
+                node = node.Parent;
+            return node;
+        }
+
         public static BinarySearchTreeNode Find(long key, BinarySearchTreeNode root)
         {
             var found = BinarySearchTree.Find(key, root);
             Splay(found);
             return found;
         }
-        public static BinarySearchTreeNode Insert(long key, BinarySearchTreeNode root)
+
+        public static void Insert(long key, BinarySearchTreeNode root)
         {
             BinarySearchTree.Insert(key, root);
-            return Find(key, root);
+            Find(key, root);  //causes splay
         }
 
-        public static void Delete(long key, BinarySearchTreeNode node)
+        public static BinarySearchTreeNode Delete(long key, BinarySearchTreeNode node)
         {
             Splay(BinarySearchTree.Next(node));
             Splay(node);
-            BinarySearchTree.Delete(node);
+            return BinarySearchTree.Delete(node);
         }
 
         public static Tuple<BinarySearchTreeNode, BinarySearchTreeNode> Split(long key, BinarySearchTreeNode root)
@@ -65,24 +74,24 @@ namespace DataStructures
             }
             
             if (root.Parent != null)
-                Splay(root);
+                Splay(root.Parent);
         }
-
-        private static void Zig(BinarySearchTreeNode root, int rotation)
+        
+        private static void Swap(BinarySearchTreeNode node, BinarySearchTreeNode parent, int parentSide)
         {
-            Swap(root, root.Parent, rotation);
-        }
-
-        private static void Swap(BinarySearchTreeNode node, BinarySearchTreeNode parent, int rotation)
-        {
-            if (rotation == NOMATCH) return;
+            if (parentSide == NOMATCH) return;
 
             node.Parent = parent.Parent;
-            if (rotation == LEFT)
+            if (parentSide == LEFT)
+            {
+                parent.Left = node.Right;
                 node.Right = parent;
+            }
             else
+            {
+                parent.Right = node.Left;
                 node.Left = parent;
-
+            }
             parent.Parent = node;
         }
 

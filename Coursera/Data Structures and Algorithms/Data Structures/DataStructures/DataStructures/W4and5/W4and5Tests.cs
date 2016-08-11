@@ -5,27 +5,29 @@ namespace DataStructures.W4and5
     [TestFixture]
     public class W4and5Tests : BaseTests
     {
-        const string path = @"W4 - Binary Search Trees\";
-        const string location_phonebook = path + "1tree_orders";
-        const string location_hash_chains = path + "2set_range_sum";
-        const string location_hash_substring = path + "3rope";
 
-        [Test]
-        public void TreeOrderTests()
+        [TestCase("01")]
+        [TestCase("02")]
+        public void TreeOrderTests(string file)
         {
-           TestDirectory(location_phonebook, TreeOrder.Answer);
+            TestFromRelativeFilePath(@"W4and5\testfiles\TreeOrders\" + file, TreeOrder.Answer);
         }
-
-        [Test]
-        public void SetRangeSumTests()
+        
+        [TestCase("01")]
+        [TestCase("04")]
+        [TestCase("05")]
+        [TestCase("20")]
+        //[TestCase("36")]
+        //[TestCase("83")]
+        public void SetRangeSumTests(string file)
         {
-            TestDirectory(location_hash_chains, SetRangeSum.Answer);
+            TestFromRelativeFilePath(@"W4and5\testfiles\SetRangeSum\" + file, SetRangeSum.Answer);
         }
 
         [Test]
         public void RopeTests()
         {
-            TestDirectory(location_hash_substring, Rope.Answer);
+            //TestDirectory(location_hash_substring, Rope.Answer);
         }
     }
 }

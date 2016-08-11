@@ -34,7 +34,7 @@ namespace DataStructures
 
         public static BinarySearchTreeNode Next(BinarySearchTreeNode node)
         {
-            return (node.Right == null) ? RightAncestor(node) : LeftDescendant(node.Right);
+            return (node.Right != null) ? LeftDescendant(node.Right) : RightAncestor(node);
         }
 
         public static void Insert(long key, BinarySearchTreeNode root)
@@ -48,25 +48,30 @@ namespace DataStructures
             else parent.Right = node;
         }
 
-        public static void Delete(BinarySearchTreeNode node)
+        public static BinarySearchTreeNode Delete(BinarySearchTreeNode node)
         {
             if (node.Right == null)
             {
-                Replace(node, node.Left);
+                return Replace(node, node.Left);
             }
             else
             {
                 var next = Next(node);
                 node.Key = next.Key;
-                Replace(next, next.Right);
+                return Replace(next, next.Right);
             }
         }
 
-        private static void Replace(BinarySearchTreeNode node, BinarySearchTreeNode with)
+        private static BinarySearchTreeNode Replace(BinarySearchTreeNode node, BinarySearchTreeNode with)
         {
-            if (node.Parent == null) return;
+            if (with == null) return null;
+            with.Parent = node.Parent;
+            if (node.Parent == null) return with;
+
             if (node.Parent.Left == node) node.Parent.Left = with;
             else node.Parent.Right = with;
+
+            return with;
         }
         
         private static BinarySearchTreeNode LeftDescendant(BinarySearchTreeNode node)
@@ -76,9 +81,9 @@ namespace DataStructures
 
         private static BinarySearchTreeNode RightAncestor(BinarySearchTreeNode node)
         {
-            return (node == null)
-                ? null
-                : (node.Key < node.Parent.Key) ? node.Parent : RightAncestor(node.Parent);
+            if (node == null || node.Parent == null) return null;
+
+            return (node.Key < node.Parent.Key) ? node.Parent : RightAncestor(node.Parent);
         }
     }
 }
