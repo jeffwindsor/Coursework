@@ -4,12 +4,6 @@ namespace DataStructures
 {
     public class SplayTree
     {
-
-        public static bool Exists(long key, BinarySearchTreeNode root)
-        {
-            return Find(key, root).Key == key;
-        }
-
         public static BinarySearchTreeNode Find(long key, BinarySearchTreeNode root)
         {
             var found = BinarySearchTree.Find(key, root);
@@ -20,17 +14,13 @@ namespace DataStructures
         public static BinarySearchTreeNode Insert(long key, BinarySearchTreeNode root)
         {
             BinarySearchTree.Insert(key, root);
-            Find(key, root);  //causes splay
-            return root;
+            return Find(key, root);
         }
 
         public static BinarySearchTreeNode Delete(long key, BinarySearchTreeNode root)
         {
             var node = Find(key, root);
-            var result = (node == null || node.Key != key) 
-                ? root 
-                : Delete(node, root);
-            return result;
+            return (node.Key == key) ? Delete(node, root) : node;
         }
 
         private static BinarySearchTreeNode Delete(BinarySearchTreeNode node, BinarySearchTreeNode root)
@@ -69,65 +59,133 @@ namespace DataStructures
             return node;
         }
 
-        public static void Splay(BinarySearchTreeNode root)
+        public static void Splay(BinarySearchTreeNode node)
         {
-            if (root == null) return;  //bad
-            var parentSide = Side(root);
-            if (parentSide == 0) return; //bad
-            var grandParentSide = Side(root.Parent);
-            
-            if (grandParentSide == 0)
-            { //Zig
-                //parent => opposite child
-                Swap(root, root.Parent, parentSide);
-            }
-            else if (parentSide == grandParentSide)
-            {//Zig Zig
-                //gparent => opposite gchild
-                Swap(root.Parent, root.Parent.Parent, grandParentSide);
-                //parent => opposite child
-                Swap(root, root.Parent, parentSide);
-            }
-            else
-            {//Zig Zag
-                //parent => opposite child
-                Swap(root, root.Parent, parentSide);
-                //gparent => opposite child
-                Swap(root, root.Parent, grandParentSide);
-            }
-            
-            if (root.Parent != null)
-                Splay(root.Parent);
-        }
-        
-        private static void Swap(BinarySearchTreeNode node, BinarySearchTreeNode parent, int parentSide)
-        {
-            if (parentSide == NOMATCH) return;
+            if (node == null || node.Parent == null) return; //bad
 
-            node.Parent = parent.Parent;
-            if (parentSide == LEFT)
+            var nodesSideOfParent = Side(node.Parent, node);
+            if (node.Parent.Parent == null)
             {
-                parent.Left = node.Right;
-                node.Right = parent;
+                Zig(node, nodesSideOfParent);
+            }
+            else if (nodesSideOfParent == Side(node.Parent, node.Parent.Parent))
+            {
+                ZigZig(node, nodesSideOfParent);
             }
             else
             {
-                parent.Right = node.Left;
-                node.Left = parent;
+                ZigZag(node, nodesSideOfParent);
             }
-            parent.Parent = node;
+
+            if (node.Parent != null)
+                Splay(node);
+        }
+
+        private static void Zig(BinarySearchTreeNode node, int side)
+        {
+            var p = node.Parent;
+
+            node.Parent = p.Parent;
+            ReplaceChild(p.Parent, p, node);
+            p.Parent = node;
+
+            if (side == LEFT)
+            {
+                var nr = node.Right;
+                node.Right = p;
+                p.Left = nr;
+            }
+            else
+            {
+                var nl = node.Left;
+                node.Left = p;
+                p.Right = nl;
+            }
+        }
+
+        private static void ZigZig(BinarySearchTreeNode node, int side)
+        {
+            var p = node.Parent;
+            var q = node.Parent.Parent;
+
+            node.Parent = q.Parent;
+            ReplaceChild(q.Parent, q, node);
+            p.Parent = node;
+            q.Parent = p;
+
+            if (side == LEFT)
+            {
+                var nr = node.Right;
+                var pr = p.Right;
+
+                node.Right = p;
+                p.Left = nr;
+                p.Right = q;
+                q.Left = pr;
+            }
+            else
+            {
+                var nl = node.Left;
+                var pl = p.Left;
+
+                node.Left = p;
+                p.Left = q;
+                p.Right = nl;
+                q.Right = pl;
+            }
+        }
+
+        private static void ZigZag(BinarySearchTreeNode node, int side)
+        {
+            var p = node.Parent;
+            var q = node.Parent.Parent;
+
+            node.Parent = q.Parent;
+            ReplaceChild(q.Parent, q, node);
+            p.Parent = node;
+            q.Parent = node;
+
+            var nl = node.Left;
+            var nr = node.Right;
+            if (side == LEFT)
+            {
+                node.Left = q;
+                node.Right = p;
+                p.Left = nr;
+                q.Right= nl;
+            }
+            else
+            {
+                node.Left = p;
+                node.Right = q;
+                p.Right = nl;
+                q.Left = nr;
+            }
         }
 
         const int NOMATCH = 0;
         const int LEFT = -1;
         const int RIGHT = 1;
-        private static int Side(BinarySearchTreeNode child)
+        private static int Side(BinarySearchTreeNode parent, BinarySearchTreeNode child)
         {
-            if (child == null || child.Parent == null) return NOMATCH;
-
-            return (child.Parent.Right == child) ? RIGHT
-                : (child.Parent.Left == child) ? LEFT
+            //if (child == null || child.Parent == null) return NOMATCH;
+            return (parent.Right == child) ? RIGHT
+                : (parent.Left == child) ? LEFT
                 : NOMATCH;
+        }
+
+        private static void ReplaceChild(BinarySearchTreeNode parent, BinarySearchTreeNode currentChild, BinarySearchTreeNode newChild)
+        {
+            if (parent == null) return;
+            switch (Side(parent,currentChild))
+            {
+                case LEFT:
+                    parent.Left = newChild;
+                    break;
+                case RIGHT:
+                    parent.Right = newChild;
+                    break;
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ namespace DataStructures
             }
             else
             {
-                Print(_original);
+                Print(GetRoot(_original));
             }
             return _sb.ToString();
         }
@@ -68,5 +68,13 @@ namespace DataStructures
             }
         }
 
+        private static BinarySearchTreeNode GetRoot(BinarySearchTreeNode node)
+        {
+            if (node == null) return null;
+
+            while (node.Parent != null)
+                node = node.Parent;
+            return node;
+        }
     }
 }
