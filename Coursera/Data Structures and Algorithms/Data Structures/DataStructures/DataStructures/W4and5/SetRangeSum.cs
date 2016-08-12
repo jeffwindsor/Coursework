@@ -111,17 +111,16 @@ namespace DataStructures.W4and5
         {
             if (Tree == null) return false;
 
-            var result = SplayTree.Exists(key, Tree);
-            ReRootTree();
-            return result;
+            Tree = SplayTree.Find(key, Tree);
+            return Tree.Key == key;
         }
 
         public long Sum(long leftKey, long rightKey)
         {
             if (Tree == null) return 0;
 
-            _lastSum = SplayTree.Sum(leftKey,rightKey, Tree);
-            ReRootTree();
+            Tree = SplayTree.Find(leftKey, Tree);
+            _lastSum = Sum(leftKey, rightKey, Tree);
             return _lastSum;
         }
 
@@ -134,21 +133,35 @@ namespace DataStructures.W4and5
 
 
         private long _lastSum = 0;
-        private BinarySearchTreeNode _tree;
-        private BinarySearchTreeNode Tree
+        private BinarySearchTreeNode Tree { get; set; }
+        private static long Sum(long leftKey, long rightKey, BinarySearchTreeNode node)
         {
-            get { return _tree; }
-            set { _tree = GetRoot(value); }
-        }
-        private void ReRootTree() { Tree = Tree; }
-        private static BinarySearchTreeNode GetRoot(BinarySearchTreeNode node)
-        {
-            if (node == null) return null;
+            long results = 0;
+            while (node != null && node.Key <= rightKey)
+            {
+                if (node.Key >= leftKey)
+                    results += node.Key;
 
-            while (node.Parent != null)
-                node = node.Parent;
-            return node;
+                node = BinarySearchTree.Next(node);
+            }
+            return results;
         }
+        
+        //private BinarySearchTreeNode _tree;
+        //private BinarySearchTreeNode Tree
+        //{
+        //    get { return _tree; }
+        //    set { _tree = GetRoot(value); }
+        //}
+        //private void ReRootTree() { Tree = Tree; }
+        //private static BinarySearchTreeNode GetRoot(BinarySearchTreeNode node)
+        //{
+        //    if (node == null) return null;
+
+        //    while (node.Parent != null)
+        //        node = node.Parent;
+        //    return node;
+        //}
 
     }
 }
