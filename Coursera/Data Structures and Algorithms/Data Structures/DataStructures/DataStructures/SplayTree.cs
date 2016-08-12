@@ -7,16 +7,7 @@ namespace DataStructures
 
         public static bool Exists(long key, BinarySearchTreeNode root)
         {
-            if (root == null) return false;
             return Find(key, root).Key == key;
-        }
-
-        public static BinarySearchTreeNode FindRoot(BinarySearchTreeNode node)
-        {
-            if (node == null) return null;
-            while (node.Parent != null)
-                node = node.Parent;
-            return node;
         }
 
         public static BinarySearchTreeNode Find(long key, BinarySearchTreeNode root)
@@ -26,25 +17,31 @@ namespace DataStructures
             return found;
         }
 
-        public static void Insert(long key, BinarySearchTreeNode root)
+        public static BinarySearchTreeNode Insert(long key, BinarySearchTreeNode root)
         {
             BinarySearchTree.Insert(key, root);
             Find(key, root);  //causes splay
+            return root;
         }
 
         public static BinarySearchTreeNode Delete(long key, BinarySearchTreeNode root)
         {
-            if (!Exists(key, root)) return root;
+            var node = Find(key, root);
+            var result = (node == null || node.Key != key) 
+                ? root 
+                : Delete(node, root);
+            return result;
+        }
 
-            Splay(BinarySearchTree.Next(root));
-            Splay(root);
-            return BinarySearchTree.Delete(root);
+        private static BinarySearchTreeNode Delete(BinarySearchTreeNode node, BinarySearchTreeNode root)
+        {
+            Splay(BinarySearchTree.Next(node));
+            Splay(node);
+            return BinarySearchTree.Delete(node);
         }
 
         public static long Sum(long leftKey, long rightKey, BinarySearchTreeNode root)
         {
-            if (root == null) return 0;
-
             long results = 0;
             var node = Find(leftKey, root);
             while (node != null && node.Key <= rightKey)
@@ -57,12 +54,14 @@ namespace DataStructures
             return results;
         }
 
-        public static Tuple<BinarySearchTreeNode, BinarySearchTreeNode> Split(long key, BinarySearchTreeNode root)
+
+
+        private static Tuple<BinarySearchTreeNode, BinarySearchTreeNode> Split(long key, BinarySearchTreeNode root)
         {
             var node = Find(key, root);
             return new Tuple<BinarySearchTreeNode, BinarySearchTreeNode>(node.Left,node.Right);
         }
-
+        
         private static BinarySearchTreeNode Merge(BinarySearchTreeNode one, BinarySearchTreeNode two)
         {
             var node = Find(long.MaxValue, one);

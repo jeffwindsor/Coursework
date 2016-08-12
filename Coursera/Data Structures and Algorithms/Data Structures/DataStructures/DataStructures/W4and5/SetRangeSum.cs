@@ -23,9 +23,6 @@ namespace DataStructures.W4and5
         private const string COMMAND_SUM = "s";
         private const long M = 1000000001;
 
-        private BinarySearchTreeNode _root;
-        private long _lastSum = 0;
-
         public static IList<string> Answer(IList<string> inputs)
         {
             var n = int.Parse(inputs[0]);
@@ -47,6 +44,9 @@ namespace DataStructures.W4and5
             var results = queries
                 .Select( (q,i) =>
                 {
+                    ///*
+                    Console.WriteLine("Current Sum: {0}", o._lastSum);
+                    Console.WriteLine((new BinarySearchTreeNodePrinter(o.Tree)).Print());
                     i += 2;  //for line number align in input file
                     if (q.Action == COMMAND_SUM)
                     {
@@ -65,8 +65,7 @@ namespace DataStructures.W4and5
                         Console.WriteLine("[{3}:-] {0} [{1}] => [{2}]", q.Action, q.Value, o.GetAdjustedValue(q.Value),
                             i);
                     }
-                    Console.WriteLine(BinarySearchTreeNodePrinter.Print(o._root));
-
+                    //*/
 
                     switch (q.Action)
                     {
@@ -97,32 +96,32 @@ namespace DataStructures.W4and5
         
         public void Insert(long key)
         {
-            if (_root == null)
-            {
-                _root = new BinarySearchTreeNode {Key = key};
-            }
-            else
-            {
-                SplayTree.Insert(key, _root);
-                _root = SplayTree.FindRoot(_root);
-            }
+            Tree = (Tree == null)
+                ? new BinarySearchTreeNode {Key = key}
+                : SplayTree.Insert(key, Tree);
         }
 
         public void Delete(long key)
         {
-            if (_root == null) return;
-            var with = SplayTree.Delete(key,_root);
-            _root = SplayTree.FindRoot(with);
+            if (Tree == null) return;
+            Tree = SplayTree.Delete(key, Tree);
         }
 
         public bool Exists(long key)
         {
-            return SplayTree.Exists(key, _root);
+            if (Tree == null) return false;
+
+            var result = SplayTree.Exists(key, Tree);
+            ReRootTree();
+            return result;
         }
 
         public long Sum(long leftKey, long rightKey)
         {
-            _lastSum = SplayTree.Sum(leftKey,rightKey,_root);
+            if (Tree == null) return 0;
+
+            _lastSum = SplayTree.Sum(leftKey,rightKey, Tree);
+            ReRootTree();
             return _lastSum;
         }
 
@@ -132,6 +131,25 @@ namespace DataStructures.W4and5
             public long Value { get; set; }
             public long RangeValue { get; set; }
         }
+
+
+        private long _lastSum = 0;
+        private BinarySearchTreeNode _tree;
+        private BinarySearchTreeNode Tree
+        {
+            get { return _tree; }
+            set { _tree = GetRoot(value); }
+        }
+        private void ReRootTree() { Tree = Tree; }
+        private static BinarySearchTreeNode GetRoot(BinarySearchTreeNode node)
+        {
+            if (node == null) return null;
+
+            while (node.Parent != null)
+                node = node.Parent;
+            return node;
+        }
+
     }
 }
 

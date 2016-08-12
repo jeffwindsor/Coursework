@@ -12,7 +12,7 @@ namespace DataStructures
 
         public override string ToString()
         {
-            return string.Format("{0}:{1}", Key, Rank);
+            return string.Format("{0}", Key); //string.Format("{0}:{1}", Key, Rank);
         }
     }
     public class BinarySearchTree
@@ -67,6 +67,24 @@ namespace DataStructures
                 return Replace(next, next.Right);
             }
         }
+
+        public static long Sum(long leftKey, long rightKey, BinarySearchTreeNode root)
+        {
+            if (root == null) return 0;
+
+            long results = 0;
+            var node = Find(leftKey, root);
+            while (node != null && node.Key <= rightKey)
+            {
+                if (node.Key >= leftKey)
+                    results += node.Key;
+
+                node = Next(node);
+            }
+            return results;
+        }
+
+
 
         private static BinarySearchTreeNode Replace(BinarySearchTreeNode node, BinarySearchTreeNode with)
         {

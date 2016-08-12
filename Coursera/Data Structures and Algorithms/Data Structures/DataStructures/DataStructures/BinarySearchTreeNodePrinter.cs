@@ -2,50 +2,69 @@
 
 namespace DataStructures
 {
-    public static class BinarySearchTreeNodePrinter
+    public class BinarySearchTreeNodePrinter
     {
-        public static string Print(BinarySearchTreeNode node)
-        {
+        private readonly BinarySearchTreeNode _original;
+        private readonly StringBuilder _sb;
 
-            var sb = new StringBuilder();
-            Print(node, sb);
-            return sb.ToString();
+        public BinarySearchTreeNodePrinter(BinarySearchTreeNode node)
+        {
+            _original = node;
+            _sb = new StringBuilder();
         }
 
-        private static void Print(BinarySearchTreeNode node, StringBuilder sb)
+        public string Print()
+        {
+            if (_original == null)
+            {
+                PrintNodeValue(_original);
+            }
+            else
+            {
+                Print(_original);
+            }
+            return _sb.ToString();
+        }
+
+        private void Print(BinarySearchTreeNode node)
         {
 
             if (node != null && node.Right != null)
             {
-                Print(node.Right, sb, true, "");
+                Print(node.Right, true, "");
             }
-            PrintNodeValue(node, sb);
+            PrintNodeValue(node);
             if (node != null && node.Left != null)
             {
-                Print(node.Left, sb, false, "");
+                Print(node.Left, false, "");
             }
         }
 
-        private static void PrintNodeValue(BinarySearchTreeNode node, StringBuilder sb)
+        private void PrintNodeValue(BinarySearchTreeNode node)
         {
-            sb.AppendLine((node == null) ? "<null>" : node.ToString());
+            _sb.AppendLine((node == null) 
+                ? "<null>" 
+                : (_original.Key == node.Key)
+                    ? "[o]" + node.ToString()
+                    : node.ToString()
+                );
         }
 
         // use string and not stringbuffer on purpose as we need to change the indent at each recursion
-        private static void Print(BinarySearchTreeNode node, StringBuilder sb, bool isRight, string indent)
+        private void Print(BinarySearchTreeNode node, bool isRight, string indent)
         {
             if (node.Right != null)
             {
-                Print(node.Right, sb, true, indent + (isRight ? "        " : " |      "));
+                Print(node.Right, true, indent + (isRight ? "        " : " |      "));
             }
-            sb.Append(indent);
-            sb.Append(isRight ? " /" : " \\");
-            sb.Append("----- ");
+            _sb.Append(indent);
+            _sb.Append(isRight ? " /" : " \\");
+            _sb.Append("----- ");
 
-            PrintNodeValue(node, sb);
+            PrintNodeValue(node);
             if (node.Left != null)
             {
-                Print(node.Left, sb, false, indent + (isRight ? " |      " : "        "));
+                Print(node.Left, false, indent + (isRight ? " |      " : "        "));
             }
         }
 
