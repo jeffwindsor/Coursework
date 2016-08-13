@@ -46,7 +46,8 @@ namespace DataStructures.W4and5
                 {
                     ///*
                     Console.WriteLine("Current Sum: {0}", o._lastSum);
-                    Console.WriteLine((new BinarySearchTreeNodePrinter(o.Tree)).Print());
+                    //Console.WriteLine((new BinarySearchTreeNodePrinter(o.Tree)).Print());
+
                     i += 2;  //for line number align in input file
                     if (q.Action == COMMAND_SUM)
                     {

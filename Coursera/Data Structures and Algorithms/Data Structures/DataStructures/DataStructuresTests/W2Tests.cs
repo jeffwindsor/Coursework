@@ -1,7 +1,8 @@
 ﻿using System.Linq;
+using DataStructures.W2;
 using NUnit.Framework;
 
-namespace DataStructures.W2
+namespace DataStructures.Tests
 {
     [TestFixture]
     public class W2Tests : BaseTests

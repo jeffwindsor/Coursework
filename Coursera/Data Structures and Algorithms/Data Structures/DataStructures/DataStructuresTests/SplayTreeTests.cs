@@ -18,8 +18,7 @@ namespace DataStructures.Tests
             public BinarySearchTreeNode N15 = new BinarySearchTreeNode { Key = 15 };
             public BinarySearchTreeNode N35 = new BinarySearchTreeNode { Key = 35 };
         }
-
-
+        
         [Test]
         public void Find_Zig_Zag_Left_Test()
         {

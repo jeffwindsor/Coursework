@@ -45,26 +45,19 @@ namespace DataStructures
         {
             if (node.Right == null)
             {
-                return Replace(node, node.Left);
+                var nl = node.Left;
+                BinarySearchTreeNode.ReplaceChild(node.Parent,node, nl);
+                //node.Orphan();
+                return nl;
             }
-            else
-            {
-                var next = Next(node);
-                node.Key = next.Key;
-                return Replace(next, next.Right);
-            }
-        }
 
-        private static BinarySearchTreeNode Replace(BinarySearchTreeNode node, BinarySearchTreeNode with)
-        {
-            if (with == null) return null;
-            with.Parent = node.Parent;
-            if (node.Parent == null) return with;
-
-            if (node.Parent.Left == node) node.Parent.Left = with;
-            else node.Parent.Right = with;
-
-            return with;
+            var next = Next(node);
+            BinarySearchTreeNode.ReplaceChild(next.Parent, next, next.Right);
+            BinarySearchTreeNode.ReplaceChild(node.Parent, node, next);
+            next.Left = node.Left;
+            next.Right = node.Right;
+            //node.Orphan();
+            return next;
         }
         
         private static BinarySearchTreeNode LeftDescendant(BinarySearchTreeNode node)

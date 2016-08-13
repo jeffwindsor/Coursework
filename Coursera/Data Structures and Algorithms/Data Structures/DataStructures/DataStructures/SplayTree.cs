@@ -63,12 +63,12 @@ namespace DataStructures
         {
             if (node == null || node.Parent == null) return; //bad
 
-            var nodesSideOfParent = Side(node.Parent, node);
+            var nodesSideOfParent = BinarySearchTreeNode.SideOf(node.Parent,node);
             if (node.Parent.Parent == null)
             {
                 Zig(node, nodesSideOfParent);
             }
-            else if (nodesSideOfParent == Side(node.Parent.Parent, node.Parent))
+            else if (nodesSideOfParent == BinarySearchTreeNode.SideOf(node.Parent.Parent,node.Parent))
             {
                 ZigZig(node, nodesSideOfParent);
             }
@@ -81,12 +81,12 @@ namespace DataStructures
                 Splay(node);
         }
 
-        private static void Zig(BinarySearchTreeNode node, int side)
+        private static void Zig(BinarySearchTreeNode node, BinarySearchTreeNode.SideOfParent side)
         {
             var p = node.Parent;
-            ReplaceChild(p.Parent, p, node);
+            BinarySearchTreeNode.ReplaceChild(p.Parent, p, node);
             
-            if (side == LEFT)
+            if (side == BinarySearchTreeNode.SideOfParent.LEFT)
             {
                 var nr = node.Right;
                 node.Right = p;
@@ -100,13 +100,13 @@ namespace DataStructures
             }
         }
 
-        private static void ZigZig(BinarySearchTreeNode node, int side)
+        private static void ZigZig(BinarySearchTreeNode node, BinarySearchTreeNode.SideOfParent side)
         {
             var p = node.Parent;
             var q = node.Parent.Parent;
-            
-            ReplaceChild(q.Parent, q, node);
-            if (side == LEFT)
+
+            BinarySearchTreeNode.ReplaceChild(q.Parent, q, node);
+            if (side == BinarySearchTreeNode.SideOfParent.LEFT)
             {
                 var nr = node.Right;
                 var pr = p.Right;
@@ -126,19 +126,18 @@ namespace DataStructures
             }
         }
 
-        private static void ZigZag(BinarySearchTreeNode node, int side)
+        private static void ZigZag(BinarySearchTreeNode node, BinarySearchTreeNode.SideOfParent side)
         {
             var p = node.Parent;
             var q = node.Parent.Parent;
 
-            node.Parent = q.Parent;
-            ReplaceChild(q.Parent, q, node);
+            BinarySearchTreeNode.ReplaceChild(q.Parent, q, node);
             p.Parent = node;
             q.Parent = node;
 
             var nl = node.Left;
             var nr = node.Right;
-            if (side == LEFT)
+            if (side == BinarySearchTreeNode.SideOfParent.LEFT)
             {
                 node.Left = q;
                 node.Right = p;
@@ -153,32 +152,6 @@ namespace DataStructures
                 q.Left = nr;
             }
         }
-
-        const int NOMATCH = 0;
-        const int LEFT = -1;
-        const int RIGHT = 1;
-        private static int Side(BinarySearchTreeNode parent, BinarySearchTreeNode child)
-        {
-            if (child == null || child.Parent == null) return NOMATCH;
-            return (parent.Right == child) ? RIGHT
-                : (parent.Left == child) ? LEFT
-                : NOMATCH;
-        }
-
-        private static void ReplaceChild(BinarySearchTreeNode parent, BinarySearchTreeNode currentChild, BinarySearchTreeNode newChild)
-        {
-            switch (Side(parent,currentChild))
-            {
-                case LEFT:
-                    parent.Left = newChild;
-                    break;
-                case RIGHT:
-                    parent.Right = newChild;
-                    break;
-                default:
-                    newChild.Parent = null;
-                    break;
-            }
-        }
+        
     }
 }

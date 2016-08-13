@@ -14,6 +14,7 @@ namespace DataStructures.Tests
             TestFromRelativeFilePath(@"TreeOrders\" + file, TreeOrder.Answer);
         }
         
+        [TestCase("Experimental")]
         [TestCase("01")]
         [TestCase("04")]
         [TestCase("05")]

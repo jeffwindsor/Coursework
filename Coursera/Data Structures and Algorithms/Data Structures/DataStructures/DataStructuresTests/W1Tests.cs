@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace DataStructures.W1
+namespace DataStructures.Tests
 {
     [TestFixture]
     public class W1Tests : BaseTests
