@@ -20,10 +20,10 @@ namespace DataStructures
         public static BinarySearchTreeNode Delete(long key, BinarySearchTreeNode root)
         {
             var node = Find(key, root);
-            return (node.Key == key) ? Delete(node, root) : node;
+            return (node.Key == key) ? Delete(node) : node;
         }
 
-        private static BinarySearchTreeNode Delete(BinarySearchTreeNode node, BinarySearchTreeNode root)
+        private static BinarySearchTreeNode Delete(BinarySearchTreeNode node)
         {
             Splay(BinarySearchTree.Next(node));
             Splay(node);
@@ -43,21 +43,19 @@ namespace DataStructures
             }
             return results;
         }
-
-
-
-        private static Tuple<BinarySearchTreeNode, BinarySearchTreeNode> Split(long key, BinarySearchTreeNode root)
-        {
-            var node = Find(key, root);
-            return new Tuple<BinarySearchTreeNode, BinarySearchTreeNode>(node.Left,node.Right);
-        }
         
-        private static BinarySearchTreeNode Merge(BinarySearchTreeNode one, BinarySearchTreeNode two)
-        {
-            var node = Find(long.MaxValue, one);
-            node.Right = two;
-            return node;
-        }
+        //private static Tuple<BinarySearchTreeNode, BinarySearchTreeNode> Split(long key, BinarySearchTreeNode root)
+        //{
+        //    var node = Find(key, root);
+        //    return new Tuple<BinarySearchTreeNode, BinarySearchTreeNode>(node.Left,node.Right);
+        //}
+        
+        //private static BinarySearchTreeNode Merge(BinarySearchTreeNode one, BinarySearchTreeNode two)
+        //{
+        //    var node = Find(long.MaxValue, one);
+        //    node.Right = two;
+        //    return node;
+        //}
 
         public static void Splay(BinarySearchTreeNode node)
         {

@@ -17,10 +17,10 @@ namespace DataStructures.W4and5
         //        Console.WriteLine(result);
         //}
 
-        private const string COMMAND_ADD = "+";
-        private const string COMMAND_DEL = "-";
-        private const string COMMAND_FIND = "?";
-        private const string COMMAND_SUM = "s";
+        private const string CommandAdd = "+";
+        private const string CommandDel = "-";
+        private const string CommandFind = "?";
+        private const string CommandSum = "s";
         private const long M = 1000000001;
 
         public static IList<string> Answer(IList<string> inputs)
@@ -29,7 +29,7 @@ namespace DataStructures.W4and5
             var queries = Enumerable.Range(1, n)
                 .Select(i =>
                 {
-                    var items = inputs[i].Split(new[] {' '});
+                    var items = inputs[i].Split(' ');
                     return new Query
                     {
                         Action = items[0],
@@ -39,14 +39,14 @@ namespace DataStructures.W4and5
                 });
 
 
-            var outputLine = 0;
+            //var outputLine = 0;
             var o = new SetRangeSum();
             var results = queries
                 .Select( (q,i) =>
                 {
-                    ///*
+                    /*
                     Console.WriteLine("Current Sum: {0}", o._lastSum);
-                    //Console.WriteLine((new BinarySearchTreeNodePrinter(o.Tree)).Print());
+                    Console.WriteLine((new BinarySearchTreeNodePrinter(o.Tree)).Print());
 
                     i += 2;  //for line number align in input file
                     if (q.Action == COMMAND_SUM)
@@ -66,26 +66,25 @@ namespace DataStructures.W4and5
                         Console.WriteLine("[{3}:-] {0} [{1}] => [{2}]", q.Action, q.Value, o.GetAdjustedValue(q.Value),
                             i);
                     }
-                    //*/
+                    */
 
                     switch (q.Action)
                     {
-                        case COMMAND_ADD:
+                        case CommandAdd:
                             o.Insert(o.GetAdjustedValue(q.Value));
                             return string.Empty;
-                        case COMMAND_DEL:
+                        case CommandDel:
                             o.Delete(o.GetAdjustedValue(q.Value));
                             return string.Empty;
-                        case COMMAND_FIND:
+                        case CommandFind:
                             return o.Exists(o.GetAdjustedValue(q.Value)) ? "Found" : "Not found";
-                        case COMMAND_SUM:
+                        case CommandSum:
                             return o.Sum(o.GetAdjustedValue(q.Value), o.GetAdjustedValue(q.RangeValue)).ToString();
                         default:
                             throw new ArgumentException("Action Unknown");
                     }
                 })
                 .Where(r => !string.IsNullOrEmpty(r));
-
 
             return results.ToArray();
         }
@@ -133,7 +132,7 @@ namespace DataStructures.W4and5
         }
 
 
-        private long _lastSum = 0;
+        private long _lastSum;
         private BinarySearchTreeNode Tree { get; set; }
         private static long Sum(long leftKey, long rightKey, BinarySearchTreeNode node)
         {
