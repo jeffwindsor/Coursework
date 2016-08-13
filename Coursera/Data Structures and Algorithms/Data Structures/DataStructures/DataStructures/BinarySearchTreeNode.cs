@@ -67,12 +67,5 @@
                     return;
             }
         }
-
-        //public void Orphan()
-        //{
-        //    _left = null;
-        //    _right = null;
-        //    Parent = null;
-        //}
     }
 }

@@ -6,25 +6,22 @@ namespace DataStructures.W4and5
 {
     public class SetRangeSum
     {
-        public static void Main(string[] args)
-        {
-            string s;
-            var inputs = new List<string>();
-            while ((s = Console.ReadLine()) != null)
-                inputs.Add(s);
+        //public static void Main(string[] args)
+        //{
+        //    string s;
+        //    var inputs = new List<string>();
+        //    while ((s = Console.ReadLine()) != null)
+        //        inputs.Add(s);
 
-            foreach (var result in Answer(inputs.ToArray()))
-                Console.WriteLine(result);
-        }
+        //    foreach (var result in Answer(inputs.ToArray()))
+        //        Console.WriteLine(result);
+        //}
 
-        private const string COMMAND_ADD = "+";
-        private const string COMMAND_DEL = "-";
-        private const string COMMAND_FIND = "?";
-        private const string COMMAND_SUM = "s";
+        private const string CommandAdd = "+";
+        private const string CommandDel = "-";
+        private const string CommandFind = "?";
+        private const string CommandSum = "s";
         private const long M = 1000000001;
-
-        private BinarySearchTreeNode _root;
-        private long _lastSum = 0;
 
         public static IList<string> Answer(IList<string> inputs)
         {
@@ -32,7 +29,7 @@ namespace DataStructures.W4and5
             var queries = Enumerable.Range(1, n)
                 .Select(i =>
                 {
-                    var items = inputs[i].Split(new[] {' '});
+                    var items = inputs[i].Split(' ');
                     return new Query
                     {
                         Action = items[0],
@@ -41,25 +38,47 @@ namespace DataStructures.W4and5
                     };
                 });
 
+
+            //var outputLine = 0;
             var o = new SetRangeSum();
             var results = queries
-                .Select(q =>
+                .Select((q, i) =>
                 {
+                    /*
+                    Console.WriteLine("Current Sum: {0}", o._lastSum);
+                    Console.WriteLine((new BinarySearchTreeNodePrinter(o.Tree)).Print());
+
+                    i += 2;  //for line number align in input file
+                    if (q.Action == COMMAND_SUM)
+                    {
+                        outputLine++;
+                        Console.WriteLine("[{5}:{6}] {0} [{1}:{2}] => [{3}:{4}]", q.Action, q.Value, q.RangeValue,
+                            o.GetAdjustedValue(q.Value), o.GetAdjustedValue(q.RangeValue), i, outputLine);
+                    }
+                    else if (q.Action == COMMAND_FIND)
+                    {
+                        outputLine++;
+                        Console.WriteLine("[{3}:{4}] {0} [{1}] => [{2}]", q.Action, q.Value, o.GetAdjustedValue(q.Value),
+                            i, outputLine);
+                    }
+                    else
+                    {
+                        Console.WriteLine("[{3}:-] {0} [{1}] => [{2}]", q.Action, q.Value, o.GetAdjustedValue(q.Value),
+                            i);
+                    }
+                    */
+
                     switch (q.Action)
                     {
-                        case COMMAND_ADD:
-                            //Console.WriteLine("{0} [{1}] => [{2}]", q.Action, q.Value, o.GetAdjustedValue(q.Value));
+                        case CommandAdd:
                             o.Insert(o.GetAdjustedValue(q.Value));
                             return string.Empty;
-                        case COMMAND_DEL:
-                            //.WriteLine("{0} [{1}] => [{2}]", q.Action, q.Value, o.GetAdjustedValue(q.Value));
+                        case CommandDel:
                             o.Delete(o.GetAdjustedValue(q.Value));
                             return string.Empty;
-                        case COMMAND_FIND:
-                            //Console.WriteLine("{0} [{1}] => [{2}]", q.Action, q.Value, o.GetAdjustedValue(q.Value));
+                        case CommandFind:
                             return o.Exists(o.GetAdjustedValue(q.Value)) ? "Found" : "Not found";
-                        case COMMAND_SUM:
-                            //Console.WriteLine("{0} [{1}:{2}] => [{3}:{4}]", q.Action, q.Value,q.RangeValue, o.GetAdjustedValue(q.Value), o.GetAdjustedValue(q.RangeValue));
+                        case CommandSum:
                             return o.Sum(o.GetAdjustedValue(q.Value), o.GetAdjustedValue(q.RangeValue)).ToString();
                         default:
                             throw new ArgumentException("Action Unknown");
@@ -67,43 +86,44 @@ namespace DataStructures.W4and5
                 })
                 .Where(r => !string.IsNullOrEmpty(r));
 
-
             return results.ToArray();
         }
 
         public long GetAdjustedValue(long source)
         {
-            return (_lastSum + source)%M;
+            return (_lastSum + source) % M;
         }
-        
+
         public void Insert(long key)
         {
-            if (_root == null)
-            {
-                _root = new BinarySearchTreeNode {Key = key};
-            }
-            else
-            {
-                SplayTree.Insert(key, _root);
-                _root = SplayTree.FindRoot(_root);
-            }
+            Tree = (Tree == null)
+                ? new BinarySearchTreeNode { Key = key }
+                : SplayTree.Insert(key, Tree);
         }
 
         public void Delete(long key)
         {
-            if (_root == null) return;
-            var with = SplayTree.Delete(key,_root);
-            _root = SplayTree.FindRoot(with);
+            if (Tree == null)
+                return;
+            Tree = GetRoot(SplayTree.Delete(key, Tree));
         }
 
         public bool Exists(long key)
         {
-            return SplayTree.Exists(key, _root);
+            if (Tree == null)
+                return false;
+
+            Tree = SplayTree.Find(key, Tree);
+            return Tree.Key == key;
         }
 
         public long Sum(long leftKey, long rightKey)
         {
-            _lastSum = SplayTree.Sum(leftKey,rightKey,_root);
+            if (Tree == null)
+                return 0;
+
+            Tree = SplayTree.Find(leftKey, Tree);
+            _lastSum = Sum(leftKey, rightKey, Tree);
             return _lastSum;
         }
 
@@ -113,25 +133,43 @@ namespace DataStructures.W4and5
             public long Value { get; set; }
             public long RangeValue { get; set; }
         }
-    }
 
-        public class SplayTree
-    {
 
-        public static bool Exists(long key, BinarySearchTreeNode root)
+        private long _lastSum;
+        private BinarySearchTreeNode Tree { get; set; }
+        private static long Sum(long leftKey, long rightKey, BinarySearchTreeNode node)
         {
-            if (root == null) return false;
-            return Find(key, root).Key == key;
+            long results = 0;
+            while (node != null && node.Key <= rightKey)
+            {
+                if (node.Key >= leftKey)
+                    results += node.Key;
+
+                node = BinarySearchTree.Next(node);
+            }
+            return results;
         }
 
-        public static BinarySearchTreeNode FindRoot(BinarySearchTreeNode node)
+        //private BinarySearchTreeNode _tree;
+        //private BinarySearchTreeNode Tree
+        //{
+        //    get { return _tree; }
+        //    set { _tree = GetRoot(value); }
+        //}
+        //private void ReRootTree() { Tree = Tree; }
+        private static BinarySearchTreeNode GetRoot(BinarySearchTreeNode node)
         {
-            if (node == null) return null;
+            if (node == null)
+                return null;
+
             while (node.Parent != null)
                 node = node.Parent;
             return node;
         }
+    }
 
+    public class SplayTree
+    {
         public static BinarySearchTreeNode Find(long key, BinarySearchTreeNode root)
         {
             var found = BinarySearchTree.Find(key, root);
@@ -139,25 +177,27 @@ namespace DataStructures.W4and5
             return found;
         }
 
-        public static void Insert(long key, BinarySearchTreeNode root)
+        public static BinarySearchTreeNode Insert(long key, BinarySearchTreeNode root)
         {
             BinarySearchTree.Insert(key, root);
-            Find(key, root);  //causes splay
+            return Find(key, root);
         }
 
         public static BinarySearchTreeNode Delete(long key, BinarySearchTreeNode root)
         {
-            if (!Exists(key, root)) return root;
+            var node = Find(key, root);
+            return (node.Key == key) ? Delete(node) : node;
+        }
 
-            Splay(BinarySearchTree.Next(root));
-            Splay(root);
-            return BinarySearchTree.Delete(root);
+        private static BinarySearchTreeNode Delete(BinarySearchTreeNode node)
+        {
+            Splay(BinarySearchTree.Next(node));
+            Splay(node);
+            return BinarySearchTree.Delete(node);
         }
 
         public static long Sum(long leftKey, long rightKey, BinarySearchTreeNode root)
         {
-            if (root == null) return 0;
-
             long results = 0;
             var node = Find(leftKey, root);
             while (node != null && node.Key <= rightKey)
@@ -170,97 +210,126 @@ namespace DataStructures.W4and5
             return results;
         }
 
-        public static Tuple<BinarySearchTreeNode, BinarySearchTreeNode> Split(long key, BinarySearchTreeNode root)
+        public static void Splay(BinarySearchTreeNode node)
         {
-            var node = Find(key, root);
-            return new Tuple<BinarySearchTreeNode, BinarySearchTreeNode>(node.Left,node.Right);
-        }
-
-        private static BinarySearchTreeNode Merge(BinarySearchTreeNode one, BinarySearchTreeNode two)
-        {
-            var node = Find(long.MaxValue, one);
-            node.Right = two;
-            return node;
-        }
-
-        public static void Splay(BinarySearchTreeNode root)
-        {
-            if (root == null) return;  //bad
-            var parentSide = Side(root);
-            if (parentSide == 0) return; //bad
-            var grandParentSide = Side(root.Parent);
-            
-            if (grandParentSide == 0)
-            { //Zig
-                //parent => opposite child
-                Swap(root, root.Parent, parentSide);
-            }
-            else if (parentSide == grandParentSide)
-            {//Zig Zig
-                //gparent => opposite gchild
-                Swap(root.Parent, root.Parent.Parent, grandParentSide);
-                //parent => opposite child
-                Swap(root, root.Parent, parentSide);
-            }
-            else
-            {//Zig Zag
-                //parent => opposite child
-                Swap(root, root.Parent, parentSide);
-                //gparent => opposite child
-                Swap(root, root.Parent, grandParentSide);
-            }
-            
-            if (root.Parent != null)
-                Splay(root.Parent);
-        }
-        
-        private static void Swap(BinarySearchTreeNode node, BinarySearchTreeNode parent, int parentSide)
-        {
-            if (parentSide == NOMATCH) return;
-
-            node.Parent = parent.Parent;
-            if (parentSide == LEFT)
+            //Recursion Replaced with iteration
+            //      if (node.Parent != null)
+            //          Splay(node);
+            //
+            while (true)
             {
-                parent.Left = node.Right;
-                node.Right = parent;
+                if (node == null || node.Parent == null)
+                    return; //bad
+
+                var nodesSideOfParent = BinarySearchTreeNode.SideOf(node.Parent, node);
+                if (node.Parent.Parent == null)
+                {
+                    Zig(node, nodesSideOfParent);
+                }
+                else if (nodesSideOfParent == BinarySearchTreeNode.SideOf(node.Parent.Parent, node.Parent))
+                {
+                    ZigZig(node, nodesSideOfParent);
+                }
+                else
+                {
+                    ZigZag(node, nodesSideOfParent);
+                }
+
+                if (node.Parent != null)
+                    continue;
+                break;
+            }
+        }
+
+        private static void Zig(BinarySearchTreeNode node, BinarySearchTreeNode.SideOfParent side)
+        {
+            var p = node.Parent;
+            BinarySearchTreeNode.ReplaceChild(p.Parent, p, node);
+
+            if (side == BinarySearchTreeNode.SideOfParent.LEFT)
+            {
+                var nr = node.Right;
+                node.Right = p;
+                p.Left = nr;
             }
             else
             {
-                parent.Right = node.Left;
-                node.Left = parent;
+                var nl = node.Left;
+                node.Left = p;
+                p.Right = nl;
             }
-            parent.Parent = node;
         }
 
-        const int NOMATCH = 0;
-        const int LEFT = -1;
-        const int RIGHT = 1;
-        private static int Side(BinarySearchTreeNode child)
+        private static void ZigZig(BinarySearchTreeNode node, BinarySearchTreeNode.SideOfParent side)
         {
-            if (child == null || child.Parent == null) return NOMATCH;
+            var p = node.Parent;
+            var q = node.Parent.Parent;
 
-            return (child.Parent.Right == child) ? RIGHT
-                : (child.Parent.Left == child) ? LEFT
-                : NOMATCH;
+            BinarySearchTreeNode.ReplaceChild(q.Parent, q, node);
+            if (side == BinarySearchTreeNode.SideOfParent.LEFT)
+            {
+                var nr = node.Right;
+                var pr = p.Right;
+                node.Right = p;
+                p.Right = q;
+                p.Left = nr;
+                q.Left = pr;
+            }
+            else
+            {
+                var nl = node.Left;
+                var pl = p.Left;
+                node.Left = p;
+                p.Left = q;
+                p.Right = nl;
+                q.Right = pl;
+            }
         }
+
+        private static void ZigZag(BinarySearchTreeNode node, BinarySearchTreeNode.SideOfParent side)
+        {
+            var p = node.Parent;
+            var q = node.Parent.Parent;
+
+            BinarySearchTreeNode.ReplaceChild(q.Parent, q, node);
+            p.Parent = node;
+            q.Parent = node;
+
+            var nl = node.Left;
+            var nr = node.Right;
+            if (side == BinarySearchTreeNode.SideOfParent.LEFT)
+            {
+                node.Left = q;
+                node.Right = p;
+                p.Left = nr;
+                q.Right = nl;
+            }
+            else
+            {
+                node.Left = p;
+                node.Right = q;
+                p.Right = nl;
+                q.Left = nr;
+            }
+        }
+
     }
 
-
-    public class BinarySearchTreeNode
-    {
-        public long Key { get; set; }
-        public BinarySearchTreeNode Parent { get; set; }
-        public BinarySearchTreeNode Left { get; set; }
-        public BinarySearchTreeNode Right { get; set; }
-        public int Rank { get; set; }
-    }
     public class BinarySearchTree
     {
         public static BinarySearchTreeNode Find(long key, BinarySearchTreeNode root)
         {
-            if (root.Key == key) return root;
-            var child = (root.Key > key) ? root.Left : root.Right;
-            return (child == null) ? root : Find(key, child);
+            //Recursion Replaced with iteration
+            //return (child == null) ? root : Find(key, child);
+            while (true)
+            {
+                if (root.Key == key)
+                    return root;
+                var child = (root.Key > key) ? root.Left : root.Right;
+                if ((child == null))
+                    return root;
+                root = child;
+            }
         }
 
         public static IEnumerable<BinarySearchTreeNode> RangeSearch(long leftKey, long rightKey, BinarySearchTreeNode root)
@@ -285,50 +354,132 @@ namespace DataStructures.W4and5
         public static void Insert(long key, BinarySearchTreeNode root)
         {
             var parent = Find(key, root);
-            if (parent.Key == key) return;
+            if (parent.Key == key)
+                return;
 
             //Add as child
             var node = new BinarySearchTreeNode { Key = key, Parent = parent };
-            if (parent.Key > key) parent.Left = node;
-            else parent.Right = node;
+            if (parent.Key > key)
+                parent.Left = node;
+            else
+                parent.Right = node;
         }
 
         public static BinarySearchTreeNode Delete(BinarySearchTreeNode node)
         {
             if (node.Right == null)
             {
-                return Replace(node, node.Left);
+                var nl = node.Left;
+                BinarySearchTreeNode.ReplaceChild(node.Parent, node, nl);
+                //node.Orphan();
+                return nl;
             }
-            else
-            {
-                var next = Next(node);
-                node.Key = next.Key;
-                return Replace(next, next.Right);
-            }
+
+            var next = Next(node);
+            BinarySearchTreeNode.ReplaceChild(next.Parent, next, next.Right);
+            BinarySearchTreeNode.ReplaceChild(node.Parent, node, next);
+            next.Left = node.Left;
+            next.Right = node.Right;
+            //node.Orphan();
+            return next;
         }
 
-        private static BinarySearchTreeNode Replace(BinarySearchTreeNode node, BinarySearchTreeNode with)
-        {
-            if (with == null) return null;
-            with.Parent = node.Parent;
-            if (node.Parent == null) return with;
-
-            if (node.Parent.Left == node) node.Parent.Left = with;
-            else node.Parent.Right = with;
-
-            return with;
-        }
-        
         private static BinarySearchTreeNode LeftDescendant(BinarySearchTreeNode node)
         {
-            return (node.Left == null) ? node : LeftDescendant(node.Left);
+            //Recursion Replaced with iteration
+            //return (node.Left == null) ? node : LeftDescendant(node.Left);
+            while (true)
+            {
+                if ((node.Left == null))
+                    return node;
+                node = node.Left;
+            }
         }
 
         private static BinarySearchTreeNode RightAncestor(BinarySearchTreeNode node)
         {
-            if (node == null || node.Parent == null) return null;
+            //Recursion Replaced with iteration
+            //return (node.Key < node.Parent.Key) ? node.Parent : RightAncestor(node.Parent);
+            while (true)
+            {
+                if (node == null || node.Parent == null)
+                    return null;
 
-            return (node.Key < node.Parent.Key) ? node.Parent : RightAncestor(node.Parent);
+                if ((node.Key < node.Parent.Key))
+                    return node.Parent;
+                node = node.Parent;
+            }
+        }
+    }
+
+    public class BinarySearchTreeNode
+    {
+        private BinarySearchTreeNode _left;
+        private BinarySearchTreeNode _right;
+
+        public long Key { get; set; }
+        public BinarySearchTreeNode Parent { get; set; }
+
+        public BinarySearchTreeNode Left
+        {
+            get { return _left; }
+            set
+            {
+                _left = value;
+                if (value != null)
+                    value.Parent = this;
+            }
+        }
+        public BinarySearchTreeNode Right
+        {
+            get { return _right; }
+            set
+            {
+                _right = value;
+                if (value != null)
+                    value.Parent = this;
+            }
+        }
+
+        public int Rank { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("{0}", Key); //string.Format("{0}:{1}", Key, Rank);
+        }
+
+        public enum SideOfParent
+        {
+            NO = 0,
+            LEFT = -1,
+            RIGHT = 1,
+        }
+
+        public static SideOfParent SideOf(BinarySearchTreeNode parent, BinarySearchTreeNode child)
+        {
+            if (child == null || child.Parent == null)
+                return SideOfParent.NO;
+
+            return (parent.Right == child) ? SideOfParent.RIGHT
+                : (parent.Left == child) ? SideOfParent.LEFT
+                : SideOfParent.NO;
+        }
+
+        public static void ReplaceChild(BinarySearchTreeNode parent, BinarySearchTreeNode currentChild, BinarySearchTreeNode newChild)
+        {
+            switch (SideOf(parent, currentChild))
+            {
+                case SideOfParent.LEFT:
+                    parent.Left = newChild;
+                    return;
+                case SideOfParent.RIGHT:
+                    parent.Right = newChild;
+                    return;
+                default:
+                    if (newChild != null)
+                        newChild.Parent = null;
+                    return;
+            }
         }
     }
 }
