@@ -43,40 +43,35 @@ namespace DataStructures
             }
             return results;
         }
-        
-        //private static Tuple<BinarySearchTreeNode, BinarySearchTreeNode> Split(long key, BinarySearchTreeNode root)
-        //{
-        //    var node = Find(key, root);
-        //    return new Tuple<BinarySearchTreeNode, BinarySearchTreeNode>(node.Left,node.Right);
-        //}
-        
-        //private static BinarySearchTreeNode Merge(BinarySearchTreeNode one, BinarySearchTreeNode two)
-        //{
-        //    var node = Find(long.MaxValue, one);
-        //    node.Right = two;
-        //    return node;
-        //}
 
         public static void Splay(BinarySearchTreeNode node)
         {
-            if (node == null || node.Parent == null) return; //bad
+            //Recursion Replaced with iteration
+            //      if (node.Parent != null)
+            //          Splay(node);
+            //
+            while (true)
+            {
+                if (node == null || node.Parent == null) return; //bad
 
-            var nodesSideOfParent = BinarySearchTreeNode.SideOf(node.Parent,node);
-            if (node.Parent.Parent == null)
-            {
-                Zig(node, nodesSideOfParent);
-            }
-            else if (nodesSideOfParent == BinarySearchTreeNode.SideOf(node.Parent.Parent,node.Parent))
-            {
-                ZigZig(node, nodesSideOfParent);
-            }
-            else
-            {
-                ZigZag(node, nodesSideOfParent);
-            }
+                var nodesSideOfParent = BinarySearchTreeNode.SideOf(node.Parent, node);
+                if (node.Parent.Parent == null)
+                {
+                    Zig(node, nodesSideOfParent);
+                }
+                else if (nodesSideOfParent == BinarySearchTreeNode.SideOf(node.Parent.Parent, node.Parent))
+                {
+                    ZigZig(node, nodesSideOfParent);
+                }
+                else
+                {
+                    ZigZag(node, nodesSideOfParent);
+                }
 
-            if (node.Parent != null)
-                Splay(node);
+                if (node.Parent != null)
+                    continue;
+                break;
+            }
         }
 
         private static void Zig(BinarySearchTreeNode node, BinarySearchTreeNode.SideOfParent side)

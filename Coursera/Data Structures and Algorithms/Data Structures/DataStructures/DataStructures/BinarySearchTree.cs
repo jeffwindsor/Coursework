@@ -6,9 +6,15 @@ namespace DataStructures
     {
         public static BinarySearchTreeNode Find(long key, BinarySearchTreeNode root)
         {
-            if (root.Key == key) return root;
-            var child = (root.Key > key) ? root.Left : root.Right;
-            return (child == null) ? root : Find(key, child);
+            //Recursion Replaced with iteration
+            //return (child == null) ? root : Find(key, child);
+            while (true)
+            {
+                if (root.Key == key) return root;
+                var child = (root.Key > key) ? root.Left : root.Right;
+                if ((child == null)) return root;
+                root = child;
+            }
         }
 
         public static IEnumerable<BinarySearchTreeNode> RangeSearch(long leftKey, long rightKey, BinarySearchTreeNode root)
@@ -59,17 +65,29 @@ namespace DataStructures
             //node.Orphan();
             return next;
         }
-        
+
         private static BinarySearchTreeNode LeftDescendant(BinarySearchTreeNode node)
         {
-            return (node.Left == null) ? node : LeftDescendant(node.Left);
+            //Recursion Replaced with iteration
+            //return (node.Left == null) ? node : LeftDescendant(node.Left);
+            while (true)
+            {
+                if ((node.Left == null)) return node;
+                node = node.Left;
+            }
         }
 
         private static BinarySearchTreeNode RightAncestor(BinarySearchTreeNode node)
         {
-            if (node == null || node.Parent == null) return null;
+            //Recursion Replaced with iteration
+            //return (node.Key < node.Parent.Key) ? node.Parent : RightAncestor(node.Parent);
+            while (true)
+            {
+                if (node == null || node.Parent == null) return null;
 
-            return (node.Key < node.Parent.Key) ? node.Parent : RightAncestor(node.Parent);
+                if ((node.Key < node.Parent.Key)) return node.Parent;
+                node = node.Parent;
+            }
         }
     }
 }
