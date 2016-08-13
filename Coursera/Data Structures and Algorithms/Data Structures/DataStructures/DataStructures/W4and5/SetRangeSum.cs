@@ -104,7 +104,7 @@ namespace DataStructures.W4and5
         public void Delete(long key)
         {
             if (Tree == null) return;
-            Tree = SplayTree.Delete(key, Tree);
+            Tree = GetRoot(SplayTree.Delete(key, Tree));
         }
 
         public bool Exists(long key)
@@ -146,7 +146,7 @@ namespace DataStructures.W4and5
             }
             return results;
         }
-        
+
         //private BinarySearchTreeNode _tree;
         //private BinarySearchTreeNode Tree
         //{
@@ -154,14 +154,15 @@ namespace DataStructures.W4and5
         //    set { _tree = GetRoot(value); }
         //}
         //private void ReRootTree() { Tree = Tree; }
-        //private static BinarySearchTreeNode GetRoot(BinarySearchTreeNode node)
-        //{
-        //    if (node == null) return null;
+        private static BinarySearchTreeNode GetRoot(BinarySearchTreeNode node)
+        {
+            if (node == null)
+                return null;
 
-        //    while (node.Parent != null)
-        //        node = node.Parent;
-        //    return node;
-        //}
+            while (node.Parent != null)
+                node = node.Parent;
+            return node;
+        }
 
     }
 }

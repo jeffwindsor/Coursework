@@ -13,7 +13,8 @@
             set
             {
                 _left = value;
-                value.Parent = this;
+                if(value != null)
+                    value.Parent = this;
             }
         }
         public BinarySearchTreeNode Right {
@@ -21,7 +22,8 @@
             set
             {
                 _right = value;
-                value.Parent = this;
+                if (value != null)
+                    value.Parent = this;
             }
         }
 

@@ -18,8 +18,8 @@ namespace DataStructures.Tests
         [TestCase("04")]
         [TestCase("05")]
         [TestCase("20")]
-        //[TestCase("36")]
-        //[TestCase("83")]
+        [TestCase("36")]
+        [TestCase("83")]
         public void SetRangeSumTests(string file)
         {
             TestFromRelativeFilePath(@"SetRangeSum\" + file, SetRangeSum.Answer);
