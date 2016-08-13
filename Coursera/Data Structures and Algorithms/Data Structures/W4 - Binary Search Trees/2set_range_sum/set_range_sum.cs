@@ -6,16 +6,16 @@ namespace DataStructures.W4and5
 {
     public class SetRangeSum
     {
-        //public static void Main(string[] args)
-        //{
-        //    string s;
-        //    var inputs = new List<string>();
-        //    while ((s = Console.ReadLine()) != null)
-        //        inputs.Add(s);
+        public static void Main(string[] args)
+        {
+            string s;
+            var inputs = new List<string>();
+            while ((s = Console.ReadLine()) != null)
+                inputs.Add(s);
 
-        //    foreach (var result in Answer(inputs.ToArray()))
-        //        Console.WriteLine(result);
-        //}
+            foreach (var result in Answer(inputs.ToArray()))
+                Console.WriteLine(result);
+        }
 
         private const string CommandAdd = "+";
         private const string CommandDel = "-";
