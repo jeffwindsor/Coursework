@@ -68,7 +68,7 @@ namespace DataStructures
             {
                 Zig(node, nodesSideOfParent);
             }
-            else if (nodesSideOfParent == Side(node.Parent, node.Parent.Parent))
+            else if (nodesSideOfParent == Side(node.Parent.Parent, node.Parent))
             {
                 ZigZig(node, nodesSideOfParent);
             }
@@ -84,11 +84,8 @@ namespace DataStructures
         private static void Zig(BinarySearchTreeNode node, int side)
         {
             var p = node.Parent;
-
-            node.Parent = p.Parent;
             ReplaceChild(p.Parent, p, node);
-            p.Parent = node;
-
+            
             if (side == LEFT)
             {
                 var nr = node.Right;
@@ -107,27 +104,21 @@ namespace DataStructures
         {
             var p = node.Parent;
             var q = node.Parent.Parent;
-
-            node.Parent = q.Parent;
+            
             ReplaceChild(q.Parent, q, node);
-            p.Parent = node;
-            q.Parent = p;
-
             if (side == LEFT)
             {
                 var nr = node.Right;
                 var pr = p.Right;
-
                 node.Right = p;
-                p.Left = nr;
                 p.Right = q;
+                p.Left = nr;
                 q.Left = pr;
             }
             else
             {
                 var nl = node.Left;
                 var pl = p.Left;
-
                 node.Left = p;
                 p.Left = q;
                 p.Right = nl;
@@ -168,7 +159,7 @@ namespace DataStructures
         const int RIGHT = 1;
         private static int Side(BinarySearchTreeNode parent, BinarySearchTreeNode child)
         {
-            //if (child == null || child.Parent == null) return NOMATCH;
+            if (child == null || child.Parent == null) return NOMATCH;
             return (parent.Right == child) ? RIGHT
                 : (parent.Left == child) ? LEFT
                 : NOMATCH;
@@ -176,7 +167,6 @@ namespace DataStructures
 
         private static void ReplaceChild(BinarySearchTreeNode parent, BinarySearchTreeNode currentChild, BinarySearchTreeNode newChild)
         {
-            if (parent == null) return;
             switch (Side(parent,currentChild))
             {
                 case LEFT:
@@ -184,6 +174,9 @@ namespace DataStructures
                     break;
                 case RIGHT:
                     parent.Right = newChild;
+                    break;
+                default:
+                    newChild.Parent = null;
                     break;
             }
         }

@@ -1,6 +1,7 @@
-﻿using NUnit.Framework;
+﻿using DataStructures.W4and5;
+using NUnit.Framework;
 
-namespace DataStructures.W4and5
+namespace DataStructures.Tests
 {
     [TestFixture]
     public class W4and5Tests : BaseTests
@@ -23,7 +24,7 @@ namespace DataStructures.W4and5
         {
             TestFromRelativeFilePath(@"SetRangeSum\" + file, SetRangeSum.Answer);
         }
-
+        
         [Test]
         public void RopeTests()
         {

@@ -2,19 +2,6 @@
 
 namespace DataStructures
 {
-    public class BinarySearchTreeNode
-    {
-        public long Key { get; set; }
-        public BinarySearchTreeNode Parent { get; set; }
-        public BinarySearchTreeNode Left { get; set; }
-        public BinarySearchTreeNode Right { get; set; }
-        public int Rank { get; set; }
-
-        public override string ToString()
-        {
-            return string.Format("{0}", Key); //string.Format("{0}:{1}", Key, Rank);
-        }
-    }
     public class BinarySearchTree
     {
         public static BinarySearchTreeNode Find(long key, BinarySearchTreeNode root)
