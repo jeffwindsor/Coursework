@@ -8,6 +8,20 @@ namespace DataStructures.Tests
     public class SetRangeSumTests
     {
 
+        [Test]
+        public void MultiAddDoesNotChangeSet_Test()
+        {
+            var x = new SetRangeSum();
+            x.Insert(1);
+            x.Insert(1);
+            x.Insert(1);
+            x.Insert(1);
+
+            x.Tree.Left.Should().BeNull();
+            x.Tree.Right.Should().BeNull();
+            x.Tree.Key.Should().Be(1);
+        }
+
         [TestCase(-100, false)]
         [TestCase(0, false)]
         [TestCase(1000000000, false)]
@@ -26,6 +40,21 @@ namespace DataStructures.Tests
             x.Insert(37);
 
             x.Exists(id).Should().Be(expected);
+        }
+
+        [Test]
+        public void SumOverflow_Test()
+        {
+            var x = new SetRangeSum();
+            x.Insert(1000000000);
+            x.Insert(999999999);
+            x.Insert(999999998);
+            x.Insert(999999997);
+            x.Insert(999999996);
+            x.Insert(999999995);
+            x.Insert(15);
+
+            x.Sum(0, 1000000000).Should().Be(6000000000);
         }
 
         [Test]
@@ -51,6 +80,7 @@ namespace DataStructures.Tests
         [TestCase(-2, 4, 0)]
         [TestCase(11, 19, 0)]
         [TestCase(-100, 100, 270)]
+        [TestCase(10, 43, 270)]
         public void SumOutOfRange_Test(long left, long right, long expected)
         {
             var x = new SetRangeSum();

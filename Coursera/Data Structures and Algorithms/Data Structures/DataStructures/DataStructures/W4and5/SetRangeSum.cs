@@ -133,7 +133,7 @@ namespace DataStructures.W4and5
 
 
         private long _lastSum;
-        private BinarySearchTreeNode Tree { get; set; }
+        internal BinarySearchTreeNode Tree { get; set; }
         private static long Sum(long leftKey, long rightKey, BinarySearchTreeNode node)
         {
             long results = 0;
