@@ -12,13 +12,70 @@ namespace DataStructures.Tests
             public BinarySearchTreeNode N40 = new BinarySearchTreeNode { Key = 40 };
             public BinarySearchTreeNode N45 = new BinarySearchTreeNode { Key = 45 };
             public BinarySearchTreeNode N30 = new BinarySearchTreeNode { Key = 30 };
+            public BinarySearchTreeNode N35 = new BinarySearchTreeNode { Key = 35 };
             public BinarySearchTreeNode N20 = new BinarySearchTreeNode { Key = 20 };
             public BinarySearchTreeNode N25 = new BinarySearchTreeNode { Key = 25 };
             public BinarySearchTreeNode N10 = new BinarySearchTreeNode { Key = 10 };
             public BinarySearchTreeNode N15 = new BinarySearchTreeNode { Key = 15 };
-            public BinarySearchTreeNode N35 = new BinarySearchTreeNode { Key = 35 };
         }
-        
+
+        [Test]
+        public void SumOutOfRanfe_Test(int left, int right)
+        {
+            BinarySearchTreeNode root = null;
+            root = SplayTree.Delete(40, root);
+            root = SplayTree.Delete(35, root);
+            root = SplayTree.Delete(30, root);
+            root = SplayTree.Delete(25, root);
+            root = SplayTree.Delete(20, root);
+            root = SplayTree.Delete(15, root);
+
+            Assert.IsNull(root);
+        }
+
+        [Test]
+        public void Delete_AllFromTop_Test()
+        {
+            var c = new Context();
+            c.N40.Left = c.N35;
+            c.N35.Left = c.N30;
+            c.N30.Left = c.N25;
+            c.N25.Left = c.N20;
+            c.N20.Left = c.N15;
+
+            var root = c.N40;
+            root = SplayTree.Delete(40, root);
+            root = SplayTree.Delete(35, root);
+            root = SplayTree.Delete(30, root);
+            root = SplayTree.Delete(25, root);
+            root = SplayTree.Delete(20, root);
+            root = SplayTree.Delete(15, root);
+
+            Assert.IsNull(root);
+        }
+
+        [Test]
+        public void Delete_AllFromBottom_Test()
+        {
+            var c = new Context();
+            c.N40.Left = c.N35;
+            c.N35.Left = c.N30;
+            c.N30.Left = c.N25;
+            c.N25.Left = c.N20;
+            c.N20.Left = c.N15;
+
+            var root = c.N40;
+            root = SplayTree.Delete(15, root);
+            root = SplayTree.Delete(20, root);
+            root = SplayTree.Delete(25, root);
+            root = SplayTree.Delete(30, root);
+            root = SplayTree.Delete(35, root);
+            root = SplayTree.Delete(40, root);
+
+            Assert.IsNull(root);
+        }
+
+
         [Test]
         public void Find_Zig_Zag_Left_Test()
         {
@@ -150,25 +207,6 @@ namespace DataStructures.Tests
             c.N15.IsRightChildOf(c.N20);
             
         }
-
-
-    }
-
-    public static class Extensions
-    {
-        public static void IsRoot(this BinarySearchTreeNode node)
-        {
-            node.Parent.Should().BeNull();
-        }
-        public static void IsLeftChildOf(this BinarySearchTreeNode child, BinarySearchTreeNode parent)
-        {
-            parent.Left.Should().Be(child);
-            child.Parent.Should().Be(parent);
-        }
-        public static void IsRightChildOf(this BinarySearchTreeNode child, BinarySearchTreeNode parent)
-        {
-            parent.Right.Should().Be(child);
-            child.Parent.Should().Be(parent);
-        }
+        
     }
 }

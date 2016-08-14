@@ -53,7 +53,8 @@ namespace DataStructures
             {
                 var nl = node.Left;
                 BinarySearchTreeNode.ReplaceChild(node.Parent,node, nl);
-                //node.Orphan();
+                node.Erase();
+
                 return nl;
             }
 
@@ -62,7 +63,8 @@ namespace DataStructures
             BinarySearchTreeNode.ReplaceChild(node.Parent, node, next);
             next.Left = node.Left;
             next.Right = node.Right;
-            //node.Orphan();
+            node.Erase();
+
             return next;
         }
 

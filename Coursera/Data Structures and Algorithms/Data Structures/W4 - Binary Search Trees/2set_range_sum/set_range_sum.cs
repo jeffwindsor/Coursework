@@ -371,7 +371,7 @@ namespace DataStructures.W4and5
             {
                 var nl = node.Left;
                 BinarySearchTreeNode.ReplaceChild(node.Parent, node, nl);
-                //node.Orphan();
+                node.Erase();
                 return nl;
             }
 
@@ -380,7 +380,7 @@ namespace DataStructures.W4and5
             BinarySearchTreeNode.ReplaceChild(node.Parent, node, next);
             next.Left = node.Left;
             next.Right = node.Right;
-            //node.Orphan();
+            node.Erase();
             return next;
         }
 
@@ -480,6 +480,13 @@ namespace DataStructures.W4and5
                         newChild.Parent = null;
                     return;
             }
+        }
+
+        public void Erase()
+        {
+            _left = null;
+            _right = null;
+            Parent = null;
         }
     }
 }

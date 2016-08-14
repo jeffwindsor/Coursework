@@ -67,5 +67,12 @@
                     return;
             }
         }
+
+        public void Erase()
+        {
+            _left = null;
+            _right = null;
+            Parent = null;
+        }
     }
 }

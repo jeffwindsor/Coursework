@@ -81,7 +81,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseTests.cs" />
+    <Compile Include="BinarySearchTreeNodeExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SetRangeSumTests.cs" />
     <Compile Include="SplayTreeTests.cs" />
     <Compile Include="W1Tests.cs" />
     <Compile Include="W2Tests.cs" />
