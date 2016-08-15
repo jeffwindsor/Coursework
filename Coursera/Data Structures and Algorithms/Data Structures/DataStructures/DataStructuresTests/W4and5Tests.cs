@@ -15,6 +15,7 @@ namespace DataStructures.Tests
         }
         
         [TestCase("Experimental")]
+        [TestCase("Julian")]
         [TestCase("01")]
         [TestCase("04")]
         [TestCase("05")]
