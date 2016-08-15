@@ -41,10 +41,11 @@ namespace DataStructures.Tests
         }
 
 
-        [Test]
-        public void RopeTests()
+        [TestCase("01")]
+        [TestCase("02")]
+        public void RopeTests(string file)
         {
-            //TestDirectory(location_hash_substring, Rope.Answer);
+            TestFromRelativeFilePath(@"Rope\" + file, Rope.Answer);
         }
     }
 }
