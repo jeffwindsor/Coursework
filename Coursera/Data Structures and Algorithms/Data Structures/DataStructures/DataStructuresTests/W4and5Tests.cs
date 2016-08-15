@@ -15,6 +15,7 @@ namespace DataStructures.Tests
         }
         
         [TestCase("Experimental")]
+        [TestCase("Julian")]
         [TestCase("01")]
         [TestCase("04")]
         [TestCase("05")]
@@ -26,6 +27,20 @@ namespace DataStructures.Tests
             TestFromRelativeFilePath(@"SetRangeSum\" + file, SetRangeSum.Answer);
         }
         
+        [TestCase("01")]
+        [TestCase("04")]
+        [TestCase("05")]
+        [TestCase("Julian")]
+        //[TestCase("Experimental")]
+        [TestCase("20")]
+        [TestCase("36")]
+        [TestCase("83")]
+        public void SetRangeSum2Tests(string file)
+        {
+            TestFromRelativeFilePath(@"SetRangeSum\" + file, SetRangeSum2.Answer);
+        }
+
+
         [Test]
         public void RopeTests()
         {

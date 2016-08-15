@@ -56,9 +56,11 @@
             switch (SideOf(parent, currentChild))
             {
                 case SideOfParent.LEFT:
+                    currentChild.Parent = null;
                     parent.Left = newChild;
                     return;
                 case SideOfParent.RIGHT:
+                    currentChild.Parent = null;
                     parent.Right = newChild;
                     return;
                 default:
