@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -323,16 +323,16 @@ namespace DataStructures.W4and5
         }
 
         #region Answer
-        public static void Main(string[] args)
-        {
-            string s;
-            var inputs = new List<string>();
-            while ((s = Console.ReadLine()) != null)
-                inputs.Add(s);
+        //public static void Main(string[] args)
+        //{
+        //    string s;
+        //    var inputs = new List<string>();
+        //    while ((s = Console.ReadLine()) != null)
+        //        inputs.Add(s);
 
-            foreach (var result in Answer(inputs.ToArray()))
-                Console.WriteLine(result);
-        }
+        //    foreach (var result in Answer(inputs.ToArray()))
+        //        Console.WriteLine(result);
+        //}
 
         public static IList<string> Answer(IList<string> inputs)
         {
@@ -356,7 +356,7 @@ namespace DataStructures.W4and5
             var results = queries
                 .Select((q, i) =>
                 {
-                    /*
+                    //*
                     Console.WriteLine("Current Sum: {0}", lastSum);
                     Console.WriteLine(o);
 
@@ -378,7 +378,7 @@ namespace DataStructures.W4and5
                         Console.WriteLine("[{3}:-] {0} [{1}] => [{2}]", q.Action, q.Value, GetAdjustedValue(lastSum, q.Value),
                             i);
                     }
-                    */
+                    //*/
 
                     switch (q.Action)
                     {

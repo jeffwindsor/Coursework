@@ -120,8 +120,9 @@ namespace DataStructures.W4and5
             if (Tree == null) return 0;
 
             Tree = SplayTree.Find(leftKey, Tree);
-            _lastSum = Sum(leftKey, rightKey, Tree);
-            return _lastSum;
+            var sum = Sum(leftKey, rightKey, Tree);
+            _lastSum = sum%M;
+            return sum;
         }
 
         public class Query

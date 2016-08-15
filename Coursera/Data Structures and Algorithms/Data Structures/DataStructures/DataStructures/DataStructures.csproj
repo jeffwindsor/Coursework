@@ -62,6 +62,7 @@
     <Compile Include="W3\Phonebook.cs" />
     <Compile Include="W4and5\Rope.cs" />
     <Compile Include="W4and5\SetRangeSum.cs" />
+    <Compile Include="W4and5\SetRangeSum2.cs" />
     <Compile Include="W4and5\TreeOrder.cs" />
   </ItemGroup>
   <ItemGroup>
