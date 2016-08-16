@@ -14,18 +14,18 @@ namespace DataStructures.Tests
             TestFromRelativeFilePath(@"TreeOrders\" + file, TreeOrder.Answer);
         }
         
-        [TestCase("Experimental")]
-        [TestCase("Julian")]
-        [TestCase("01")]
-        [TestCase("04")]
-        [TestCase("05")]
-        [TestCase("20")]
-        [TestCase("36")]
-        [TestCase("83")]
-        public void SetRangeSumTests(string file)
-        {
-            TestFromRelativeFilePath(@"SetRangeSum\" + file, SetRangeSum.Answer);
-        }
+        //[TestCase("Experimental")]
+        //[TestCase("Julian")]
+        //[TestCase("01")]
+        //[TestCase("04")]
+        //[TestCase("05")]
+        //[TestCase("20")]
+        //[TestCase("36")]
+        //[TestCase("83")]
+        //public void SetRangeSumTests(string file)
+        //{
+        //    TestFromRelativeFilePath(@"SetRangeSum\" + file, SetRangeSum.Answer);
+        //}
         
         [TestCase("01")]
         [TestCase("04")]
@@ -41,8 +41,9 @@ namespace DataStructures.Tests
         }
 
 
-        [TestCase("01")]
-        [TestCase("02")]
+        [TestCase("sample1")]
+        [TestCase("sample2")]
+        [TestCase("Experimental")]
         public void RopeTests(string file)
         {
             TestFromRelativeFilePath(@"Rope\" + file, Rope.Answer);

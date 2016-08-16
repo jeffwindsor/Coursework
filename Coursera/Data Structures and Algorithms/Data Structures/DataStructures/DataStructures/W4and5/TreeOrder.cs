@@ -49,6 +49,7 @@ namespace DataStructures.W4and5
         {
             return Traverse(InOrderTraversal);
         }
+
         public IEnumerable<long> PreOrder()
         {
             return Traverse(PreOrderTraversal);
