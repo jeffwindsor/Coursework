@@ -8,7 +8,13 @@ namespace DataStructures.W4and5
 {
     public class Rope
     {
-        private Node _root;
+        private Node _root = new Node();
+
+        public char Search(int i)
+        {
+            var found = Search(_root,i);
+            return found.Item1.SubString[found.Item2];
+        }
         
         private void Insert(int index, Node node)
         {
@@ -23,40 +29,66 @@ namespace DataStructures.W4and5
             _root = Concat(lm.Left, mr.Right);
         }
 
-        private NodePair Split(Node node, int index)
+        private static NodePair Split(Node node, int i)
         {
+            var result = Search(node, i);
+            var found = result.Item1;
+            var foundIndex = result.Item2;
+
+            var foundParent = found.Parent;
+            var split = SplitLeaf(found, foundIndex);
+
+
 
             //Rebalance
             throw new NotImplementedException();
         }
 
-        private Node Concat(Node left,  Node right)
+        private static Node SplitLeaf(Node found, int i)
         {
-            var result = new Node { Left = left, Right = right,  };
+            if (found.SubString.Length != i)
+            {
+                //Mid case
+                found.SubString = found.SubString.Substring(0, i);
+                found.UpdateSize();
 
-            //Rebalance
-            throw new NotImplementedException();
+                return new Node
+                {
+                    Right = found.Right,
+                    SubString = found.SubString.Substring(i - 1, found.SubString.Length - i)
+                };
+            }
+            else
+            {
+                //End Case
+                found.Parent.Right = new Node {Parent = found.Parent};
+                found.Parent = new Node();
+                return found;
+            }
         }
 
-        private static NodePair SplitLeaf(Node node, int index)
+        private static Node Concat(Node left,  Node right)
+        {
+            return new Node { Left = left, Right = right };
+        }
+
+        private static Tuple<Node,int> Search(Node node, int i)
         {
             while (true)
             {
-                if (node.Weight < index)
+                if (node.Weight < i)
                 {
-                    index = index - node.Weight;
+                    i = i - node.Weight;
                     node = node.Right;   
                     continue;
                 }
 
                 if (node.Left == null)
                 {
-                    var splitIndex = node.Data.Length - index;
-                    if(splitIndex == 0)
+                    node = node.Left;
+                    continue;
                 }
-                return new NodePair {Left = new Node {Data = }, Right = node};
-
-                node = node.Left;
+                return new Tuple<Node, int>(node, i);
             }
         }
 
@@ -118,17 +150,21 @@ namespace DataStructures.W4and5
 
         private class Node
         {   
-            public int Weight { get { return (Data == null)?0:Data.Length; } }
+            public static Node Empty = new Node();
+            public int Weight { get { return (!IsLeaf) ? 0 : SubString.Length; } }
             public long Size { get; private set; }
 
-            private void UpdateSize()
+            public void UpdateSize()
             {
-                Size = (Left == null ? 0 : Left.Size) + (Right == null ? 0 : Right.Size);
+                Size = 
+                    (IsEmpty) ? 0 : 
+                    (IsLeaf) ? Weight :
+                    (Left == null ? 0 : Left.Size) + (Right == null ? 0 : Right.Size);
             }
 
-            public string Data { get; private set; }
+            public string SubString { get; set; }
 
-            public Node Parent { get; private set; }
+            public Node Parent { get; set; }
             private Node _left;
             public Node Left
             {
@@ -158,8 +194,8 @@ namespace DataStructures.W4and5
             }
             
 
-            public bool IsLeaf { get { return Left == null && Right == null && Data != null && Weight > 0; }}
-            public bool IsEmpty { get { return Left == null && Right == null && Data == null; } }
+            public bool IsLeaf { get { return Left == null && Right == null && SubString != null && Weight > 0; }}
+            public bool IsEmpty { get { return Left == null && Right == null && SubString == null; } }
 
             //public override string ToString()
             //{
