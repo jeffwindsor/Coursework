@@ -8,39 +8,39 @@ namespace DataStructures.W4and5
 {
     public class Rope
     {
-        private Node _root;
 
-        public Rope(string s)
+        //private char Search(int i)
+        //{
+        //    var r = Search(_root,i);
+        //    return r.Node.SubString[r.StringIndex];
+        //}
+
+        internal static Node Move(int startIndex, int endIndex, int insertIndex, Node node)
         {
-            _root = Node.CreateLeaf(s);
+            var removed = Remove(startIndex, endIndex,node);
+            return Add(insertIndex, removed.Right, removed.Left);
         }
 
-        private char Search(int i)
+        internal static Node Add(int index, Node addition, Node node)
         {
-            var r = Search(_root,i);
-            return r.Node.SubString[r.StringIndex];
-        }
-
-        private void Move(int startIndex, int endIndex, int insertIndex)
-        {
-            var removed = Remove(startIndex, endIndex);
-            Add(insertIndex, removed);
-        }
-
-        private void Add(int index, Node node)
-        {
-            var split = Split(_root, index);
-            _root = Node.CreateConcatenation(Node.CreateConcatenation(split.Left, node), split.Right);
+            var split = Split(node, index);
+            return Node.CreateConcatenation(Node.CreateConcatenation(split.Left, addition), split.Right);
         }
 
         //Removes Section and Returns it
-        private Node Remove(int startIndex, int endIndex)
+        internal static NodePair Remove(int startIndex, int endIndex, Node node)
         {
-            var mr = Split(_root, endIndex);
-            var lm = Split(mr.Left, startIndex);
-            _root = Node.CreateConcatenation(lm.Left, mr.Right);
+            var s1 = Split(node, endIndex);
+            var right = s1.Right;
+            var s2 = Split(s1.Left, startIndex - 1);
+            var middle = s2.Right;
+            var left = s2.Left;
+            
+            Console.WriteLine(new NodePrinter(left).Print());
+            Console.WriteLine(new NodePrinter(middle).Print());
+            Console.WriteLine(new NodePrinter(right).Print());
 
-            return mr.Left;
+            return new NodePair(Node.CreateConcatenation(left, right), middle);
         }
 
         internal static NodePair Split(Node node, int i)
@@ -48,28 +48,43 @@ namespace DataStructures.W4and5
             //Find leaf at index
             var result = Search(node, i);
             var leaf = result.Node;
-            var parent = leaf.Parent;
-
-            //Split found leaf in Node
-            var splitLeaf = SplitLeaf(leaf, result.StringIndex);
-            Replace(leaf, splitLeaf.Left);
+            var split = SplitLeaf(leaf, result.StringIndex);
             
-            //Transfer all right sides to split
-            var right = splitLeaf.Right; 
-            while (SideOfParent(parent) == Side.LEFT)
+            Node cursor = null;
+            Node acc = null;
+            switch (SideOfParent(leaf))
             {
-                parent = parent.Parent;
-                if (parent == null || parent.Right == null)
-                    continue;
+                case Side.LEFT:
+                    cursor = leaf.Parent;
+                    break;
+                case Side.RIGHT:
+                    cursor = (leaf.Parent == null) ? null : leaf.Parent.Parent;
+                    break;
+            }
+            if (split.Right != null)
+            {
+                //Middle of Left Node
+                acc = split.Right;
+                Replace(leaf, split.Left);
+            }
 
-                var right1 = parent.Right;
-                Replace(parent.Right, null);
-                right = Node.CreateConcatenation(right, right1);
+            //var iteration = 1;
+            while (cursor != null)
+            {
+                //Console.WriteLine(iteration);
+                //Console.WriteLine(new NodePrinter(node).Print());
+                //Console.WriteLine(new NodePrinter(acc).Print());
+
+                var right = cursor.Right;
+                Replace(cursor.Right, null);
+                acc = (acc == null) ? right : Node.CreateConcatenation(acc, right);
+                
+                cursor = (SideOfParent(cursor)==Side.LEFT) ? cursor.Parent : null;
+                //iteration++;
             }
 
             //Rebalance
-            var left = splitLeaf.Left == null || splitLeaf.Left.IsRoot ? splitLeaf.Left : node;
-            return new NodePair(left, right);
+            return new NodePair(node, acc);
         }
 
         internal static NodePair SplitLeaf(Node leaf, int stringIndex)
@@ -77,9 +92,10 @@ namespace DataStructures.W4and5
             if (!leaf.IsLeaf)
                 throw new ArgumentException("leaf");
 
-            if (stringIndex == 0)
-                return new NodePair(null, Node.CreateLeaf(leaf.SubString));
-            if (stringIndex == leaf.SubString.Length - 1)
+            if (stringIndex < 1)
+                return new NodePair(null,Node.CreateLeaf(leaf.SubString));
+
+            if (stringIndex == leaf.SubString.Length)
                 return new NodePair(Node.CreateLeaf(leaf.SubString), null);
             //Middle
             var i = stringIndex;
@@ -91,6 +107,7 @@ namespace DataStructures.W4and5
 
         internal static void Replace(Node current, Node replacement)
         {
+            if (current == null) return;
             switch (SideOfParent(current))
             {
                 case Side.LEFT:
@@ -100,24 +117,18 @@ namespace DataStructures.W4and5
                     current.Parent.Right = replacement;
                     break;
             }
+            current.Parent = null;
         }
 
         internal static IndexSearch Search(Node node, int i)
         {
-            return (node.Weight < i)
-                ? Search(node.Right, i - node.Weight)
+            return (node.SearchWeight < i)
+                ? Search(node.Right, i - node.SearchWeight)
                 : node.Left != null 
                     ? Search(node.Left, i) 
                     : new IndexSearch {Node = node, StringIndex = i};
         }
-
-        internal enum Side
-        {
-            NO = 0,
-            LEFT = -1,
-            RIGHT = 1,
-        }
-
+        
         internal static Side SideOfParent(Node child)
         {
             if (child == null || child.Parent == null)
@@ -134,95 +145,6 @@ namespace DataStructures.W4and5
             InOrderTraversal(node.Left, results);
             results.Append(node.SubString);
             InOrderTraversal(node.Right, results);
-        }
-
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            InOrderTraversal(_root,sb);
-            return sb.ToString();
-        }
-
-        public string Print()
-        {
-            return new NodePrinter(_root).Print();
-        }
-
-        internal class Node
-        {
-            public static Node CreateLeaf(string s)
-            {
-                var result = new Node
-                {
-                    SubString = s
-                };
-                result.UpdateSize();
-                return result;
-            }
-
-            public static Node CreateConcatenation(Node left, Node right)
-            {
-                var result = new Node();
-                result.Left = left;
-                result.Right = right;
-                result.UpdateSize();
-                return result;
-            }
-
-            private Node(){}
-
-            public int Weight { get { return SubString == null ? 0 : SubString.Length; } }
-
-            public long Size { get; private set; }
-
-            public void UpdateSize()
-            {
-                Size = (IsLeaf) ? Weight : (Left==null?0:Left.Size) + (Right==null?0:Right.Size);
-            }
-
-            public string SubString { get; set; }
-
-            public Node Parent { get; set; }
-            private Node _left;
-            public Node Left
-            {
-                get { return _left; }
-                set
-                {
-                    _left = value;
-                    if (value == null) return;
-
-                    _left.Parent = this;
-                    UpdateSize();
-                }
-            }
-
-            private Node _right;
-            public Node Right
-            {
-                get { return _right; }
-                set
-                {
-                    _right = value;
-                    if (value == null) return;
-
-                    _right.Parent = this;
-                    UpdateSize();
-                }
-            }
-            
-            public bool IsLeaf { get { return Left == null && Right == null && Weight > 0; } }
-            public bool IsRoot { get { return Parent == null; } }
-
-            public override string ToString()
-            {
-                return string.Format("[{0}]",Weight) + (SubString==null ? "": SubString);
-            }
-
-            public string Print()
-            {
-                return new NodePrinter(this).Print();
-            }
         }
         
         #region Main
@@ -253,16 +175,113 @@ namespace DataStructures.W4and5
                     };
                 });
 
-            var rope = new Rope(s);
+            var node = Node.CreateLeaf(s);
             foreach (var x in xs)
             {
-                rope.Move(x.StartIndex, x.EndIndex, x.InsertIndex);
-                Console.WriteLine(rope);
-                Console.WriteLine(rope.Print());
+                node = Move(x.StartIndex, x.EndIndex, x.InsertIndex, node);
+                Console.WriteLine(node);
+                Console.WriteLine(node.ToTreeString());
             }
-            return new [] { rope.ToString()};
+            return new [] { node.ToString()};
         }
         #endregion
+
+        #region Nested Classes
+        internal enum Side
+        {
+            NO = 0,
+            LEFT = -1,
+            RIGHT = 1,
+        }
+        internal class Node
+        {
+            public static Node CreateLeaf(string s)
+            {
+                var result = new Node
+                {
+                    SubString = s
+                };
+                result.UpdateWeight();
+                return result;
+            }
+
+            public static Node CreateConcatenation(Node left, Node right)
+            {
+                var result = new Node();
+                result.Left = left;
+                result.Right = right;
+                result.UpdateWeight();
+                return result;
+            }
+
+            private Node() { }
+
+            public int SearchWeight { get; private set; }
+
+            public int TotalWeight { get; private set; }
+
+            public void UpdateWeight()
+            {
+                TotalWeight = IsLeaf
+                    ? SubString.Length
+                    : (Left == null ? 0 : Left.TotalWeight) + (Right == null ? 0 : Right.TotalWeight);
+
+                SearchWeight = IsLeaf
+                    ? TotalWeight
+                    : (Left == null ? 0 : Left.TotalWeight);
+            }
+
+            public string SubString { get; set; }
+
+            public Node Parent { get; set; }
+            private Node _left;
+            public Node Left
+            {
+                get { return _left; }
+                set
+                {
+                    _left = value;
+                    if (value == null) return;
+
+                    _left.Parent = this;
+                    UpdateWeight();
+                }
+            }
+
+            private Node _right;
+            public Node Right
+            {
+                get { return _right; }
+                set
+                {
+                    _right = value;
+                    if (value == null) return;
+
+                    _right.Parent = this;
+                    UpdateWeight();
+                }
+            }
+
+            public bool IsLeaf { get { return Left == null && Right == null && SubString != null; } }
+            public bool IsRoot { get { return Parent == null; } }
+
+            public override string ToString()
+            {
+                return string.Format("[{0}]", SearchWeight) + (SubString == null ? "" : SubString);
+            }
+
+            public string ToInOrderString()
+            {
+                var sb = new StringBuilder();
+                InOrderTraversal(this, sb);
+                return sb.ToString();
+            }
+
+            public string ToTreeString()
+            {
+                return new NodePrinter(this).Print();
+            }
+        }
 
         internal class NodePair
         {
@@ -352,5 +371,6 @@ namespace DataStructures.W4and5
                 return node;
             }
         }
+    #endregion
     }
 }
