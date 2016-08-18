@@ -8,6 +8,25 @@ namespace DataStructures.Tests
     [TestFixture]
     public class RopeTests
     {
+        [Test]
+        public void ReduceTest()
+        {
+            var n = Rope.Node.CreateConcatenation(
+                null, Rope.Node.CreateConcatenation(
+                    Rope.Node.CreateConcatenation(
+                        Rope.Node.CreateLeaf("X")
+                        , null),
+                    null)
+                );
+
+            Console.WriteLine(n.ToTreeString());
+
+            n = Rope.Reduce(n);
+            Console.WriteLine(n.ToTreeString());
+            Assert.IsTrue(n.IsLeaf);
+        }
+
+
         [TestCase("abcdefgh", 1, 3, "defgh", "abc", TestName = "Remove From Front")]
         public void RemoveTestCases(string s, int startIndex, int endIndex, string expectedLeft, string expectedRight)
         {
@@ -15,8 +34,7 @@ namespace DataStructures.Tests
             var result = Rope.Remove(startIndex, endIndex, node);
             AssertNodePair(expectedLeft, expectedRight, result);
         }
-
-
+        
         [TestCase(7, 13, 0, "my_nameHello__is_Simon", TestName = "Wiki Move to Front")]
         [TestCase(7, 13, 15, "Hello__is_Simonmy_name", TestName = "Wiki Move to End")]
         [TestCase(7, 13, 8, "Hello__imy_names_Simon", TestName = "Wiki Move forward")]
@@ -108,7 +126,7 @@ namespace DataStructures.Tests
 
         private static Rope.Node WikiTree()
         {
-            return
+            var results = 
                 Rope.Node.CreateConcatenation( //22
                     Rope.Node.CreateConcatenation( //9
                         Rope.Node.CreateConcatenation( //6
@@ -128,6 +146,7 @@ namespace DataStructures.Tests
                         ),
                     null
                     );
+            return results;
         }
     }
 }

@@ -44,6 +44,7 @@ namespace DataStructures.Tests
         [TestCase("sample1")]
         [TestCase("sample2")]
         [TestCase("Experimental")]
+        [TestCase("2")]
         public void RopeTests(string file)
         {
             TestFromRelativeFilePath(@"Rope\" + file, Rope.Answer);

@@ -10,23 +10,27 @@ namespace DataStructures.W4and5
     {
         internal static Node Move(int startIndex, int endIndex, int insertIndex, Node node)
         {
+            node = Reduce(node);
             var removed = Remove(startIndex, endIndex, node);
 
-            //Console.WriteLine("Move - Remove");
+            //Console.WriteLine("Move - Remove {0}-{1}", startIndex, endIndex);
             //Console.WriteLine(new NodePrinter(removed.Left).Print());
             //Console.WriteLine(new NodePrinter(removed.Right).Print());
 
-            return Add(insertIndex, removed.Right, removed.Left);
+            var added = Add(insertIndex, removed.Right, removed.Left);
+
+            //Console.WriteLine("     - Add {0}", insertIndex);
+            //Console.WriteLine(new NodePrinter(added).Print());
+
+            return added; 
         }
 
         internal static Node Add(int index, Node addition, Node node)
         {
             var split = Split(node, index);
-
             //Console.WriteLine("Add");
             //Console.WriteLine(new NodePrinter(split.Left).Print());
             //Console.WriteLine(new NodePrinter(split.Right).Print());
-
             return Node.CreateConcatenation(Node.CreateConcatenation(split.Left, addition), split.Right);
         }
 
@@ -38,20 +42,18 @@ namespace DataStructures.W4and5
             var s2 = Split(s1.Left, startIndex - 1);
             var middle = s2.Right;
             var left = s2.Left;
-
             //Console.WriteLine("Remove");
             //Console.WriteLine(new NodePrinter(left).Print());
             //Console.WriteLine(new NodePrinter(middle).Print());
             //Console.WriteLine(new NodePrinter(right).Print());
-
             return new NodePair(Node.CreateConcatenation(left, right), middle);
         }
 
         internal static NodePair Split(Node node, int i)
         {
             //Edge Cases
-            if (i < 1) return new NodePair(null, node);
-            if (i > node.TotalWeight) return new NodePair(node, null);
+            if (i < 1) return new NodePair(null, Reduce(node));
+            if (i > node.TotalWeight) return new NodePair(Reduce(node), null);
 
             //Find leaf at index
             var result = Search(node, i);
@@ -99,7 +101,7 @@ namespace DataStructures.W4and5
             }
 
             //Rebalance-Compress
-            return new NodePair(node, acc);
+            return new NodePair(Reduce(node), Reduce(acc));
         }
 
         internal static NodePair SplitLeaf(Node leaf, int stringIndex)
@@ -112,7 +114,7 @@ namespace DataStructures.W4and5
 
             if (stringIndex == leaf.SubString.Length)
                 return new NodePair(Node.CreateLeaf(leaf.SubString), null);
-            //Middle
+
             var i = stringIndex;
             return new NodePair(
                 Node.CreateLeaf(leaf.SubString.Substring(0, i)),
@@ -131,8 +133,29 @@ namespace DataStructures.W4and5
                 case Side.RIGHT:
                     current.Parent.Right = replacement;
                     break;
+                case Side.NO:
+                    replacement.Parent = null;
+                    break;
             }
             current.Parent = null;
+        }
+
+        internal static Node Reduce(Node node)
+        {
+            var cursor = node;
+            while (cursor != null && !cursor.IsLeaf && cursor.IsOneSided)
+            {
+                cursor = cursor.Left ?? cursor.Right;
+            }
+            if(node != cursor) Replace(node, cursor);
+
+            if (cursor != null)
+            {
+                Reduce(cursor.Left);
+                Reduce(cursor.Right);
+            }
+
+            return cursor;
         }
 
         private static IndexSearch Search(Node node, int i)
@@ -194,9 +217,6 @@ namespace DataStructures.W4and5
             foreach (var x in xs)
             {
                 node = Move(x.StartIndex, x.EndIndex, x.InsertIndex, node);
-                Console.WriteLine(node);
-                Console.WriteLine();
-                Console.WriteLine(node.ToTreeString());
             }
             return new [] { node.ToInOrderString()};
         }
@@ -276,6 +296,7 @@ namespace DataStructures.W4and5
                 }
             }
 
+            public bool IsOneSided {get { return (Left == null && Right != null) || (Left != null && Right == null); }}
             public bool IsLeaf { get { return Left == null && Right == null && SubString != null; } }
             public bool IsRoot { get { return Parent == null; } }
 
