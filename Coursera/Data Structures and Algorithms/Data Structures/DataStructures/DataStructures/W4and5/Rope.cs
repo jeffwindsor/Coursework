@@ -8,22 +8,25 @@ namespace DataStructures.W4and5
 {
     public class Rope
     {
-
-        //private char Search(int i)
-        //{
-        //    var r = Search(_root,i);
-        //    return r.Node.SubString[r.StringIndex];
-        //}
-
         internal static Node Move(int startIndex, int endIndex, int insertIndex, Node node)
         {
-            var removed = Remove(startIndex, endIndex,node);
+            var removed = Remove(startIndex, endIndex, node);
+
+            Console.WriteLine("Move - Remove");
+            Console.WriteLine(new NodePrinter(removed.Left).Print());
+            Console.WriteLine(new NodePrinter(removed.Right).Print());
+
             return Add(insertIndex, removed.Right, removed.Left);
         }
 
         internal static Node Add(int index, Node addition, Node node)
         {
             var split = Split(node, index);
+
+            Console.WriteLine("Add");
+            Console.WriteLine(new NodePrinter(split.Left).Print());
+            Console.WriteLine(new NodePrinter(split.Right).Print());
+
             return Node.CreateConcatenation(Node.CreateConcatenation(split.Left, addition), split.Right);
         }
 
@@ -35,55 +38,62 @@ namespace DataStructures.W4and5
             var s2 = Split(s1.Left, startIndex - 1);
             var middle = s2.Right;
             var left = s2.Left;
-            
-            Console.WriteLine(new NodePrinter(left).Print());
-            Console.WriteLine(new NodePrinter(middle).Print());
-            Console.WriteLine(new NodePrinter(right).Print());
+
+            //Console.WriteLine("Remove");
+            //Console.WriteLine(new NodePrinter(left).Print());
+            //Console.WriteLine(new NodePrinter(middle).Print());
+            //Console.WriteLine(new NodePrinter(right).Print());
 
             return new NodePair(Node.CreateConcatenation(left, right), middle);
         }
 
         internal static NodePair Split(Node node, int i)
         {
+            //Edge Cases
+            if (i < 1) return new NodePair(null, node);
+            if (i > node.TotalWeight) return new NodePair(node, null);
+
             //Find leaf at index
             var result = Search(node, i);
             var leaf = result.Node;
-            var split = SplitLeaf(leaf, result.StringIndex);
-            
-            Node cursor = null;
-            Node acc = null;
-            switch (SideOfParent(leaf))
-            {
-                case Side.LEFT:
-                    cursor = leaf.Parent;
-                    break;
-                case Side.RIGHT:
-                    cursor = (leaf.Parent == null) ? null : leaf.Parent.Parent;
-                    break;
-            }
-            if (split.Right != null)
-            {
-                //Middle of Left Node
-                acc = split.Right;
-                Replace(leaf, split.Left);
-            }
+            var parent = leaf.Parent;
 
+            //Establish Case's Appropriate Parent Processing Starting Place (before Split) 
+            var side = SideOfParent(leaf);
+            var cursor = (side == Side.LEFT)
+                    ? leaf.Parent
+                    : (side == Side.RIGHT && (SideOfParent(leaf.Parent) == Side.LEFT))
+                        ? leaf.Parent.Parent
+                        : null;
+
+            //Split and establish accumulator 
+            var split = SplitLeaf(leaf, result.StringIndex);
+            var acc = split.Right;
+            Replace(leaf, split.Left);
+
+            //Walk up Parents starting at case's initial location
             //var iteration = 1;
             while (cursor != null)
             {
-                //Console.WriteLine(iteration);
+                //Console.WriteLine(iteration++);
                 //Console.WriteLine(new NodePrinter(node).Print());
                 //Console.WriteLine(new NodePrinter(acc).Print());
 
                 var right = cursor.Right;
                 Replace(cursor.Right, null);
+                if(cursor.Right == null) cursor.UpdateWeight();
                 acc = (acc == null) ? right : Node.CreateConcatenation(acc, right);
-                
-                cursor = (SideOfParent(cursor)==Side.LEFT) ? cursor.Parent : null;
-                //iteration++;
+                cursor = (SideOfParent(cursor) == Side.LEFT) ? cursor.Parent : null;
             }
 
-            //Rebalance
+            //Update Weight Along chain
+            while (parent != null)
+            {
+                parent.UpdateWeight();
+                parent = parent.Parent;
+            }
+
+            //Rebalance-Compress
             return new NodePair(node, acc);
         }
 
@@ -105,7 +115,7 @@ namespace DataStructures.W4and5
                 );
         }
 
-        internal static void Replace(Node current, Node replacement)
+        private static void Replace(Node current, Node replacement)
         {
             if (current == null) return;
             switch (SideOfParent(current))
@@ -120,7 +130,7 @@ namespace DataStructures.W4and5
             current.Parent = null;
         }
 
-        internal static IndexSearch Search(Node node, int i)
+        private static IndexSearch Search(Node node, int i)
         {
             return (node.SearchWeight < i)
                 ? Search(node.Right, i - node.SearchWeight)
@@ -128,8 +138,8 @@ namespace DataStructures.W4and5
                     ? Search(node.Left, i) 
                     : new IndexSearch {Node = node, StringIndex = i};
         }
-        
-        internal static Side SideOfParent(Node child)
+
+        private static Side SideOfParent(Node child)
         {
             if (child == null || child.Parent == null)
                 return Side.NO;
@@ -169,9 +179,9 @@ namespace DataStructures.W4and5
                     var items = inputs[i].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     return new
                     {
-                        StartIndex = int.Parse(items[0]) - 1,
-                        EndIndex = int.Parse(items[1]) - 1,
-                        InsertIndex = int.Parse(items[2]) - 1
+                        StartIndex = int.Parse(items[0] + 1),
+                        EndIndex = int.Parse(items[1] + 1),
+                        InsertIndex = int.Parse(items[2])
                     };
                 });
 
@@ -180,6 +190,7 @@ namespace DataStructures.W4and5
             {
                 node = Move(x.StartIndex, x.EndIndex, x.InsertIndex, node);
                 Console.WriteLine(node);
+                Console.WriteLine();
                 Console.WriteLine(node.ToTreeString());
             }
             return new [] { node.ToString()};
@@ -241,10 +252,9 @@ namespace DataStructures.W4and5
                 set
                 {
                     _left = value;
-                    if (value == null) return;
-
-                    _left.Parent = this;
                     UpdateWeight();
+
+                    if (value != null) _left.Parent = this;
                 }
             }
 
@@ -255,10 +265,9 @@ namespace DataStructures.W4and5
                 set
                 {
                     _right = value;
-                    if (value == null) return;
-
-                    _right.Parent = this;
                     UpdateWeight();
+
+                    if (value != null) _right.Parent = this;
                 }
             }
 
@@ -267,7 +276,7 @@ namespace DataStructures.W4and5
 
             public override string ToString()
             {
-                return string.Format("[{0}]", SearchWeight) + (SubString == null ? "" : SubString);
+                return string.Format("[{0}] {1}", SearchWeight, SubString == null ? "" : SubString);
             }
 
             public string ToInOrderString()

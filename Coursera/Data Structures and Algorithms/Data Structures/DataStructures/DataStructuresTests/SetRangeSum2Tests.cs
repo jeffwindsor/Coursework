@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace DataStructures.Tests
 {
     [TestFixture]
-    public class SetRangeSum22Tests
+    public class SetRangeSum2Tests
     {
         //INSERT TESTS
 
