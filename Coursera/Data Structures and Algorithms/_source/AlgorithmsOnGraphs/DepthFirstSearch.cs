@@ -5,10 +5,10 @@ namespace AlgorithmsOnGraphs
 {
     public class DepthFirstSearch
     {
-        private readonly IGraph _graph;
+        private readonly ISearchableGraph _graph;
         private readonly int[] _connectedComponent;
 
-        public DepthFirstSearch(IGraph g)
+        public DepthFirstSearch(ISearchableGraph g)
         {
             _graph = g;
             _connectedComponent = new int[g.Size()];

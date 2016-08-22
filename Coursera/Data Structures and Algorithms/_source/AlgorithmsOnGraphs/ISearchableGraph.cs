@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace AlgorithmsOnGraphs
 {
-    public interface IGraph
+    public interface ISearchableGraph
     {
         int Size();
 
