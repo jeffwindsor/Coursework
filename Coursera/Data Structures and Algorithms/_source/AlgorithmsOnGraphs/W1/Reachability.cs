@@ -60,9 +60,5 @@ namespace AlgorithmsOnGraphs.W1
         {
             return int.Parse(source) - 1; //input is 1 based return zero based
         }
-
-        #region Classes
-
-        #endregion
     }
 }
