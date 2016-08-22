@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using FluentAssertions;
 
-namespace DataStructures.Tests
+namespace AlgorithmsOnGraphs.Tests
 {
     public abstract class BaseTests
     {
