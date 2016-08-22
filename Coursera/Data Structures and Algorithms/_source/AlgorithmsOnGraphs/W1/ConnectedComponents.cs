@@ -37,7 +37,7 @@ namespace AlgorithmsOnGraphs.W1
                     };
                 });
 
-            var graph = new AdjacentyListGraph(verticeCount);
+            var graph = new AdjacencyListGraph(verticeCount);
             foreach (var x in xs)
             {
                 graph.AddEdge(x.Left, x.Right);

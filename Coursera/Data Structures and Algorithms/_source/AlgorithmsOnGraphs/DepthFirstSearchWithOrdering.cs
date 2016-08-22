@@ -20,12 +20,15 @@ namespace AlgorithmsOnGraphs
             base.Search();
         }
 
-        protected override void PreVisitHook(int v)
+        protected override void Explore(int v, int connectedComponent)
         {
+            ConnectedComponent[v] = connectedComponent;
             _pre[v] = _counter++;
-        }
-        protected override void PostVisitHook(int v)
-        {
+            foreach (var w in Graph.Neighbors(v))
+            {
+                if (Visited(w) == false)
+                    Explore(w, connectedComponent);
+            }
             _post[v] = _counter++;
         }
     }

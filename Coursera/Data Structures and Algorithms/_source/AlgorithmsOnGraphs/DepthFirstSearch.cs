@@ -1,30 +1,30 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AlgorithmsOnGraphs
 {
     public class DepthFirstSearch
     {
-        private readonly ISearchableGraph _graph;
-        private readonly int[] _connectedComponent;
+        protected readonly ISearchableGraph Graph;
+        protected int[] ConnectedComponent { get; set; }
+        public int ConnectedComponents { get; protected set; }
 
         public DepthFirstSearch(ISearchableGraph g)
         {
-            _graph = g;
-            _connectedComponent = new int[g.Size()];
+            Graph = g;
+            ConnectedComponent = new int[g.Size()];
             ConnectedComponents = 0;
         }
 
-        public int ConnectedComponents { get; private set; }
-
         public bool Visited(int v)
         {
-            return _connectedComponent[v] != 0;
+            return ConnectedComponent[v] != 0;
         }
 
         public virtual void Search()
         {
-            for (var i = 0; i < _connectedComponent.Length; i++)
+            for (var i = 0; i < ConnectedComponent.Length; i++)
                 Explore(i);
         }
 
@@ -34,25 +34,20 @@ namespace AlgorithmsOnGraphs
                 Explore(v, ++ConnectedComponents);
         }
 
-        private void Explore(int v, int connectedComponent)
+        protected virtual void Explore(int v, int connectedComponent)
         {
-            _connectedComponent[v] = connectedComponent;
-            PreVisitHook(v);
-            foreach (var w in _graph.Neighbors(v))
+            ConnectedComponent[v] = connectedComponent;
+            foreach (var w in Graph.Neighbors(v))
             {
                 if (Visited(w) == false)
                     Explore(w, connectedComponent);
             }
-            PostVisitHook(v);
         }
-
-        protected virtual void PreVisitHook(int v){}
-        protected virtual void PostVisitHook(int v){}
-
+        
         public override string ToString()
         {
             return string.Join(Environment.NewLine,
-                _connectedComponent.Select(
+                ConnectedComponent.Select(
                     (item, i) => string.Format("[{0}]: {1}", i, item))
                 );
         }
