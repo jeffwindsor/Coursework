@@ -50,6 +50,7 @@
     <Compile Include="W1\ConnectedComponents.cs" />
     <Compile Include="W1\Reachability.cs" />
     <Compile Include="W2\Acyclicity.cs" />
+    <Compile Include="W2\Topsort.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

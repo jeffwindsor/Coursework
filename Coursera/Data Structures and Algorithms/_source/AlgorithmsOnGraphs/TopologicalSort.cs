@@ -19,5 +19,10 @@ namespace AlgorithmsOnGraphs
         {
             get { return ((IEnumerable<int>)_order).Reverse(); }
         }
+
+        public override string ToString()
+        {
+            return string.Join(" ", Order.Select(i => i.ToString()));
+        }
     }
 }

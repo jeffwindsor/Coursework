@@ -80,11 +80,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AcyclicityTests.cs" />
+    <Compile Include="W2\AcyclicityTests.cs" />
     <Compile Include="BaseTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ConnectedComponentsTests.cs" />
-    <Compile Include="ReachabilityTests.cs" />
+    <Compile Include="W1\ConnectedComponentsTests.cs" />
+    <Compile Include="W1\ReachabilityTests.cs" />
+    <Compile Include="W2\TopsortTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AlgorithmsOnGraphs\AlgorithmsOnGraphs.csproj">

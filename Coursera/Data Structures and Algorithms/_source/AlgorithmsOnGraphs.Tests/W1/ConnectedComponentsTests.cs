@@ -1,7 +1,7 @@
 ﻿using AlgorithmsOnGraphs.W1;
 using NUnit.Framework;
 
-namespace AlgorithmsOnGraphs.Tests
+namespace AlgorithmsOnGraphs.Tests.W1
 {
     [TestFixture]
     public class ConnectedComponentsTests : BaseTests

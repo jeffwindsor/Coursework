@@ -1,16 +1,16 @@
 ﻿using AlgorithmsOnGraphs.W2;
 using NUnit.Framework;
 
-namespace AlgorithmsOnGraphs.Tests
+namespace AlgorithmsOnGraphs.Tests.W2
 {
     [TestFixture]
-    public class AcyclicityTests : BaseTests
+    public class TopsortTests : BaseTests
     {
         [TestCase("Sample1")]
         [TestCase("Sample2")]
         public void TestFiles(string file)
         {
-            TestFromRelativeFilePath(@"Acyclicity\" + file, Acyclicity.Answer);
+            TestFromRelativeFilePath(@"Topsort\" + file, Topsort.Answer);
         }
 
     }
