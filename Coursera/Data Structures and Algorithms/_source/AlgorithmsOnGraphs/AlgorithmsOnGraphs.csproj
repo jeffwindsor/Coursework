@@ -42,7 +42,6 @@
   <ItemGroup>
     <Compile Include="DepthFirstSearch.cs" />
     <Compile Include="AdjacencyListGraph.cs" />
-    <Compile Include="DepthFirstSearchWithOrdering.cs" />
     <Compile Include="GraphCycleException.cs" />
     <Compile Include="TopologicalSort.cs" />
     <Compile Include="ISearchableGraph.cs" />
@@ -50,6 +49,7 @@
     <Compile Include="W1\ConnectedComponents.cs" />
     <Compile Include="W1\Reachability.cs" />
     <Compile Include="W2\Acyclicity.cs" />
+    <Compile Include="W2\StronglyConnected.cs" />
     <Compile Include="W2\Topsort.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

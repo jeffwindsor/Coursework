@@ -43,12 +43,17 @@ namespace AlgorithmsOnGraphs
                     Explore(w, connectedComponent);
             }
         }
-        
+
+        public IEnumerable<int> Components
+        {
+            get { return ConnectedComponent.Distinct(); }
+        }
+
         public override string ToString()
         {
-            return string.Join(Environment.NewLine,
+            return string.Join(" ",
                 ConnectedComponent.Select(
-                    (item, i) => string.Format("[{0}]: {1}", i, item))
+                    (item, i) => string.Format("[{0}:{1}]", i, item))
                 );
         }
     }

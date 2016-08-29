@@ -65,9 +65,10 @@ namespace AlgorithmsOnGraphs
         {
             return string.Join(Environment.NewLine,
                 _hashSets.Select(
-                    (item, i) => item == null
-                        ? ""
-                        : string.Format("[{0}]: {1}", i, string.Join(",", item.Select(e => e.ToString()))))
+                    (item, i) =>  string.Format("[{0}]: {1}", i,
+                        item == null
+                            ? ""
+                            : string.Join(",", item.Select(e => e.ToString()))))
                 );
         }
     }
