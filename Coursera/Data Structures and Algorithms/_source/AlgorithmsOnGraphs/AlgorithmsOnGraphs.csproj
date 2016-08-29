@@ -43,11 +43,13 @@
     <Compile Include="DepthFirstSearch.cs" />
     <Compile Include="AdjacencyListGraph.cs" />
     <Compile Include="DepthFirstSearchWithOrdering.cs" />
+    <Compile Include="GraphCycleException.cs" />
     <Compile Include="TopologicalSort.cs" />
     <Compile Include="ISearchableGraph.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="W1\ConnectedComponents.cs" />
     <Compile Include="W1\Reachability.cs" />
+    <Compile Include="W2\Acyclicity.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
