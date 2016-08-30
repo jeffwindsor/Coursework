@@ -27,12 +27,6 @@ namespace AlgorithmsOnGraphs
             _lists[left].Add(right);
         }
 
-        public void AddEdge(int left, int right)
-        {
-            AddDirectedEdge(left, right);
-            AddDirectedEdge(right, left);
-        }
-
         public override string ToString()
         {
             return _lists.ToString();

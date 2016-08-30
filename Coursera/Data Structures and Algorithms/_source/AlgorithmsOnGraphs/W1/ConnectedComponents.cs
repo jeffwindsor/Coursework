@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace AlgorithmsOnGraphs.W1
 {
@@ -19,33 +17,11 @@ namespace AlgorithmsOnGraphs.W1
 
         public static IList<string> Answer(IList<string> inputs)
         {
-            var chars = new[] { ' ' };
-            var line0 = inputs[0].Split(chars);
-            var verticeCount = int.Parse(line0[0]);
-            var edgeCount = int.Parse(line0[1]);
-
-            var xs = Enumerable.Range(1, edgeCount)
-                .Select(i =>
-                {
-                    var items = inputs[i].Trim().Split(chars, StringSplitOptions.RemoveEmptyEntries);
-                    return new
-                    {
-                        Left = GetIndex(items[0]),
-                        Right = GetIndex(items[1])
-                    };
-                });
-
-            var graph = new AdjacencyListGraph(verticeCount);
-            foreach (var x in xs)
-            {
-                graph.AddEdge(x.Left, x.Right);
-            }
-
+            var graph = new GraphInput(inputs).ToUndirectedAdjacencyGraph();
             //Console.WriteLine(graph.ToPrettyString());
             
             var dsf = new DepthFirstSearch(graph);
             dsf.Search();
-
             //Console.WriteLine(dsf.ToPrettyString());
             
             return new[] { dsf.ConnectedComponents.ToString() };
