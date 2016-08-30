@@ -80,6 +80,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="W3\FlightSegmentTests.cs" />
+    <Compile Include="W3\BipartiteTests.cs" />
     <Compile Include="W2\AcyclicityTests.cs" />
     <Compile Include="BaseTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

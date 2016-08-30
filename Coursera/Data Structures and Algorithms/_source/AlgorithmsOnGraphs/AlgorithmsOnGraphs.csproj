@@ -40,10 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SearchData.cs" />
+    <Compile Include="BreadthFirstSearch.cs" />
     <Compile Include="DepthFirstSearch.cs" />
     <Compile Include="AdjacencyListGraph.cs" />
     <Compile Include="GraphCycleException.cs" />
     <Compile Include="GraphInput.cs" />
+    <Compile Include="BaseGraphSearch.cs" />
     <Compile Include="TopologicalSort.cs" />
     <Compile Include="ISearchableGraph.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -53,9 +56,10 @@
     <Compile Include="DepthFirstSearchWithCycleException.cs" />
     <Compile Include="W2\StronglyConnected.cs" />
     <Compile Include="W2\Topsort.cs" />
+    <Compile Include="W3\Bipartite.cs" />
+    <Compile Include="W3\FlightSegments.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="W3\" />
     <Folder Include="W4\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,60 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace AlgorithmsOnGraphs
 {
-    public class DepthFirstSearch
+    public class DepthFirstSearch : BaseGraphSearch
     {
-        protected readonly ISearchableGraph Graph;
-        protected int[] ConnectedComponent { get; set; }
-        public int ConnectedComponents { get; protected set; }
+        public int MaxComponent { get; private set; }
 
-        public DepthFirstSearch(ISearchableGraph g)
-        {
-            Graph = g;
-            ConnectedComponent = new int[g.Size()];
-            ConnectedComponents = 0;
-        }
-
-        public bool Visited(int v)
-        {
-            return ConnectedComponent[v] != 0;
-        }
+        public DepthFirstSearch(ISearchableGraph g) : base(g) { }
 
         public virtual void Search()
         {
-            for (var i = 0; i < ConnectedComponent.Length; i++)
+            for (var i = 0; i < SearchData.Values.Count; i++)
                 Explore(i);
         }
 
         public void Explore(int v)
         {
-            if (!Visited(v))
-                Explore(v, ++ConnectedComponents);
+            if (!SearchData.Visited(v))
+                Explore(v, ++MaxComponent);
         }
 
         protected virtual void Explore(int v, int connectedComponent)
         {
-            ConnectedComponent[v] = connectedComponent;
+            SearchData.SetValue(v, connectedComponent);
             foreach (var w in Graph.Neighbors(v))
             {
-                if (Visited(w) == false)
+                if (!SearchData.Visited(w))
                     Explore(w, connectedComponent);
             }
         }
 
         public IEnumerable<int> Components
         {
-            get { return ConnectedComponent.Distinct(); }
+            get { return SearchData.Values.Distinct(); }
         }
 
         public override string ToString()
         {
-            return string.Join(" ",
-                ConnectedComponent.Select(
-                    (item, i) => string.Format("[{0}:{1}]", i, item))
-                );
+            return string.Join(" ", SearchData.Values.Select((item, i) => string.Format("[{0}:{1}]", i, item)));
         }
     }
 }

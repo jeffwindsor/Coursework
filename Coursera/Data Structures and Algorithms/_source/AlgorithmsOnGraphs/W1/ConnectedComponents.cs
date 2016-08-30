@@ -24,7 +24,7 @@ namespace AlgorithmsOnGraphs.W1
             dsf.Search();
             //Console.WriteLine(dsf.ToPrettyString());
             
-            return new[] { dsf.ConnectedComponents.ToString() };
+            return new[] { dsf.MaxComponent.ToString() };
         }
 
         private static int GetIndex(string source)
