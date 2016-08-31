@@ -10,12 +10,12 @@ namespace AlgorithmsOnGraphs
         private const int RED = 0;
         private const int BLUE = 1;
         private readonly ISearchableGraph _graph;
-        private readonly SearchData _searchData;
+        private readonly SearchData _color;
 
         public BreadthFirstSearchWithBipartiteDetection(ISearchableGraph g)
         {
             _graph = g;
-            _searchData = new SearchData(g.Size());
+            _color = new SearchData(g.Size());
         }
 
         public bool IsBipartite()
@@ -32,7 +32,7 @@ namespace AlgorithmsOnGraphs
         }
         private void Explore(int start)
         {
-            _searchData.SetValue(start, RED);
+            _color.SetValue(start, RED);
 
             var queue = new Queue<int>();
             queue.Enqueue(start);
@@ -42,24 +42,24 @@ namespace AlgorithmsOnGraphs
                 var neighborColor = GetNeighborColor(current);
                 foreach (var neighbor in _graph.Neighbors(current).Where(i => i != current))
                 {
-                    if (_searchData.Visited(neighbor))
+                    if (_color.Visited(neighbor))
                     {
                         //Check Visited neighbor is the correct color
-                        if(_searchData.GetValue(neighbor) != neighborColor)
+                        if(_color.GetValue(neighbor) != neighborColor)
                             throw new NonBipartiteException();
 
                         continue;
                     }
 
                     queue.Enqueue(neighbor);
-                    _searchData.SetValue(neighbor, neighborColor);
+                    _color.SetValue(neighbor, neighborColor);
                 }
             }
         }
 
         private int GetNeighborColor(int index)
         {
-            switch (_searchData.GetValue(index))
+            switch (_color.GetValue(index))
             {
                 case RED:
                     return BLUE;

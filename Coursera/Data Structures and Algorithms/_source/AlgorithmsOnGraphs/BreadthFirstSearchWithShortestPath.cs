@@ -7,13 +7,13 @@ namespace AlgorithmsOnGraphs
     {
         private readonly SearchData _visitedFrom;
         private readonly ISearchableGraph _graph;
-        private readonly SearchData _searchData;
+        private readonly SearchData _depth;
 
         public BreadthFirstSearchWithShortestPath(ISearchableGraph g)
         {
             _visitedFrom = new SearchData(g.Size());
             _graph = g;
-            _searchData = new SearchData(g.Size());
+            _depth = new SearchData(g.Size());
         }
         
         public ICollection<int> ShortestPath(int from, int to)
@@ -26,7 +26,7 @@ namespace AlgorithmsOnGraphs
 
         private void Explore(int start)
         {
-            _searchData.SetValue(start, 0);
+            _depth.SetValue(start, 0);
 
             var queue = new Queue<int>();
             queue.Enqueue(start);
@@ -35,10 +35,10 @@ namespace AlgorithmsOnGraphs
                 var current = queue.Dequeue();
                 foreach (var neighbor in _graph.Neighbors(current))
                 {
-                    if (_searchData.Visited(neighbor)) continue;
+                    if (_depth.Visited(neighbor)) continue;
 
                     queue.Enqueue(neighbor);
-                    _searchData.SetValue(neighbor, _searchData.GetValue(current) + 1);
+                    _depth.SetValue(neighbor, _depth.GetValue(current) + 1);
                     _visitedFrom.SetValue(neighbor, current);
                 }
             }
