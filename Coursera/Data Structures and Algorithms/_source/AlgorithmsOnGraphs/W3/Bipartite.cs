@@ -19,7 +19,7 @@ namespace AlgorithmsOnGraphs.W3
 
         public static IList<string> Answer(IList<string> inputs)
         {
-            var gi = new GraphInput(inputs);
+            var gi = new AdjacencyListGraphInput(inputs);
             var graph = gi.ToUndirectedAdjacencyGraph();
             //Console.WriteLine(graph);
             

@@ -17,7 +17,7 @@ namespace AlgorithmsOnGraphs.W1
 
         public static IList<string> Answer(IList<string> inputs)
         {
-            var graph = new GraphInput(inputs).ToUndirectedAdjacencyGraph();
+            var graph = new AdjacencyListGraphInput(inputs).ToUndirectedAdjacencyGraph();
             //Console.WriteLine(graph.ToPrettyString());
             
             var dsf = new DepthFirstSearchWithComponents(graph);

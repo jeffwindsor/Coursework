@@ -7,7 +7,7 @@ namespace AlgorithmsOnGraphs
     {
         private readonly List<int> _order = new List<int>();
 
-        public TopologicalSort(ISearchableGraph g) : base(g) {}
+        public TopologicalSort(AdjacencyListGraph g) : base(g) {}
         
         protected override void Explore(int v, int connectedComponent)
         {

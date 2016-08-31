@@ -2,11 +2,11 @@
 {
     public class DijkstrasAlgorithm
     {
-        private readonly ISearchableGraph _graph;
+        private readonly AdjacencyListGraph _graph;
         private readonly SearchData _distance;
         private readonly SearchData _visitedFrom;
         
-        public DijkstrasAlgorithm(ISearchableGraph g)
+        public DijkstrasAlgorithm(AdjacencyListGraph g)
         {
             _graph = g;
             _visitedFrom = new SearchData(g.Size());

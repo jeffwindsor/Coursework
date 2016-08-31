@@ -5,11 +5,11 @@ namespace AlgorithmsOnGraphs
 {
     public class BreadthFirstSearchWithShortestPath
     {
-        private readonly ISearchableGraph _graph;
+        private readonly AdjacencyListGraph _graph;
         private readonly SearchData _distance;
         private readonly SearchData _visitedFrom;
 
-        public BreadthFirstSearchWithShortestPath(ISearchableGraph g)
+        public BreadthFirstSearchWithShortestPath(AdjacencyListGraph g)
         {
             _visitedFrom = new SearchData(g.Size());
             _graph = g;

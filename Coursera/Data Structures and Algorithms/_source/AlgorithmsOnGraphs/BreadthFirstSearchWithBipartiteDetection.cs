@@ -9,10 +9,10 @@ namespace AlgorithmsOnGraphs
     {
         private const int RED = 0;
         private const int BLUE = 1;
-        private readonly ISearchableGraph _graph;
+        private readonly AdjacencyListGraph _graph;
         private readonly SearchData _color;
 
-        public BreadthFirstSearchWithBipartiteDetection(ISearchableGraph g)
+        public BreadthFirstSearchWithBipartiteDetection(AdjacencyListGraph g)
         {
             _graph = g;
             _color = new SearchData(g.Size());

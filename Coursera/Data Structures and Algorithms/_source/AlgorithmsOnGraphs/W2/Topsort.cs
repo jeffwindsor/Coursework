@@ -22,7 +22,7 @@ namespace AlgorithmsOnGraphs.W2
 
         public static IList<string> Answer(IList<string> inputs)
         {
-            var graph = new GraphInput(inputs).ToDirectedAdjacencyGraph();
+            var graph = new AdjacencyListGraphInput(inputs).ToDirectedAdjacencyGraph();
             //Console.WriteLine(graph);
 
             var s = new TopologicalSort(graph);
