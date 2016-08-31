@@ -46,9 +46,7 @@
     <Compile Include="AdjacencyListGraph.cs" />
     <Compile Include="GraphCycleException.cs" />
     <Compile Include="GraphInput.cs" />
-    <Compile Include="BaseGraphSearch.cs" />
     <Compile Include="TopologicalSort.cs" />
-    <Compile Include="ISearchableGraph.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="W1\ConnectedComponents.cs" />
     <Compile Include="W1\Reachability.cs" />
@@ -57,7 +55,7 @@
     <Compile Include="W2\StronglyConnected.cs" />
     <Compile Include="W2\Topsort.cs" />
     <Compile Include="W3\Bipartite.cs" />
-    <Compile Include="W3\FlightSegments.cs" />
+    <Compile Include="W3\BreadthFirstSearchFS.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="W4\" />

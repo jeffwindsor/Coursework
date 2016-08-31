@@ -28,7 +28,7 @@ namespace AlgorithmsOnGraphs.W1
             dsf.Explore(points.Left);
             //Console.WriteLine(dsf.ToPrettyString());
 
-            var hasPath = dsf.SearchData.Visited(points.Right) ? "1" : "0";
+            var hasPath = dsf.Visited(points.Right) ? "1" : "0";
             return new[] { hasPath };
         }
 

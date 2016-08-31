@@ -4,6 +4,12 @@ using System.Linq;
 
 namespace AlgorithmsOnGraphs
 {
+    public interface ISearchableGraph
+    {
+        int Size();
+
+        IEnumerable<int> Neighbors(int i);
+    }
     public class GraphInput
     {
         private int _lineCursor;

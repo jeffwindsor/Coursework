@@ -5,8 +5,8 @@ namespace AlgorithmsOnGraphs
 {
     public class SearchData
     {
-        private static int NOT_VISITED = -1;
-        private int[] _values { get; }
+        public static int NOT_VISITED = -1;
+        private readonly int[] _values;
 
         public SearchData(int size)
         {

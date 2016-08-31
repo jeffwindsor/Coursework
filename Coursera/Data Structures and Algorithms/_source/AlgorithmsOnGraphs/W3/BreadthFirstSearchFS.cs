@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AlgorithmsOnGraphs.W3
 {
-    public class FlightSegments
+    public class BreadthFirstSearchFS
     {
         //public static void Main(string[] args)
         //{
@@ -18,15 +20,14 @@ namespace AlgorithmsOnGraphs.W3
         public static IList<string> Answer(IList<string> inputs)
         {
             var gi = new GraphInput(inputs);
-            var graph = gi.ToDirectedAdjacencyGraph();
-            var points = gi.NextAsEdge();
-
+            var graph = gi.ToUndirectedAdjacencyGraph();
             //Console.WriteLine(graph);
-            var s = new BreadthFirstSearch(graph);
-            s.Search(points.Left);
 
-
-            var answer = "";
+            var points = gi.NextAsEdge();
+            var path = new BreadthFirstSearch(graph)
+                .ShortestPath(points.Left, points.Right);
+            
+            var answer = path.Any() ? path.Count.ToString() : "-1";
 
             return new[] { answer };
         }

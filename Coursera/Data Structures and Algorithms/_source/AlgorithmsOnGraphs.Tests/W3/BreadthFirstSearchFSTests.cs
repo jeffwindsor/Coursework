@@ -4,13 +4,13 @@ using NUnit.Framework;
 namespace AlgorithmsOnGraphs.Tests.W3
 {
     [TestFixture]
-    public class FlightSegmentTests : BaseTests
+    public class BreadthFirstSearchFSTests : BaseTests
     {
         [TestCase("Sample1")]
         [TestCase("Sample2")]
         public void TestFiles(string file)
         {
-            //TestFromRelativeFilePath(@"BreadthFirstSearch\" + file, FlightSegments.Answer);
+            TestFromRelativeFilePath(@"BreadthFirstSearch\" + file, BreadthFirstSearchFS.Answer);
         }
 
     }

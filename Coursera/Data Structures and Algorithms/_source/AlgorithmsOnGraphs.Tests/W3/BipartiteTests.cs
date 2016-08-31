@@ -10,7 +10,7 @@ namespace AlgorithmsOnGraphs.Tests.W3
         [TestCase("Sample2")]
         public void TestFiles(string file)
         {
-            //TestFromRelativeFilePath(@"Bipartite\" + file, Bipartite.Answer);
+            TestFromRelativeFilePath(@"Bipartite\" + file, Bipartite.Answer);
         }
 
     }

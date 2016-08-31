@@ -3,42 +3,53 @@ using System.Linq;
 
 namespace AlgorithmsOnGraphs
 {
-    public class DepthFirstSearch : BaseGraphSearch
+    public class DepthFirstSearch
     {
         public int MaxComponent { get; private set; }
+        private readonly ISearchableGraph _graph;
+        private readonly SearchData _searchData;
 
-        public DepthFirstSearch(ISearchableGraph g) : base(g) { }
+        public DepthFirstSearch(ISearchableGraph g)
+        {
+            _graph = g;
+            _searchData = new SearchData(g.Size());
+        }
+
+        public bool Visited(int v)
+        {
+            return _searchData.Visited(v);
+        }
 
         public virtual void Search()
         {
-            for (var i = 0; i < SearchData.Values.Count; i++)
+            for (var i = 0; i < _searchData.Values.Count; i++)
                 Explore(i);
         }
 
         public void Explore(int v)
         {
-            if (!SearchData.Visited(v))
+            if (!_searchData.Visited(v))
                 Explore(v, ++MaxComponent);
         }
 
         protected virtual void Explore(int v, int connectedComponent)
         {
-            SearchData.SetValue(v, connectedComponent);
-            foreach (var w in Graph.Neighbors(v))
+            _searchData.SetValue(v, connectedComponent);
+            foreach (var w in _graph.Neighbors(v))
             {
-                if (!SearchData.Visited(w))
+                if (!_searchData.Visited(w))
                     Explore(w, connectedComponent);
             }
         }
 
         public IEnumerable<int> Components
         {
-            get { return SearchData.Values.Distinct(); }
+            get { return _searchData.Values.Distinct(); }
         }
 
         public override string ToString()
         {
-            return string.Join(" ", SearchData.Values.Select((item, i) => string.Format("[{0}:{1}]", i, item)));
+            return string.Join(" ", _searchData.Values.Select((item, i) => string.Format("[{0}:{1}]", i, item)));
         }
     }
 }
