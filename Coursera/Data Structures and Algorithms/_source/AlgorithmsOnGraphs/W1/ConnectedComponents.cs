@@ -20,7 +20,7 @@ namespace AlgorithmsOnGraphs.W1
             var graph = new GraphInput(inputs).ToUndirectedAdjacencyGraph();
             //Console.WriteLine(graph.ToPrettyString());
             
-            var dsf = new DepthFirstSearch(graph);
+            var dsf = new DepthFirstSearchWithComponents(graph);
             dsf.Search();
             //Console.WriteLine(dsf.ToPrettyString());
             

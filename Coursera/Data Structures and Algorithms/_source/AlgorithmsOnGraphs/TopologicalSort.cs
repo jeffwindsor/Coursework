@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace AlgorithmsOnGraphs
 {
-    public class TopologicalSort : DepthFirstSearch
+    public class TopologicalSort : DepthFirstSearchWithComponents
     {
         private readonly List<int> _order = new List<int>();
 

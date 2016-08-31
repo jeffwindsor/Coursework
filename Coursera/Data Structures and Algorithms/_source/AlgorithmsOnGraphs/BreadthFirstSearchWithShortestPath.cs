@@ -3,13 +3,13 @@ using System.Linq;
 
 namespace AlgorithmsOnGraphs
 {
-    public class BreadthFirstSearch
+    public class BreadthFirstSearchWithShortestPath
     {
         private readonly SearchData _visitedFrom;
         private readonly ISearchableGraph _graph;
         private readonly SearchData _searchData;
 
-        public BreadthFirstSearch(ISearchableGraph g)
+        public BreadthFirstSearchWithShortestPath(ISearchableGraph g)
         {
             _visitedFrom = new SearchData(g.Size());
             _graph = g;
@@ -19,12 +19,12 @@ namespace AlgorithmsOnGraphs
         public ICollection<int> ShortestPath(int from, int to)
         {
             //Search From to establish visited values
-            Search(from);
+            Explore(from);
             //Return shortest path
             return GetShortestPath(from, to);
         }
 
-        private void Search(int start)
+        private void Explore(int start)
         {
             _searchData.SetValue(start, 0);
 

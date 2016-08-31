@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AlgorithmsOnGraphs
 {
-    public class DepthFirstSearchWithCycleException
+    public class GraphCycleException : Exception { }
+    public class DepthFirstSearchWithCycleDetection
     {
         private readonly ISearchableGraph _g;
         
-        public DepthFirstSearchWithCycleException(ISearchableGraph g)
+        public DepthFirstSearchWithCycleDetection(ISearchableGraph g)
         {
             _g = g;
         }

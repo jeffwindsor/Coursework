@@ -40,18 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BreadthFirstSearchWithBipartiteDetection.cs" />
     <Compile Include="SearchData.cs" />
-    <Compile Include="BreadthFirstSearch.cs" />
-    <Compile Include="DepthFirstSearch.cs" />
+    <Compile Include="BreadthFirstSearchWithShortestPath.cs" />
+    <Compile Include="DepthFirstSearchWithComponents.cs" />
     <Compile Include="AdjacencyListGraph.cs" />
-    <Compile Include="GraphCycleException.cs" />
     <Compile Include="GraphInput.cs" />
     <Compile Include="TopologicalSort.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="W1\ConnectedComponents.cs" />
     <Compile Include="W1\Reachability.cs" />
     <Compile Include="W2\Acyclicity.cs" />
-    <Compile Include="DepthFirstSearchWithCycleException.cs" />
+    <Compile Include="DepthFirstSearchWithCycleDetection.cs" />
     <Compile Include="W2\StronglyConnected.cs" />
     <Compile Include="W2\Topsort.cs" />
     <Compile Include="W3\Bipartite.cs" />

@@ -30,7 +30,7 @@ namespace AlgorithmsOnGraphs.W2
         {
             try
             {
-                new DepthFirstSearchWithCycleException(g).Search();
+                new DepthFirstSearchWithCycleDetection(g).Search();
                 return false;
             }
             catch (GraphCycleException)

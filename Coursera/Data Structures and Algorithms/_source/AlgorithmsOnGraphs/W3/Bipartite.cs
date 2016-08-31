@@ -22,14 +22,10 @@ namespace AlgorithmsOnGraphs.W3
             var gi = new GraphInput(inputs);
             var graph = gi.ToUndirectedAdjacencyGraph();
             //Console.WriteLine(graph);
-
-            var points = gi.NextAsEdge();
-            var path = new BreadthFirstSearch(graph)
-                .ShortestPath(points.Left, points.Right);
-
-            var answer = path.Any() ? path.Count.ToString() : "-1";
-
+            
+            var answer = new BreadthFirstSearchWithBipartiteDetection(graph).IsBipartite() ? "1" : "0";
             return new[] { answer };
         }
+        
     }
 }

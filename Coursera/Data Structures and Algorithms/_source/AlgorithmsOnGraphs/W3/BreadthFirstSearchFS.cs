@@ -24,7 +24,7 @@ namespace AlgorithmsOnGraphs.W3
             //Console.WriteLine(graph);
 
             var points = gi.NextAsEdge();
-            var path = new BreadthFirstSearch(graph)
+            var path = new BreadthFirstSearchWithShortestPath(graph)
                 .ShortestPath(points.Left, points.Right);
             
             var answer = path.Any() ? path.Count.ToString() : "-1";

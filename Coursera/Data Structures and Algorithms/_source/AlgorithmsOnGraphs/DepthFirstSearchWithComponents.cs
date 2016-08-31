@@ -3,13 +3,13 @@ using System.Linq;
 
 namespace AlgorithmsOnGraphs
 {
-    public class DepthFirstSearch
+    public class DepthFirstSearchWithComponents
     {
         public int MaxComponent { get; private set; }
         private readonly ISearchableGraph _graph;
         private readonly SearchData _searchData;
 
-        public DepthFirstSearch(ISearchableGraph g)
+        public DepthFirstSearchWithComponents(ISearchableGraph g)
         {
             _graph = g;
             _searchData = new SearchData(g.Size());

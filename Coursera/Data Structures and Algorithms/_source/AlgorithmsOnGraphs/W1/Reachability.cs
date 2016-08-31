@@ -24,7 +24,7 @@ namespace AlgorithmsOnGraphs.W1
             //Console.WriteLine(graph.ToPrettyString());
 
             var points = graphInputs.NextAsEdge();
-            var dsf = new DepthFirstSearch(graph);
+            var dsf = new DepthFirstSearchWithComponents(graph);
             dsf.Explore(points.Left);
             //Console.WriteLine(dsf.ToPrettyString());
 

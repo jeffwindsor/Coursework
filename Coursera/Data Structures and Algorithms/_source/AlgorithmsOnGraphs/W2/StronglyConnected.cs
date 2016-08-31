@@ -37,7 +37,7 @@ namespace AlgorithmsOnGraphs.W2
             srg.Search();
 
             //look for v in graph in reverse post order
-            var sg = new DepthFirstSearch(graph);
+            var sg = new DepthFirstSearchWithComponents(graph);
             var order = srg.Order;
             foreach (var v in order)
             {
