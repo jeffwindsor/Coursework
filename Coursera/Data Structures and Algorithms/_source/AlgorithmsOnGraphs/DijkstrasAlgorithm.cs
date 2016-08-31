@@ -30,7 +30,7 @@
                 foreach (var neighbor in _graph.Neighbors(current))
                 {
                     var dc = _distance.GetValue(current);
-                    var dn = _distance.GetValue(neighbor);
+                    //var dn = _distance.GetValue(neighbor);
 
                 }
             }

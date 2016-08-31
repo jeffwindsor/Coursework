@@ -40,7 +40,8 @@ namespace AlgorithmsOnGraphs
             {
                 var current = queue.Dequeue();
                 var neighborColor = GetNeighborColor(current);
-                foreach (var neighbor in _graph.Neighbors(current).Where(i => i != current))
+                foreach (var neighbor in _graph.NeighborIndexes(current)
+                                               .Where(i => i != current))
                 {
                     if (_color.Visited(neighbor))
                     {

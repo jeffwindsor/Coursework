@@ -25,7 +25,7 @@ namespace AlgorithmsOnGraphs
                 throw new GraphCycleException();
 
             ancestory.Add(v);
-            foreach (var w in _g.Neighbors(v))
+            foreach (var w in _g.NeighborIndexes(v))
             {
                 Explore(w, ancestory);
             }

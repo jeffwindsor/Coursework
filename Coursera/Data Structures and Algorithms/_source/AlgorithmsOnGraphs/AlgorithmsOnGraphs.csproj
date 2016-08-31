@@ -47,7 +47,6 @@
     <Compile Include="BreadthFirstSearchWithShortestPath.cs" />
     <Compile Include="DepthFirstSearchWithComponents.cs" />
     <Compile Include="AdjacencyListGraph.cs" />
-    <Compile Include="AdjacencyListGraphInput.cs" />
     <Compile Include="TopologicalSort.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="W1\ConnectedComponents.cs" />

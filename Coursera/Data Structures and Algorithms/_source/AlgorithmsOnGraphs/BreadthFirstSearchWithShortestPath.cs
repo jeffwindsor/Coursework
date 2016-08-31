@@ -33,7 +33,7 @@ namespace AlgorithmsOnGraphs
             while (queue.Any())
             {
                 var current = queue.Dequeue();
-                foreach (var neighbor in _graph.Neighbors(current))
+                foreach (var neighbor in _graph.NeighborIndexes(current).Where(i=>i!=current))
                 {
                     if (_distance.Visited(neighbor)) continue;
 

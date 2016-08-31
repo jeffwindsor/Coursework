@@ -14,39 +14,33 @@ namespace AlgorithmsOnGraphs
             _inputs = inputs;
         }
 
-        public class Edge
-        {
-            public int Left { get; set; }
-            public int Right { get; set; }
-        }
-
         public AdjacencyListGraph ToUndirectedAdjacencyGraph()
         {
-            return ToAdjacencyGraph((g, l, r) =>
+            return ToAdjacencyGraph((g, e) =>
             {
-                g.AddDirectedEdge(l, r);
-                g.AddDirectedEdge(r, l);
+                g.AddDirectedEdge(e);
+                g.AddDirectedEdge(ReverseEdge(e));
             });
         }
         public AdjacencyListGraph ToDirectedAdjacencyGraph()
         {
-            return ToAdjacencyGraph((g, l, r) => g.AddDirectedEdge(l, r));
+            return ToAdjacencyGraph((g, e) => g.AddDirectedEdge(e));
         }
 
         public AdjacencyListGraph ToDirectedReverseAdjacencyGraph()
         {
-            return ToAdjacencyGraph((g, l, r) => g.AddDirectedEdge(r, l));
+            return ToAdjacencyGraph((g, e) => g.AddDirectedEdge(ReverseEdge(e)));
         }
 
-        private AdjacencyListGraph ToAdjacencyGraph(Action<AdjacencyListGraph, int, int> addEdge)
+        private AdjacencyListGraph ToAdjacencyGraph(Action<AdjacencyListGraph, Edge> addEdge)
         {
             var line0 = ParseIntPair(_inputs[0]);
             var verticeCount = line0.Item1;
             var edgeCount = line0.Item2;
             var graph = new AdjacencyListGraph(verticeCount);
-            foreach (var x in Enumerable.Range(1, edgeCount).Select(i => ParseEdge(_inputs[i])))
+            foreach (var edge in Enumerable.Range(1, edgeCount).Select(i => ParseEdge(_inputs[i])))
             {
-                addEdge(graph, x.Left, x.Right);
+                addEdge(graph, edge);
             }
             _lineCursor = edgeCount + 1;
 
@@ -79,6 +73,22 @@ namespace AlgorithmsOnGraphs
         {
             return (index + 1).ToString(); //input is 1 based return zero based
         }
+
+        private static Edge ReverseEdge(Edge e)
+        {
+            return new Edge
+            {
+                Right = e.Left,
+                Left = e.Right,
+                Weight = e.Weight
+            };
+        }
+    }
+    public class Edge
+    {
+        public int Left { get; set; }
+        public int Right { get; set; }
+        public int Weight { get; set; }
     }
     public class AdjacencyListGraph
     {
@@ -93,14 +103,18 @@ namespace AlgorithmsOnGraphs
             return _lists.Length;
         }
 
-        public IEnumerable<int> Neighbors(int i)
+        public IEnumerable<Edge> Neighbors(int i)
         {
-            return _lists[i];
+            return _lists[i].Select(kvp => kvp.Value);
         }
-        
-        public void AddDirectedEdge(int left, int right)
+        public IEnumerable<int> NeighborIndexes(int i)
         {
-            _lists[left].Add(right);
+            return _lists[i].Select(kvp => kvp.Value.Right);
+        }
+
+        public void AddDirectedEdge(Edge edge)
+        {
+            _lists[edge.Left][edge.Right] = edge;
         }
 
         public override string ToString()
@@ -109,32 +123,32 @@ namespace AlgorithmsOnGraphs
         }
     }
 
-    public class AdjacencyList : HashSet<int>
+    public class AdjacencyList : Dictionary<int,Edge>
     {
         public bool IsSink { get { return !this.Any(); } }
     }
 
     public class AdjacencyListArray
     {
-        private readonly AdjacencyList[] _hashSets;
+        private readonly AdjacencyList[] _list;
         public AdjacencyListArray(int size)
         {
-            _hashSets = new AdjacencyList[size];
+            _list = new AdjacencyList[size];
         }
         public AdjacencyList this[int i]
         {
             get
             {
-                return _hashSets[i] ?? (_hashSets[i] = new AdjacencyList());
+                return _list[i] ?? (_list[i] = new AdjacencyList());
             }
         }
 
-        public int Length { get { return _hashSets.Length; } }
+        public int Length { get { return _list.Length; } }
 
         public override string ToString()
         {
             return string.Join(Environment.NewLine,
-                _hashSets.Select(
+                _list.Select(
                     (item, i) =>  string.Format("[{0}]: {1}", i,
                         item == null
                             ? ""

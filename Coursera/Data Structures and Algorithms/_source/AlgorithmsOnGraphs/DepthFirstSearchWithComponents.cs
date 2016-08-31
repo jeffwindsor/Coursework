@@ -35,7 +35,7 @@ namespace AlgorithmsOnGraphs
         protected virtual void Explore(int v, int connectedComponent)
         {
             _component.SetValue(v, connectedComponent);
-            foreach (var w in _graph.Neighbors(v))
+            foreach (var w in _graph.NeighborIndexes(v))
             {
                 if (!_component.Visited(w))
                     Explore(w, connectedComponent);
