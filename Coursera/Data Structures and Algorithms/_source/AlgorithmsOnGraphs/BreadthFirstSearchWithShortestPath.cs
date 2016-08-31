@@ -5,15 +5,15 @@ namespace AlgorithmsOnGraphs
 {
     public class BreadthFirstSearchWithShortestPath
     {
-        private readonly SearchData _visitedFrom;
         private readonly ISearchableGraph _graph;
-        private readonly SearchData _depth;
+        private readonly SearchData _distance;
+        private readonly SearchData _visitedFrom;
 
         public BreadthFirstSearchWithShortestPath(ISearchableGraph g)
         {
             _visitedFrom = new SearchData(g.Size());
             _graph = g;
-            _depth = new SearchData(g.Size());
+            _distance = new SearchData(g.Size());
         }
         
         public ICollection<int> ShortestPath(int from, int to)
@@ -26,7 +26,7 @@ namespace AlgorithmsOnGraphs
 
         private void Explore(int start)
         {
-            _depth.SetValue(start, 0);
+            _distance.SetValue(start, 0);
 
             var queue = new Queue<int>();
             queue.Enqueue(start);
@@ -35,10 +35,10 @@ namespace AlgorithmsOnGraphs
                 var current = queue.Dequeue();
                 foreach (var neighbor in _graph.Neighbors(current))
                 {
-                    if (_depth.Visited(neighbor)) continue;
+                    if (_distance.Visited(neighbor)) continue;
 
                     queue.Enqueue(neighbor);
-                    _depth.SetValue(neighbor, _depth.GetValue(current) + 1);
+                    _distance.SetValue(neighbor, _distance.GetValue(current) + 1);
                     _visitedFrom.SetValue(neighbor, current);
                 }
             }
@@ -48,8 +48,8 @@ namespace AlgorithmsOnGraphs
             var result = new List<int>();
             while (to != from)
             {
-                //No Path Check
-                if(to == SearchData.NOT_VISITED)
+                //No Path Found
+                if(to == _visitedFrom.InitialValue)
                     return new List<int>();
                 
                 result.Add(to);

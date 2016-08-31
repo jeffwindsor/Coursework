@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BreadthFirstSearchWithBipartiteDetection.cs" />
+    <Compile Include="DijkstrasAlgorithm.cs" />
+    <Compile Include="PriorityQueue.cs" />
     <Compile Include="SearchData.cs" />
     <Compile Include="BreadthFirstSearchWithShortestPath.cs" />
     <Compile Include="DepthFirstSearchWithComponents.cs" />
