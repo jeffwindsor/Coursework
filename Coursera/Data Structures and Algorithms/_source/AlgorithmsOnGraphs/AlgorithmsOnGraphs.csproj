@@ -42,7 +42,6 @@
   <ItemGroup>
     <Compile Include="BreadthFirstSearchWithBipartiteDetection.cs" />
     <Compile Include="DijkstrasAlgorithm.cs" />
-    <Compile Include="PriorityQueue.cs" />
     <Compile Include="SearchData.cs" />
     <Compile Include="BreadthFirstSearchWithShortestPath.cs" />
     <Compile Include="DepthFirstSearchWithComponents.cs" />
@@ -57,10 +56,9 @@
     <Compile Include="W2\Topsort.cs" />
     <Compile Include="W3\Bipartite.cs" />
     <Compile Include="W3\BreadthFirstSearchFS.cs" />
+    <Compile Include="W4\Dijkstras.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="W4\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

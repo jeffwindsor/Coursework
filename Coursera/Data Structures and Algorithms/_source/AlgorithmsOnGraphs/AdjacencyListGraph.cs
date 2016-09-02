@@ -63,7 +63,12 @@ namespace AlgorithmsOnGraphs
         {
             //Index given in 1 convert to 0
             var linePath = line.Split(Splits, StringSplitOptions.RemoveEmptyEntries);
-            return new Edge { Left = ParseIndex(linePath[0]), Right = ParseIndex(linePath[1]) };
+            return new Edge
+            {
+                Left = ParseIndex(linePath[0]),
+                Right = ParseIndex(linePath[1]),
+                Weight = (linePath.Length ==3)? int.Parse(linePath[1]) : 0
+            };
         }
         public static int ParseIndex(string source)
         {
