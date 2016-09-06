@@ -18,6 +18,7 @@ namespace AlgorithmsOnGraphs
             return _values[v] != InitialValue;
         }
 
+        public int Length {get { return _values.Length; }}
         public ICollection<int> Values { get { return _values; } }
         public virtual void SetValue(int v, int value)
         {
