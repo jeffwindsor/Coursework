@@ -6,14 +6,14 @@ namespace AlgorithmsOnGraphs
     public class BreadthFirstSearchWithShortestPath
     {
         private readonly AdjacencyListGraph _graph;
-        private readonly SearchData _distance;
-        private readonly SearchData _visitedFrom;
+        private readonly SearchData<int> _distance;
+        private readonly SearchData<int> _visitedFrom;
 
         public BreadthFirstSearchWithShortestPath(AdjacencyListGraph g)
         {
-            _visitedFrom = new SearchData(g.Size());
             _graph = g;
-            _distance = new SearchData(g.Size());
+            _visitedFrom = new SearchData<int>(g.Size(), -1);
+            _distance = new SearchData<int>(g.Size(), -1);
         }
         
         public ICollection<int> ShortestPath(int from, int to)

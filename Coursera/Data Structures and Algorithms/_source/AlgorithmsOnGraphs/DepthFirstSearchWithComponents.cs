@@ -7,12 +7,12 @@ namespace AlgorithmsOnGraphs
     {
         public int MaxComponent { get; private set; }
         private readonly AdjacencyListGraph _graph;
-        private readonly SearchData _component;
+        private readonly SearchData<int> _component;
 
         public DepthFirstSearchWithComponents(AdjacencyListGraph g)
         {
             _graph = g;
-            _component = new SearchData(g.Size());
+            _component = new SearchData<int>(g.Size(), -1);
         }
 
         public bool Visited(int v)

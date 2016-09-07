@@ -90,6 +90,7 @@
     <Compile Include="W1\ReachabilityTests.cs" />
     <Compile Include="W2\StronglyConnectedTests.cs" />
     <Compile Include="W2\TopsortTests.cs" />
+    <Compile Include="W4\NegativeCycleTests.cs" />
     <Compile Include="W4\DijkstrasTests.cs" />
   </ItemGroup>
   <ItemGroup>
