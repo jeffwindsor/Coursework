@@ -28,5 +28,11 @@ namespace AlgorithmsOnGraphs
         {
             return _values[v];
         }
+
+        public override string ToString()
+        {
+            var items = _values.Select((v, i) => string.Format("{0}:{1}", i, v));
+            return string.Join(", ", items);
+        }
     }
 }

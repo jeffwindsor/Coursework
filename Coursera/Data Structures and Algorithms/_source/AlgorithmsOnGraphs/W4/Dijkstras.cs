@@ -25,10 +25,9 @@ namespace AlgorithmsOnGraphs.W4
             //Console.WriteLine(graph);
 
             var s = new DijkstrasAlgorithm(graph);
-            var path = s.LowestCostPath(points.Left,points.Right);
-
-            var answer = string.Join(" ",path.Select(p => p.ToString()));
-            return new[] { answer };
+            var cost = s.LowestCostPath(points.Left,points.Right);
+            
+            return new[] { cost.ToString() };
         }
     }
 }

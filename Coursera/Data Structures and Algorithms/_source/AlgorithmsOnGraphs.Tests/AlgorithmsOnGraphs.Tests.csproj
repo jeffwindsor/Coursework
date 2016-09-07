@@ -80,6 +80,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MinPriorityQueueTests.cs" />
     <Compile Include="W3\BreadthFirstSearchFSTests.cs" />
     <Compile Include="W3\BipartiteTests.cs" />
     <Compile Include="W2\AcyclicityTests.cs" />

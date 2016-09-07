@@ -67,7 +67,7 @@ namespace AlgorithmsOnGraphs
             {
                 Left = ParseIndex(linePath[0]),
                 Right = ParseIndex(linePath[1]),
-                Weight = (linePath.Length ==3)? int.Parse(linePath[1]) : 0
+                Weight = (linePath.Length ==3)? int.Parse(linePath[2]) : 0
             };
         }
         public static int ParseIndex(string source)
@@ -94,6 +94,11 @@ namespace AlgorithmsOnGraphs
         public int Left { get; set; }
         public int Right { get; set; }
         public int Weight { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("{0}({1})", Right, Weight);
+        }
     }
     public class AdjacencyListGraph
     {
@@ -131,6 +136,11 @@ namespace AlgorithmsOnGraphs
     public class AdjacencyList : Dictionary<int,Edge>
     {
         public bool IsSink { get { return !this.Any(); } }
+
+        public override string ToString()
+        {
+            return string.Join(", ", this.Select(kvp => kvp.Value.ToString()));
+        }
     }
 
     public class AdjacencyListArray
@@ -152,13 +162,8 @@ namespace AlgorithmsOnGraphs
 
         public override string ToString()
         {
-            return string.Join(Environment.NewLine,
-                _list.Select(
-                    (item, i) =>  string.Format("[{0}]: {1}", i,
-                        item == null
-                            ? ""
-                            : string.Join(",", item.Select(e => e.ToString()))))
-                );
+            var listItems = _list.Select((item, i) => string.Format("{0} => {1}", i, item == null ? "" : item.ToString()));
+            return string.Join(" || ", listItems);
         }
     }
 }

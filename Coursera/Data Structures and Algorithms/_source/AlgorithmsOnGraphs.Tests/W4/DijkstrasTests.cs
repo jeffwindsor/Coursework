@@ -8,6 +8,8 @@ namespace AlgorithmsOnGraphs.Tests.W4
     {
         [TestCase("Sample1")]
         [TestCase("Sample2")]
+        [TestCase("Sample3")]
+        [TestCase("Case2")]
         public void TestFiles(string file)
         {
             TestFromRelativeFilePath(@"Dijkstras\" + file, Dijkstras.Answer);
