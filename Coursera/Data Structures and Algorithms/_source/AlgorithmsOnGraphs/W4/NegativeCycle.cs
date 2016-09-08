@@ -20,61 +20,80 @@ namespace AlgorithmsOnGraphs.W4
         public static IList<string> Answer(IList<string> inputs)
         {
             var gis = new AdjacencyListGraphInput(inputs);
-
             //Convert exchange rate to negative weight
             gis.WeightParseFunction = x => -Math.Log(x,2);
+            var g = gis.ToEdges();
 
-            //BellmanFordAlgorithm
-            var s = new NegativeCycle(gis.ToEdges());
-            var cycle = s.HasNegativeCycle();
+            var s = new NegativeCycle(g.Item1,g.Item2);
+            var answer = s.HasNegativeCycle() ? "1" : "0";
             
-            return new[] { cycle ? "1" : "0" };
+            return new[] { answer };
         }
 
         private readonly List<Edge> _edges;
         private readonly int _size;
-        private SearchData<double> _distance;
-        private SearchData<int> _visitedFrom;
         private const double MaxDistance = double.PositiveInfinity;
 
-        public NegativeCycle(Tuple<int, IEnumerable<Edge>> edges)
+        public NegativeCycle(int vertices, IEnumerable<Edge> edges)
         {
-            _edges = edges.Item2.ToList();
-            _size = edges.Item1;
+            _edges = edges.OrderBy(e=>e.Left).ToList();
+            _size = vertices;
         }
 
         public bool HasNegativeCycle()
         {
-            Explore(0);
-            return _edges.Any(e => Relax(e.Left, e.Right, e.Weight));
+            var result = BellmanFord(0, _size);
+            return _edges.Any(e => Relax(e, result));
         }
 
-        private void Explore(int start)
+        private class BellmanFordResult
         {
-            _visitedFrom = new SearchData<int>(_size,-1);
-            _distance = new SearchData<double>(_size, MaxDistance);
-            _distance.SetValue(start, 0);
+            public BellmanFordResult(int size)
+            {
+                Size = size;
+                VisitedFrom = new SearchData<int>(size, -1);
+                Distance = new SearchData<double>(size, MaxDistance);
+            }
+            public int Size { get; set; }
+            public SearchData<double> Distance { get; set; }
+            public SearchData<int> VisitedFrom { get; set; }
+        }
 
+        private BellmanFordResult BellmanFord(int start, int size)
+        {
+            var result = new BellmanFordResult(size);
+            result.Distance.SetValue(start, 0);
+
+            IEnumerable<Edge> workingEdges = _edges;
             for (var i = 0; i < _size; i++)
             {
-                foreach (var e in _edges)
-                {
-                    Relax(e.Left, e.Right, e.Weight);
-                }
+                workingEdges = workingEdges.Where(e => Relax(e, result) || IsMaxDistance(e.Weight));
             }
+            return result;
         }
 
-        private bool Relax(int left, int right, double weight)
+        private static bool IsMaxDistance(double d)
         {
-            var relaxedDistance = double.IsPositiveInfinity(_distance.GetValue(left))
-                ? MaxDistance
-                : _distance.GetValue(left) + weight;
-            var currentDistance = _distance.GetValue(right);
+            return double.IsPositiveInfinity(d);
+        }
+
+        private static bool Relax(Edge e, BellmanFordResult r)
+        {
+            return Relax(e.Left, e.Right, e.Weight, r);
+        }
+
+        private static bool Relax(int left, int right, double weight, BellmanFordResult r)
+        {
+            var leftDistance = r.Distance.GetValue(left);
+            var relaxedDistance = IsMaxDistance(leftDistance)
+                ? leftDistance
+                : leftDistance + weight;
+            var currentDistance = r.Distance.GetValue(right);
 
             if (currentDistance <= relaxedDistance) return false;
 
-            _distance.SetValue(right, relaxedDistance);
-            _visitedFrom.SetValue(right, left);
+            r.Distance.SetValue(right, relaxedDistance);
+            r.VisitedFrom.SetValue(right, left);
             return true;
         }
     }
