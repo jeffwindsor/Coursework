@@ -8,6 +8,9 @@ namespace AlgorithmsOnGraphs.Tests.W4
     {
         [TestCase("Sample1")]
         [TestCase("Sample2")]
+        [TestCase("Case2")]
+        [TestCase("Case5")]
+        [TestCase("Case5a")]
         public void TestFiles(string file)
         {
             TestFromRelativeFilePath(@"NegativeCycle\" + file, NegativeCycle.Answer);
