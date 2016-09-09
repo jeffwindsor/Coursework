@@ -37,9 +37,9 @@ namespace AlgorithmsOnGraphs.W4
             public BellmanFordResult(int size)
             {
                 VisitedFrom = new SearchData<int>(size, -1);
-                Distance = new SearchData<double>(size, 0);
+                Distance = new SearchData<int>(size, 0);
             }
-            public SearchData<double> Distance { get; private set; }
+            public SearchData<int> Distance { get; private set; }
             public SearchData<int> VisitedFrom { get; private set; }
         }
 
@@ -62,7 +62,7 @@ namespace AlgorithmsOnGraphs.W4
             return Relax(e.Left, e.Right, e.Weight, r);
         }
 
-        private static bool Relax(int left, int right, double weight, BellmanFordResult r)
+        private static bool Relax(int left, int right, int weight, BellmanFordResult r)
         {
             var leftDistance = r.Distance.GetValue(left);
             var relaxedDistance = leftDistance + weight;

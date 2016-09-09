@@ -12,11 +12,8 @@ namespace AlgorithmsOnGraphs
         public AdjacencyListGraphInput(IList<string> inputs)
         {
             _inputs = inputs;
-            WeightParseFunction = x => x;  //No Op
         }
-
-        public Func<double, double> WeightParseFunction { get; set; }
-
+        
         public Tuple<int,IEnumerable<Edge>> ToEdges()
         {
             var line0 = ParseIntPair(_inputs[0]);
@@ -66,7 +63,10 @@ namespace AlgorithmsOnGraphs
         {
             return ParseEdge(_inputs[_lineCursor++]);
         }
-
+        public int NextAsInt()
+        {
+            return int.Parse(_inputs[_lineCursor++]);
+        }
 
         private static readonly char[] Splits = { ' ' };
         public static Tuple<int, int> ParseIntPair(string line)
@@ -82,7 +82,7 @@ namespace AlgorithmsOnGraphs
             {
                 Left = ParseIndex(linePath[0]),
                 Right = ParseIndex(linePath[1]),
-                Weight = (linePath.Length ==3)? WeightParseFunction(double.Parse(linePath[2])) : 0.0
+                Weight = (linePath.Length ==3)? int.Parse(linePath[2]) : 0
             };
         }
         public static int ParseIndex(string source)
@@ -114,7 +114,7 @@ namespace AlgorithmsOnGraphs
     {
         public int Left { get; set; }
         public int Right { get; set; }
-        public double Weight { get; set; }
+        public int Weight { get; set; }
 
         public override string ToString()
         {
