@@ -63,9 +63,9 @@ namespace AlgorithmsOnGraphs
         {
             return ParseEdge(_inputs[_lineCursor++]);
         }
-        public int NextAsInt()
+        public int NextAsIndex()
         {
-            return int.Parse(_inputs[_lineCursor++]);
+            return ParseIndex(_inputs[_lineCursor++]);
         }
 
         private static readonly char[] Splits = { ' ' };
@@ -114,7 +114,7 @@ namespace AlgorithmsOnGraphs
     {
         public int Left { get; set; }
         public int Right { get; set; }
-        public int Weight { get; set; }
+        public long Weight { get; set; }
 
         public override string ToString()
         {

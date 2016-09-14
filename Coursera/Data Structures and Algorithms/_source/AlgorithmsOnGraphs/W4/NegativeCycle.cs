@@ -29,7 +29,7 @@ namespace AlgorithmsOnGraphs.W4
         private static bool HasNegativeCycle(int size, List<Edge> edges)
         {
             var result = BellmanFord(size, edges);
-            return edges.Any(e => Relax(e, result));
+            return edges.Any(e => Relax(e.Left, e.Right, e.Weight, result));
         }
 
         private class BellmanFordResult
@@ -37,9 +37,9 @@ namespace AlgorithmsOnGraphs.W4
             public BellmanFordResult(int size)
             {
                 VisitedFrom = new SearchData<int>(size, -1);
-                Distance = new SearchData<int>(size, 0);
+                Distance = new SearchData<long>(size, 0);
             }
-            public SearchData<int> Distance { get; private set; }
+            public SearchData<long> Distance { get; private set; }
             public SearchData<int> VisitedFrom { get; private set; }
         }
 
@@ -47,22 +47,17 @@ namespace AlgorithmsOnGraphs.W4
         {
             var result = new BellmanFordResult(size);
             //Console.WriteLine("Initial: {0}",result.Distance);
-            IEnumerable<Edge> workingEdges = edges;
+            //IEnumerable<Edge> workingEdges = edges;
             for (var i = 0; i < size; i++)
             {
-                foreach (var edge in edges){ Relax(edge,result); }
+                foreach (var e in edges){ Relax(e.Left,e.Right,e.Weight,result); }
                 //workingEdges = workingEdges.Where(e => Relax(e, result) e.Weight == 0);
                 //Console.WriteLine("{1}: {0}", result.Distance,i);
             }
             return result;
         }
-        
-        private static bool Relax(Edge e, BellmanFordResult r)
-        {
-            return Relax(e.Left, e.Right, e.Weight, r);
-        }
-
-        private static bool Relax(int left, int right, int weight, BellmanFordResult r)
+     
+        private static bool Relax(int left, int right, long weight, BellmanFordResult r)
         {
             var leftDistance = r.Distance.GetValue(left);
             var relaxedDistance = leftDistance + weight;

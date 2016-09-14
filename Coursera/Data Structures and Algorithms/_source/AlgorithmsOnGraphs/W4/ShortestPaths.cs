@@ -21,7 +21,7 @@ namespace AlgorithmsOnGraphs.W4
         {
             var gis = new AdjacencyListGraphInput(inputs);
             var g = gis.ToEdges();
-            var start = gis.NextAsInt();
+            var start = gis.NextAsIndex();
 
 
             var path = ShortestPath(start, g.Item1, g.Item2.ToList());
@@ -42,8 +42,8 @@ namespace AlgorithmsOnGraphs.W4
                 .ToArray();
         }
 
-        private const int PositiveInfinity = int.MaxValue;
-        private const int NegativeInfinity = int.MinValue;
+        private const long PositiveInfinity = long.MaxValue;
+        private const long NegativeInfinity = long.MinValue;
         
         private static BellmanFordResult ShortestPath(int start, int size, List<Edge> edges)
         {
@@ -55,7 +55,7 @@ namespace AlgorithmsOnGraphs.W4
 
             var result = BellmanFord(start, size, edges);
             var negative = edges
-                .Where(e => ShouldRelax(e, result).Item1)
+                .Where(e => ShouldRelax(e.Left,e.Right,e.Weight, result).Item1)
                 .Select(e => e.Right)
                 .ToList();
             
@@ -72,21 +72,19 @@ namespace AlgorithmsOnGraphs.W4
             result.Distance.SetValue(start,0);
 
             //Console.WriteLine("Initial: {0}",result.Distance);
-            IEnumerable<Edge> workingEdges = edges;
+            //IEnumerable<Edge> workingEdges = edges;
             for (var i = 0; i < size; i++)
             {
-                foreach (var edge in edges) { Relax(edge, result); }
+                foreach (var e in edges)
+                {
+                    Relax(e.Left, e.Right, e.Weight, result);
+                }
                 //Console.WriteLine("{1}: {0}", result.Distance,i);
             }
             return result;
         }
-
-        private static bool Relax(Edge e, BellmanFordResult r)
-        {
-            return Relax(e.Left, e.Right, e.Weight, r);
-        }
-
-        private static bool Relax(int left, int right, int weight, BellmanFordResult r)
+        
+        private static bool Relax(int left, int right, long weight, BellmanFordResult r)
         {
             var should = ShouldRelax(left, right, weight, r);
 
@@ -97,18 +95,14 @@ namespace AlgorithmsOnGraphs.W4
             }
             return should.Item1;
         }
-
-        private static Tuple<bool, int> ShouldRelax(Edge e, BellmanFordResult r)
-        {
-            return ShouldRelax(e.Left, e.Right, e.Weight, r);
-        }
-        private static Tuple<bool, int> ShouldRelax(int left, int right, int weight, BellmanFordResult r)
+        
+        private static Tuple<bool, long> ShouldRelax(int left, int right, long weight, BellmanFordResult r)
         {
             var leftDistance = r.Distance.GetValue(left);
             var relaxedDistance = leftDistance == PositiveInfinity ? leftDistance : leftDistance + weight;
             var currentDistance = r.Distance.GetValue(right);
 
-            return new Tuple<bool, int>(currentDistance > relaxedDistance, relaxedDistance);
+            return new Tuple<bool, long>(currentDistance > relaxedDistance, relaxedDistance);
         }
 
         private class BellmanFordResult
@@ -116,9 +110,9 @@ namespace AlgorithmsOnGraphs.W4
             public BellmanFordResult(int size)
             {
                 VisitedFrom = new SearchData<int>(size, -1);
-                Distance = new SearchData<int>(size, PositiveInfinity);
+                Distance = new SearchData<long>(size, PositiveInfinity);
             }
-            public SearchData<int> Distance { get; private set; }
+            public SearchData<long> Distance { get; private set; }
             public SearchData<int> VisitedFrom { get; private set; }
         }
         
