@@ -93,6 +93,8 @@
     <Compile Include="W4\ShortestPathsTests.cs" />
     <Compile Include="W4\NegativeCycleTests.cs" />
     <Compile Include="W4\DijkstrasTests.cs" />
+    <Compile Include="W5\ConnectingComponents.cs" />
+    <Compile Include="W5\ClusteringTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AlgorithmsOnGraphs\AlgorithmsOnGraphs.csproj">

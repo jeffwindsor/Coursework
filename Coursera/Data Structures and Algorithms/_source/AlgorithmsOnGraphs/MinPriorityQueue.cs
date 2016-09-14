@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 
@@ -9,7 +10,7 @@ namespace AlgorithmsOnGraphs
         private class Node
         {
             public int Value { get; set; }
-            public int Priority { get; set; }
+            public long Priority { get; set; }
         }
 
         private const int NOT_IN_HEAP = -1;
@@ -25,7 +26,7 @@ namespace AlgorithmsOnGraphs
             _maxSize = size;
         }
 
-        public void Enqueue(int value, int priority)
+        public void Enqueue(int value, long priority)
         {
             if (_currentSize == _maxSize) throw new ArgumentOutOfRangeException();
             _currentSize += 1;
@@ -55,7 +56,12 @@ namespace AlgorithmsOnGraphs
             return Dequeue();
         }
 
-        public void ChangePriority(int value, int priority)
+        public bool Contains(int value)
+        {
+            return _valueToHeapIndexMap[value] != NOT_IN_HEAP;
+        }
+
+        public void ChangePriority(int value, long priority)
         {
             var heapIndex = _valueToHeapIndexMap[value];
             if (heapIndex == NOT_IN_HEAP)
@@ -118,7 +124,7 @@ namespace AlgorithmsOnGraphs
             return IsPrioritySwap(_heap[source].Priority, _heap[target].Priority);
         }
 
-        private static bool IsPrioritySwap(int source, int target)
+        private static bool IsPrioritySwap(long source, long target)
         {
             return source < target;
         }
