@@ -2,8 +2,76 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AlgorithmsOnGraphs
+namespace AlgorithmsOnGraphs.W5
 {
+    public class Clustering
+    {
+        public static void Main(string[] args)
+        {
+            string s;
+            var inputs = new List<string>();
+            while ((s = Console.ReadLine()) != null)
+                inputs.Add(s);
+
+            foreach (var result in Answer(inputs.ToArray()))
+                Console.WriteLine(result);
+        }
+
+        public static IList<string> Answer(IList<string> inputs)
+        {
+            var gis = Inputs.AdjacencyListGraphDecimal(inputs);
+            var pointsWithCount = gis.ToPoints();
+            var k = gis.NextAsInt();
+
+            var pointCount = pointsWithCount.Item1;
+            var points = pointsWithCount.Item2.ToArray();
+            var lines = PrimsAlgorithm.ConnectAllPoints(pointCount, points);
+
+            var value = Calculate(k, pointCount, lines);
+            var answer = value.ToString("0.0000000000");
+            answer = answer.Remove(answer.Length - 1);  //Simulate truncate at 9
+            return new[] { answer };
+        }
+
+        public static decimal Calculate(int numberOfClusters, int pointCount, IEnumerable<Edge<decimal>> lines)
+        {
+            const int NO_CLUSTER = -1;
+            var clusterId = NO_CLUSTER;
+            var clusters = new SearchData<int>(pointCount, NO_CLUSTER);
+            var queue = new HashSet<int>(Enumerable.Range(0,pointCount));
+            var d = decimal.MinValue;
+
+            foreach (var line in lines.OrderBy(l => l.Weight))
+            {
+                if (!queue.Any())
+                {
+                    if (clusters.GetValue(line.Left) == clusters.GetValue(line.Right))
+                        continue;
+                    else
+                        return line.Weight;
+                }
+                d = line.Weight;
+                if (!queue.Contains(line.Left)) continue;
+                
+
+                queue.Remove(line.Left);
+                if (clusters.GetValue(line.Right) == NO_CLUSTER)
+                {
+                    if(clusterId < numberOfClusters) clusterId++;
+
+                    clusters.SetValue(line.Right, clusterId);
+                    clusters.SetValue(line.Left, clusterId);
+                }
+                else
+                {
+                    clusters.SetValue(line.Left, clusters.GetValue(line.Right));
+                }
+            }
+
+            return d;
+        }
+    }
+
     public class Inputs
     {
         public static AdjacencyListGraphInput<long> AdjacencyListGraphLong(IList<string> inputs)
@@ -233,6 +301,64 @@ namespace AlgorithmsOnGraphs
         {
             var listItems = _list.Select((item, i) => string.Format("{0} => {1}", i, item == null ? "" : item.ToString()));
             return string.Join(" || ", listItems);
+        }
+    }
+
+    public class PrimsAlgorithm
+    {
+        public static IEnumerable<Edge<decimal>> ConnectAllPoints(int pointCount, Point[] points)
+        {
+            //make edge for all points to all other points except self
+            //  with weight = SQRT( SQR(x1 - x2) + SQR(y1 - y2))
+            //  left = index of point
+            //  right = index of to point
+            var lines =
+                from x in Enumerable.Range(0, pointCount)
+                from y in Enumerable.Range(0, pointCount)
+                where x != y
+                let xp = points[x]
+                let yp = points[y]
+                select new Edge<decimal> { Left = x, Right = y, Weight = GetDistance(xp, yp) };
+            return lines;
+        }
+
+        private static decimal GetDistance(Point a, Point b)
+        {
+            var value = Math.Sqrt(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2));
+            return Convert.ToDecimal(value);
+        }
+
+    }
+     public class SearchData<T> where T : IEquatable<T>
+    {
+        private readonly T[] _values;
+        public readonly T InitialValue;
+        public SearchData(int size, T initialValue)
+        {
+            InitialValue = initialValue;
+            _values = Enumerable.Repeat(initialValue, size).ToArray();
+        }
+        
+        public bool Visited(int v)
+        {
+            return !_values[v].Equals(InitialValue);
+        }
+
+        public int Length {get { return _values.Length; }}
+        public ICollection<T> Values { get { return _values; } }
+        public virtual void SetValue(int v, T value)
+        {
+            _values[v] = value;
+        }
+        public virtual T GetValue(int v)
+        {
+            return _values[v];
+        }
+
+        public override string ToString()
+        {
+            var items = _values.Select((v, i) => string.Format("{0}:{1}", i, v));
+            return string.Join(", ", items);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace AlgorithmsOnGraphs.W5
             var pointCount = pointsWithCount.Item1;
             var points = pointsWithCount.Item2.ToArray();
 
-            var lines = PrimsAlgorithm.ToEdges(pointCount,points);
+            var lines = PrimsAlgorithm.ConnectAllPoints(pointCount,points);
             var g = gis.ToUndirectedAdjacencyGraph(new Tuple<int, IEnumerable<Edge<decimal>>>(pointCount,lines));
 
             var primsResult = PrimsAlgorithm.Calculate(g);

@@ -6,7 +6,7 @@ namespace AlgorithmsOnGraphs
 {
     public class PrimsAlgorithm
     {
-        public static IEnumerable<Edge<decimal>> ToEdges(int pointCount, Point[] points)
+        public static IEnumerable<Edge<decimal>> ConnectAllPoints(int pointCount, Point[] points)
         {
             //make edge for all points to all other points except self
             //  with weight = SQRT( SQR(x1 - x2) + SQR(y1 - y2))

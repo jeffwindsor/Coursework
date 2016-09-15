@@ -8,6 +8,7 @@ namespace AlgorithmsOnGraphs.Tests.W5
     {
         [TestCase("Sample1")]
         [TestCase("Sample2")]
+        [TestCase("Case2")]
         public void TestFiles(string file)
         {
             TestFromRelativeFilePath(@"Clustering\" + file, Clustering.Answer);
