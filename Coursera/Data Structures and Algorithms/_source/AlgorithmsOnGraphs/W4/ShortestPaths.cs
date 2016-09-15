@@ -19,7 +19,7 @@ namespace AlgorithmsOnGraphs.W4
 
         public static IList<string> Answer(IList<string> inputs)
         {
-            var gis = new AdjacencyListGraphInput(inputs);
+            var gis = Inputs.AdjacencyListGraphLong(inputs);
             var g = gis.ToEdges();
             var start = gis.NextAsIndex();
 
@@ -45,9 +45,9 @@ namespace AlgorithmsOnGraphs.W4
         private const long PositiveInfinity = long.MaxValue;
         private const long NegativeInfinity = long.MinValue;
         
-        private static BellmanFordResult ShortestPath(int start, int size, List<Edge> edges)
+        private static BellmanFordResult ShortestPath(int start, int size, List<Edge<long>> edges)
         {
-            var g = new AdjacencyListGraph(size);
+            var g = new AdjacencyListGraph<long>(size);
             foreach (var edge in edges)
             {
                 g.AddDirectedEdge(edge);
@@ -66,7 +66,7 @@ namespace AlgorithmsOnGraphs.W4
             return result;
         }
         
-        private static BellmanFordResult BellmanFord(int start, int size, List<Edge> edges)
+        private static BellmanFordResult BellmanFord(int start, int size, List<Edge<long>> edges)
         {
             var result = new BellmanFordResult(size);
             result.Distance.SetValue(start,0);
@@ -116,7 +116,7 @@ namespace AlgorithmsOnGraphs.W4
             public SearchData<int> VisitedFrom { get; private set; }
         }
         
-        public static IEnumerable<int> BreathFirstSearch(IEnumerable<int> starts, AdjacencyListGraph graph)
+        public static IEnumerable<int> BreathFirstSearch(IEnumerable<int> starts, AdjacencyListGraph<long> graph)
         {
             var visited = new SearchData<bool>(graph.Size(), false);
             var queue = new Queue<int>();

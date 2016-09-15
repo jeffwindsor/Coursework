@@ -1,16 +1,14 @@
 using System;
-using System.ComponentModel;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 
 namespace AlgorithmsOnGraphs
 {
-    public class MinPriorityQueue
+    public class MinPriorityQueue<TPriority> where TPriority : IComparable<TPriority>
     {
         private class Node
         {
             public int Value { get; set; }
-            public long Priority { get; set; }
+            public TPriority Priority { get; set; }
         }
 
         private const int NOT_IN_HEAP = -1;
@@ -18,15 +16,17 @@ namespace AlgorithmsOnGraphs
         private int _currentSize;
         private readonly Node[] _heap;
         private readonly int[] _valueToHeapIndexMap;
+        private readonly TPriority _maxPriority;
 
-        public MinPriorityQueue(int size)
+        public MinPriorityQueue(int size, TPriority maxPriority)
         {
             _heap = new Node[size];
             _valueToHeapIndexMap = Enumerable.Range(0,size).Select(_ => NOT_IN_HEAP).ToArray();
             _maxSize = size;
+            _maxPriority = maxPriority;
         }
 
-        public void Enqueue(int value, long priority)
+        public void Enqueue(int value, TPriority priority)
         {
             if (_currentSize == _maxSize) throw new ArgumentOutOfRangeException();
             _currentSize += 1;
@@ -51,7 +51,7 @@ namespace AlgorithmsOnGraphs
 
         private int Remove(int index)
         {
-            _heap[index].Priority = int.MaxValue;
+            _heap[index].Priority = _maxPriority;
             SiftUp(index);
             return Dequeue();
         }
@@ -61,7 +61,7 @@ namespace AlgorithmsOnGraphs
             return _valueToHeapIndexMap[value] != NOT_IN_HEAP;
         }
 
-        public void ChangePriority(int value, long priority)
+        public void ChangePriority(int value, TPriority priority)
         {
             var heapIndex = _valueToHeapIndexMap[value];
             if (heapIndex == NOT_IN_HEAP)
@@ -124,9 +124,9 @@ namespace AlgorithmsOnGraphs
             return IsPrioritySwap(_heap[source].Priority, _heap[target].Priority);
         }
 
-        private static bool IsPrioritySwap(long source, long target)
+        private static bool IsPrioritySwap(TPriority source, TPriority target)
         {
-            return source < target;
+            return source.CompareTo(target) < 0; //   source < target;
         }
 
         private void Swap(int source, int target)

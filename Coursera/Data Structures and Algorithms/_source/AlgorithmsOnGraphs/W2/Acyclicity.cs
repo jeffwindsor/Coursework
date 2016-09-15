@@ -19,14 +19,14 @@ namespace AlgorithmsOnGraphs.W2
 
         public static IList<string> Answer(IList<string> inputs)
         {
-            var graph = new AdjacencyListGraphInput(inputs).ToDirectedAdjacencyGraph();
+            var graph = Inputs.AdjacencyListGraphLong(inputs).ToDirectedAdjacencyGraph();
             //Console.WriteLine(graph);
             
             var answer = IsCyclic(graph) ? "1" : "0";
 
             return new[] { answer };
         }
-        private static bool IsCyclic(AdjacencyListGraph g)
+        private static bool IsCyclic(AdjacencyListGraph<long> g)
         {
             try
             {

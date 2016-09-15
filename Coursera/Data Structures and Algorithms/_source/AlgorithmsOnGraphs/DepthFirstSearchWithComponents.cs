@@ -6,10 +6,10 @@ namespace AlgorithmsOnGraphs
     public class DepthFirstSearchWithComponents
     {
         public int MaxComponent { get; private set; }
-        private readonly AdjacencyListGraph _graph;
+        private readonly AdjacencyListGraph<long> _graph;
         private readonly SearchData<int> _component;
 
-        public DepthFirstSearchWithComponents(AdjacencyListGraph g)
+        public DepthFirstSearchWithComponents(AdjacencyListGraph<long> g)
         {
             _graph = g;
             _component = new SearchData<int>(g.Size(), -1);

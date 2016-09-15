@@ -59,7 +59,7 @@
     <Compile Include="W4\NegativeCycle.cs" />
     <Compile Include="W4\Dijkstras.cs" />
     <Compile Include="W5\Clustering.cs" />
-    <Compile Include="W5\ConnectingComponents.cs" />
+    <Compile Include="W5\ConnectingPoints.cs" />
     <Compile Include="W4\ShortestPaths.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -6,9 +6,9 @@ namespace AlgorithmsOnGraphs
     public class GraphCycleException : Exception { }
     public class DepthFirstSearchWithCycleDetection
     {
-        private readonly AdjacencyListGraph _g;
+        private readonly AdjacencyListGraph<long> _g;
         
-        public DepthFirstSearchWithCycleDetection(AdjacencyListGraph g)
+        public DepthFirstSearchWithCycleDetection(AdjacencyListGraph<long> g)
         {
             _g = g;
         }

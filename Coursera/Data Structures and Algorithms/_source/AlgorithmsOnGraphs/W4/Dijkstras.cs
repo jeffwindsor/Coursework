@@ -19,7 +19,7 @@ namespace AlgorithmsOnGraphs.W4
 
         public static IList<string> Answer(IList<string> inputs)
         {
-            var gi = new AdjacencyListGraphInput(inputs);
+            var gi = Inputs.AdjacencyListGraphLong(inputs);
             var graph = gi.ToDirectedAdjacencyGraph();
             var points = gi.NextAsEdge();
             //Console.WriteLine(graph);
@@ -30,12 +30,12 @@ namespace AlgorithmsOnGraphs.W4
             return new[] { cost.ToString() };
         }
 
-        private readonly AdjacencyListGraph _graph;
+        private readonly AdjacencyListGraph<long> _graph;
         private SearchData<int> _distance;
         private SearchData<int> _visitedFrom;
         private const int MaxDistance = int.MaxValue;
 
-        public Dijkstras(AdjacencyListGraph g)
+        public Dijkstras(AdjacencyListGraph<long> g)
         {
             _graph = g;
         }
@@ -56,7 +56,7 @@ namespace AlgorithmsOnGraphs.W4
             _distance.SetValue(start, 0);
 
             //Make Prioirty Queue
-            var pq = new MinPriorityQueue(_graph.Size());
+            var pq = new MinPriorityQueue<long>(_graph.Size(), long.MaxValue);
             for (var i = 0; i < _distance.Length; i++)
             {
                 pq.Enqueue(i, _distance.GetValue(i));

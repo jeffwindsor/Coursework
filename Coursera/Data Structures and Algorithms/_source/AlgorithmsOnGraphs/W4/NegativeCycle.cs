@@ -19,14 +19,14 @@ namespace AlgorithmsOnGraphs.W4
 
         public static IList<string> Answer(IList<string> inputs)
         {
-            var gis = new AdjacencyListGraphInput(inputs);
+            var gis = Inputs.AdjacencyListGraphLong(inputs);
             var g = gis.ToEdges();
             
             var answer = HasNegativeCycle(g.Item1, g.Item2.ToList()) ? "1" : "0";
             return new[] { answer };
         }
 
-        private static bool HasNegativeCycle(int size, List<Edge> edges)
+        private static bool HasNegativeCycle(int size, List<Edge<long>> edges)
         {
             var result = BellmanFord(size, edges);
             return edges.Any(e => Relax(e.Left, e.Right, e.Weight, result));
@@ -43,7 +43,7 @@ namespace AlgorithmsOnGraphs.W4
             public SearchData<int> VisitedFrom { get; private set; }
         }
 
-        private static BellmanFordResult BellmanFord(int size, List<Edge> edges)
+        private static BellmanFordResult BellmanFord(int size, List<Edge<long>> edges)
         {
             var result = new BellmanFordResult(size);
             //Console.WriteLine("Initial: {0}",result.Distance);

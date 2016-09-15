@@ -20,7 +20,7 @@ namespace AlgorithmsOnGraphs.W2
 
         public static IList<string> Answer(IList<string> inputs)
         {
-            var graphInputs = new AdjacencyListGraphInput(inputs);
+            var graphInputs = Inputs.AdjacencyListGraphLong(inputs);
             var g = graphInputs.ToDirectedAdjacencyGraph();
             //Console.WriteLine(g);
             var rg = graphInputs.ToDirectedReverseAdjacencyGraph();
@@ -30,7 +30,7 @@ namespace AlgorithmsOnGraphs.W2
             var answer = s.Count();
             return new[] { answer.ToString() };
         }
-        public static IEnumerable<int> StronglyConnectedComponents(AdjacencyListGraph graph, AdjacencyListGraph reverse)
+        public static IEnumerable<int> StronglyConnectedComponents(AdjacencyListGraph<long> graph, AdjacencyListGraph<long> reverse)
         {
             //run dfs of reverse graph
             var srg = new TopologicalSort(reverse);

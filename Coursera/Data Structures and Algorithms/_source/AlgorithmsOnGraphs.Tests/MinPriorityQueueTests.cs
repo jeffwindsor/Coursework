@@ -38,13 +38,13 @@ namespace AlgorithmsOnGraphs.Tests
         }
 
 
-        public void AssertDequeuesByPriority(MinPriorityQueue q, int[] expected)
+        public void AssertDequeuesByPriority(MinPriorityQueue<int> q, int[] expected)
         {
             var actual = DequeueAll(q);
             actual.Should().Equal(expected);
         }
 
-        private static int[] DequeueAll(MinPriorityQueue queue)
+        private static int[] DequeueAll(MinPriorityQueue<int> queue)
         {
             var result = new List<int>();
 
@@ -59,9 +59,9 @@ namespace AlgorithmsOnGraphs.Tests
             return result.ToArray();
         }
 
-        private static MinPriorityQueue CreateQueue(int[] priorities)
+        private static MinPriorityQueue<int> CreateQueue(int[] priorities)
         {
-            var queue = new MinPriorityQueue(priorities.Length);
+            var queue = new MinPriorityQueue<int>(priorities.Length, int.MaxValue);
             for (var i = 0; i < priorities.Length; i++)
             {
                 queue.Enqueue(i, priorities[i]);

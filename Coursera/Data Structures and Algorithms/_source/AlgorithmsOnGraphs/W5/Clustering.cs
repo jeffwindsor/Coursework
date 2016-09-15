@@ -19,7 +19,7 @@ namespace AlgorithmsOnGraphs.W5
 
         public static IList<string> Answer(IList<string> inputs)
         {
-            var gis = new AdjacencyListGraphInput(inputs);
+            var gis = Inputs.AdjacencyListGraphLong(inputs);
             var g = gis.ToEdges();
             var start = gis.NextAsIndex();
 

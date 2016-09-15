@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace AlgorithmsOnGraphs.W5
 {
-    public class ConnectingComponents
+    public class ConnectingPoints
     {
         //public static void Main(string[] args)
         //{
@@ -21,22 +20,37 @@ namespace AlgorithmsOnGraphs.W5
         private const long PositiveInfinity = long.MaxValue;
         public static IList<string> Answer(IList<string> inputs)
         {
-            var gis = new AdjacencyListGraphInput(inputs);
+            var gis = Inputs.AdjacencyListGraphDecimal(inputs);
+            var points = gis.ToPoints();
+            var verticeCount = points.Item1;
+            var vertices = points.Item2.ToArray();
 
-            //read points with index
             //make edge for all points to all other points except self
             //  with weight = SQRT( SQR(x1 - x2) + SQR(y1 - y2))
             //  left = index of point
             //  right = index of to point
+            var lines = 
+                from x in Enumerable.Range(0, verticeCount)
+                from y in Enumerable.Range(0, verticeCount)
+                where x != y
+                let xp = vertices[x]
+                let yp = vertices[y]
+                select new Edge<decimal> {Left = x, Right = y, Weight = GetDistance(xp,yp)};
             //then build tree from edges
+            var g = gis.ToUndirectedAdjacencyGraph(new Tuple<int, IEnumerable<Edge<decimal>>>(verticeCount,lines));
+            var primsResult = PrimsAlgorithm(g);
+            var answer = primsResult.Cost.Values.Sum();
 
-            var g = gis.ToUndirectedAdjacencyGraph();
-            var result = PrimsAlgorithm(g);
-
-            throw new NotImplementedException();
+            return new [] { answer.ToString("0.000000000") };
         }
 
-        private static PrimsResult PrimsAlgorithm(AdjacencyListGraph graph)
+        private static decimal GetDistance(Point a, Point b)
+        {
+            var value = Math.Sqrt(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2));
+            return Convert.ToDecimal(value);
+        }
+
+        private static PrimsResult PrimsAlgorithm(AdjacencyListGraph<decimal> graph)
         {
             var size = graph.Size();
 
@@ -45,7 +59,7 @@ namespace AlgorithmsOnGraphs.W5
             result.Cost.SetValue(0,0);
 
             //priority queue of costs
-            var q = new MinPriorityQueue(size);
+            var q = new MinPriorityQueue<decimal>(size, decimal.MaxValue);
             for (var i = 0; i < size; i++)
             {
                 q.Enqueue(i,result.Cost.GetValue(i));
@@ -69,8 +83,6 @@ namespace AlgorithmsOnGraphs.W5
                     q.ChangePriority(z,w);
                 }
             }
-
-
             return result;
         }
 
@@ -80,9 +92,9 @@ namespace AlgorithmsOnGraphs.W5
             public PrimsResult(int size)
             {
                 Parent = new SearchData<int>(size, -1);
-                Cost = new SearchData<long>(size, PositiveInfinity);
+                Cost = new SearchData<decimal>(size, PositiveInfinity);
             }
-            public SearchData<long> Cost { get; private set; }
+            public SearchData<decimal> Cost { get; private set; }
             public SearchData<int> Parent { get; private set; }
         }
     }
