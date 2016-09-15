@@ -27,48 +27,20 @@ namespace AlgorithmsOnGraphs.W5
             var points = pointsWithCount.Item2.ToArray();
             var lines = PrimsAlgorithm.ConnectAllPoints(pointCount, points);
 
-            var value = Calculate(k, pointCount, lines);
-            var answer = value.ToString("0.0000000000");
+            var g = gis.ToUndirectedAdjacencyGraph(new Tuple<int, IEnumerable<Edge<decimal>>>(pointCount, lines));
+            var primsResult = PrimsAlgorithm.Calculate(g);
+            
+            var d = primsResult.Cost.Values
+                .OrderByDescending(i => i)
+                .Take(k-1)
+                .Last();
+
+
+            var answer = d.ToString("0.0000000000");
             answer = answer.Remove(answer.Length - 1);  //Simulate truncate at 9
             return new[] { answer };
-        }
 
-        public static decimal Calculate(int numberOfClusters, int pointCount, IEnumerable<Edge<decimal>> lines)
-        {
-            const int NO_CLUSTER = -1;
-            var clusterId = NO_CLUSTER;
-            var clusters = new SearchData<int>(pointCount, NO_CLUSTER);
-            var queue = new HashSet<int>(Enumerable.Range(0,pointCount));
-            var d = decimal.MinValue;
-
-            foreach (var line in lines.OrderBy(l => l.Weight))
-            {
-                if (!queue.Any())
-                {
-                    if (clusters.GetValue(line.Left) == clusters.GetValue(line.Right))
-                        continue;
-                    else
-                        return line.Weight;
-                }
-                d = line.Weight;
-                if (!queue.Contains(line.Left)) continue;
-                
-
-                queue.Remove(line.Left);
-                if (clusters.GetValue(line.Right) == NO_CLUSTER)
-                {
-                    if(clusterId < numberOfClusters) clusterId++;
-
-                    clusters.SetValue(line.Right, clusterId);
-                    clusters.SetValue(line.Left, clusterId);
-                }
-                else
-                {
-                    clusters.SetValue(line.Left, clusters.GetValue(line.Right));
-                }
-            }
-
-            return d;
+            //return new[] { answer.ToString("0.000000000") };
         }
     }
 
@@ -304,7 +276,7 @@ namespace AlgorithmsOnGraphs.W5
         }
     }
 
-    public class PrimsAlgorithm
+public class PrimsAlgorithm
     {
         public static IEnumerable<Edge<decimal>> ConnectAllPoints(int pointCount, Point[] points)
         {
@@ -328,6 +300,52 @@ namespace AlgorithmsOnGraphs.W5
             return Convert.ToDecimal(value);
         }
 
+        public static PrimsResult Calculate(AdjacencyListGraph<decimal> graph)
+        {
+            var size = graph.Size();
+
+            //Initialize result with 0 as first vertex
+            var result = new PrimsResult(size);
+            result.Cost.SetValue(0, 0);
+
+            //priority queue of costs
+            var q = new MinPriorityQueue<decimal>(size, decimal.MaxValue);
+            for (var i = 0; i < size; i++)
+            {
+                q.Enqueue(i, result.Cost.GetValue(i));
+            }
+
+            //Walk
+            while (!q.IsEmpty())
+            {
+                //Console.WriteLine("Queue: {0}", q);
+                var currentIndex = q.Dequeue();
+
+                //Console.WriteLine("Extract: {0}", currentIndex);
+                foreach (var edge in graph.Neighbors(currentIndex))
+                {
+                    var z = edge.Right;
+                    var w = edge.Weight;
+                    if (!q.Contains(z) || result.Cost.GetValue(z) <= w) continue;
+
+                    result.Cost.SetValue(z, w);
+                    result.Parent.SetValue(z, currentIndex);
+                    q.ChangePriority(z, w);
+                }
+            }
+            return result;
+        }
+        
+        public class PrimsResult
+        {
+            public PrimsResult(int size)
+            {
+                Parent = new SearchData<int>(size, -1);
+                Cost = new SearchData<decimal>(size, decimal.MaxValue);
+            }
+            public SearchData<decimal> Cost { get; private set; }
+            public SearchData<int> Parent { get; private set; }
+        }
     }
      public class SearchData<T> where T : IEquatable<T>
     {
@@ -359,6 +377,152 @@ namespace AlgorithmsOnGraphs.W5
         {
             var items = _values.Select((v, i) => string.Format("{0}:{1}", i, v));
             return string.Join(", ", items);
+        }
+    }
+        public class MinPriorityQueue<TPriority> where TPriority : IComparable<TPriority>
+    {
+        private class Node
+        {
+            public int Value { get; set; }
+            public TPriority Priority { get; set; }
+        }
+
+        private const int NOT_IN_HEAP = -1;
+        private readonly int _maxSize;
+        private int _currentSize;
+        private readonly Node[] _heap;
+        private readonly int[] _valueToHeapIndexMap;
+        private readonly TPriority _maxPriority;
+
+        public MinPriorityQueue(int size, TPriority maxPriority)
+        {
+            _heap = new Node[size];
+            _valueToHeapIndexMap = Enumerable.Range(0,size).Select(_ => NOT_IN_HEAP).ToArray();
+            _maxSize = size;
+            _maxPriority = maxPriority;
+        }
+
+        public void Enqueue(int value, TPriority priority)
+        {
+            if (_currentSize == _maxSize) throw new ArgumentOutOfRangeException();
+            _currentSize += 1;
+
+            _valueToHeapIndexMap[value] = LastIndex;
+            _heap[LastIndex] = new Node { Value = value, Priority = priority };
+            SiftUp(LastIndex);
+        }
+
+        public int Dequeue()
+        {
+            var result = _heap[FirstIndex];
+
+            Swap(FirstIndex, LastIndex);
+            _heap[LastIndex] = null;
+            _valueToHeapIndexMap[result.Value] = NOT_IN_HEAP;
+            _currentSize -= 1;
+
+            SiftDown(FirstIndex);
+            return result.Value;
+        }
+
+        private int Remove(int index)
+        {
+            _heap[index].Priority = _maxPriority;
+            SiftUp(index);
+            return Dequeue();
+        }
+
+        public bool Contains(int value)
+        {
+            return _valueToHeapIndexMap[value] != NOT_IN_HEAP;
+        }
+
+        public void ChangePriority(int value, TPriority priority)
+        {
+            var heapIndex = _valueToHeapIndexMap[value];
+            if (heapIndex == NOT_IN_HEAP)
+                return;
+
+            var node = _heap[heapIndex];
+            var oldPriority = node.Priority;
+            node.Priority = priority;
+
+            if (IsPrioritySwap(priority, oldPriority))
+                SiftUp(heapIndex);
+            else
+                SiftDown(heapIndex);
+        }
+
+        private static int ParentIndex(int i) { return ((i - 1) / 2); }
+        private static int LeftChildIndex(int i) { return 2 * i + 1; }
+        private static int RightChildIndex(int i) { return 2 * i + 2; }
+        private int LastIndex { get { return _currentSize - 1; }}
+        private const int FirstIndex = 0;
+        public bool IsEmpty()
+        {
+            return _currentSize == 0;
+        }
+        
+
+        private void SiftUp(int index)
+        {
+            while (index > FirstIndex && IsSwap(index, ParentIndex(index)))
+            {
+                var parentIndex = ParentIndex(index);
+                Swap(index, parentIndex);
+                index = parentIndex;
+            }
+        }
+
+        private void SiftDown(int index)
+        {
+            while (true)
+            {
+                var maxIndex = index;
+
+                var rightIndex = RightChildIndex(index);
+                if (rightIndex < _currentSize && IsSwap(rightIndex, maxIndex))
+                    maxIndex = rightIndex;
+
+                var leftIndex = LeftChildIndex(index);
+                if (leftIndex < _currentSize && IsSwap(leftIndex, maxIndex))
+                    maxIndex = leftIndex;
+
+                if (index == maxIndex) return;
+
+                Swap(index, maxIndex);
+                index = maxIndex;
+            }
+        }
+
+        private bool IsSwap(int source, int target)
+        {
+            return IsPrioritySwap(_heap[source].Priority, _heap[target].Priority);
+        }
+
+        private static bool IsPrioritySwap(TPriority source, TPriority target)
+        {
+            return source.CompareTo(target) < 0; //   source < target;
+        }
+
+        private void Swap(int source, int target)
+        {
+            var one = _heap[source];
+            var two = _heap[target];
+
+            _valueToHeapIndexMap[one.Value] = target;
+            _valueToHeapIndexMap[two.Value] = source;
+
+            _heap[target] = one;
+            _heap[source] = two;
+
+
+        }
+
+        public override string ToString()
+        {
+            var values = _heap.Take(_currentSize).Select((n, i) => string.Format("{0}:{1}", n.Priority, n.Value));
+            return string.Join(", ", values);
         }
     }
 }
