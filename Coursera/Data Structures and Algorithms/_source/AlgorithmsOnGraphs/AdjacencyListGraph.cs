@@ -39,7 +39,7 @@ namespace AlgorithmsOnGraphs
 
             return new Tuple<int, IEnumerable<Point>>(pointCount, points);
         }
-
+        
         public Tuple<int,IEnumerable<Edge<TWeight>>> ToEdges()
         {
             var line0 = ParseIntPair(_inputs[0]);

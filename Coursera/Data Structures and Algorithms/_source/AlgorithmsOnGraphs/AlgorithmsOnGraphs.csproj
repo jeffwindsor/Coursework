@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="BreadthFirstSearchWithBipartiteDetection.cs" />
     <Compile Include="MinPriorityQueue.cs" />
+    <Compile Include="PrimsAlgorithm.cs" />
     <Compile Include="SearchData.cs" />
     <Compile Include="BreadthFirstSearchWithShortestPath.cs" />
     <Compile Include="DepthFirstSearchWithComponents.cs" />
