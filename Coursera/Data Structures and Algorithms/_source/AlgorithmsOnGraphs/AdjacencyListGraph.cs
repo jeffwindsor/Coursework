@@ -169,6 +169,7 @@ namespace AlgorithmsOnGraphs
             return string.Format("{0}({1})", Right, Weight);
         }
     }
+
     public class AdjacencyListGraph<TWeight>
     {
         private readonly AdjacencyListArray<TWeight> _lists;
