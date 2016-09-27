@@ -1,5 +1,4 @@
 ﻿using System;
-using AlgorithmsOnGraphs.Tests;
 using AlgorithmsOnStrings.W1;
 using NUnit.Framework;
 

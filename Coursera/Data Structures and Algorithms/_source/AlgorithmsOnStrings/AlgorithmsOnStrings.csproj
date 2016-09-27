@@ -37,6 +37,7 @@
     <Compile Include="SuffixTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PrefixTree.cs" />
+    <Compile Include="W1\SharedString.cs" />
     <Compile Include="W1\Suffix.cs" />
     <Compile Include="W1\TrieWithMatchExtended.cs" />
     <Compile Include="W1\TrieWithMatch.cs" />

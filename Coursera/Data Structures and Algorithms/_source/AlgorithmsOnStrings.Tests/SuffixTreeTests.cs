@@ -1,5 +1,4 @@
-﻿using AlgorithmsOnGraphs.Tests;
-using AlgorithmsOnStrings.W1;
+﻿using AlgorithmsOnStrings.W1;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -19,34 +18,34 @@ namespace AlgorithmsOnStrings.Tests
         [Test]
         public void MergeFullOverlap()
         {
-            var st = new SuffixTree("abab");
+            var st = new SuffixTree("abab$");
             st.Merge(0, 2);
             st.Merge(2, 2);
             var actual = st.ToText();
             
-            actual.ShouldBeEquivalentTo(new [] { "ab$", "$"});
+            actual.ShouldBeEquivalentTo(new [] { "ab"});
         }
 
         [TestCase(0, 2, 2, 4, TestName = "MergePartialOverlapOneSide Left")]
         [TestCase(2, 4, 0, 2, TestName = "MergePartialOverlapOneSide Right")]
         public void MergePartialOverlapOneSide(int rs, int rl, int ls, int ll)
         {
-            var st = new SuffixTree("ababcd");
+            var st = new SuffixTree("ababcd$");
             st.Merge(ls, ll);
             st.Merge(rs, rl);
             var actual = st.ToText();
-            actual.ShouldBeEquivalentTo(new[] { "ab$", "cd$", "$" });
+            actual.ShouldBeEquivalentTo(new[] { "ab", "cd"});
         }
 
         [TestCase(0, 3, 3, 4, TestName = "MergePartialOverlapBothSides Left")]
         [TestCase(3, 4, 0, 3, TestName = "MergePartialOverlapBothSides Right")]
         public void MergePartialOverlapBothSides(int rs, int rl, int ls, int ll)
         {
-            var st = new SuffixTree("abzabcd");
+            var st = new SuffixTree("abzabcd$");
             st.Merge(ls, ll);
             st.Merge(rs, rl);
             var actual = st.ToText();
-            actual.ShouldBeEquivalentTo(new[] { "ab", "z$", "cd$", "$" });
+            actual.ShouldBeEquivalentTo(new[] { "ab", "z", "cd" });
         }
     }
 }

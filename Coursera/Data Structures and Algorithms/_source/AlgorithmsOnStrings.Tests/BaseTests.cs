@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using FluentAssertions;
 
-namespace AlgorithmsOnGraphs.Tests
+namespace AlgorithmsOnStrings.Tests
 {
     public abstract class BaseTests
     {

@@ -12,87 +12,111 @@ namespace AlgorithmsOnStrings
         public SuffixTree(string text)
         {
             _text = text.ToCharArray();
-            _root = new Node(0, 0, true, Enumerable.Empty<Node>());
-            _nodes = new List<Node> {_root};
+            _root = new Node(0, 0, Enumerable.Empty<Node>());
+            _nodes = new List<Node>();
         }
         
         public void Merge(int start, int length)
         {
-            var node = new Node(start, length, true, Enumerable.Empty<Node>());
+            var node = new Node(start, length, Enumerable.Empty<Node>());
             foreach (var child in _root.Children)
             {
-                if (Merge(child, node, _text, _nodes))
+                if (Merge(child, node))
                     return;
             }
             _root.Children.Add(node);
             _nodes.Add(node);
         }
 
-        private static bool Merge(Node root, Node node, IReadOnlyList<char> text, ICollection<Node> nodes)
+        private bool Merge(Node root, Node node)
         {
-            var i = MatchIndex(root, node, text);
+            var i = MatchIndex(root, node);
             //NO OVERLAP
             if (i == -1) return false;
             //OVERLAP
-            Branch(root, i, node, nodes);
+            Branch(root, i, node);
 
             return true;
         }
 
-        private static void Branch(Node root, int i, Node node, ICollection<Node> nodes)
+        private bool MergeFirst(IEnumerable<Node> nodes, Node node)
         {
-            var remainderThis = CopyAfter(i, root);
-            var remainderThisEmpty = remainderThis.Length <= 0;
+            foreach (var root in nodes)
+            {
+                if (Merge(root, node)) return true;
+            }
+            return false;
+        }
+
+        private void Branch(Node root, int i, Node node)
+        {
+            var remainderRoot = CopyAfter(i, root);
             var remainderNode = CopyAfter(i, node);
-            var remainderNodeEmpty = remainderNode.Length <= 0;
-
             root.Length = i + 1;
-            root.IsEndNode = remainderThisEmpty || remainderNodeEmpty;
+            
+            if (remainderRoot.IsEmpty())
+            {
+                //Merge down or add
+                if (remainderNode.IsEmpty()) return;
+                if(!MergeFirst(root.Children, remainderNode))
+                    AddNode(root, remainderNode);
+            }
+            else
+            {
+                //Split and take children with the split
+                root.Children.Clear();
+                AddNode(root, remainderRoot);
+                //Add remainder as child
+                if (!remainderNode.IsEmpty())
+                    AddNode(root, remainderNode);
+            }
+        }
 
-            root.Children.Clear();
-            if (!remainderThisEmpty)
-            {
-                root.Children.Add(remainderThis);
-                nodes.Add(remainderThis);
-            }
-            if (!remainderNodeEmpty)
-            {
-                root.Children.Add(remainderNode);
-                nodes.Add(remainderNode);
-            }
+        private void AddNode(Node root, Node node)
+        {
+            root.Children.Add(node);
+            _nodes.Add(node);
         }
 
         private static Node CopyAfter(int i, Node source)
         {
             var l = i + 1;
-            return new Node(source.Start + l, source.Length - l, source.IsEndNode, source.Children);
+            return new Node(source.Start + l, source.Length - l, source.Children);
         }
         
-        private static int MatchIndex(Node s1, Node s2, IReadOnlyList<char> text)
+        private int MatchIndex(Node s1, Node s2)
         {
             int i;
             for (i = 0; i < Math.Min(s1.Length, s2.Length); i++)
             {
-                if (!IsSameChar(s1.Start + i, s2.Start + i, text))
+                if (!IsSameChar(s1.Start + i, s2.Start + i))
                     break;
             }
             return i - 1;
         }
 
-        private static bool IsSameChar(int i, int j, IReadOnlyList<char> text)
+        private bool IsSameChar(int i, int j)
         {
-            return text[i] == text[j];
+            return _text[i] == _text[j];
         }
 
+        public IReadOnlyCollection<Node> Nodes { get { return _nodes; } }
+        private IEnumerable<string> ToDebugText()
+        {
+            return _nodes.Select(ToDebugText);
+        }
+
+        private string ToDebugText(Node node)
+        {
+            return string.Format("{0} [{1}]", ToText(node),string.Join(", ", node.Children.Select(ToText)));
+        }
         public IEnumerable<string> ToText()
         {
             return _nodes.Select(ToText);
         }
-
-        private string ToText(Node node)
+        public string ToText(Node node)
         {
-            var v = new string(_text.Skip(node.Start).Take(node.Length).ToArray());
-            return node.IsEndNode ? string.Format("{0}$", v) : v;
+            return new string(_text.Skip(node.Start).Take(node.Length).ToArray());
         }
         
 
@@ -110,13 +134,14 @@ namespace AlgorithmsOnStrings
                 return ToSuffixTree(NextAsString());
             }
 
-            public static SuffixTree ToSuffixTree(string text)
+            public SuffixTree ToSuffixTree(string text)
             {
-                text = text.Replace("$", "");
                 var result = new SuffixTree(text);
+                Console.WriteLine(string.Join(", ", result.ToDebugText()));
                 for (var i = 0; i < text.Length; i++)
                 {
                     result.Merge(i, text.Length - i);
+                    Console.WriteLine(string.Join(", ", result.ToDebugText()));
                 }
                 return result;
             }
@@ -135,14 +160,17 @@ namespace AlgorithmsOnStrings
         {
             public int Start { get; set; }
             public int Length { get; set; }
-            public bool IsEndNode { get; set; }
             public readonly List<Node> Children;
-            
-            public Node(int start, int length, bool isEndNode, IEnumerable<Node> children)
+
+            public bool IsEmpty()
+            {
+                return Length <= 0;
+            }
+
+            public Node(int start, int length, IEnumerable<Node> children)
             {
                 Start = start;
                 Length = length;
-                IsEndNode = isEndNode;
                 Children = children.ToList();
             }
             
