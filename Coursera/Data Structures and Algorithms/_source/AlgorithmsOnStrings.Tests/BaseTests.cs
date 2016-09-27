@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using FluentAssertions;
 
 namespace AlgorithmsOnGraphs.Tests
@@ -32,14 +33,13 @@ namespace AlgorithmsOnGraphs.Tests
 
             Console.WriteLine();
             Console.WriteLine("[File {0}]", path);
-            //actual.Count.Should().Be(expected.Length);
-            for (var a = 0; a < actual.Count; a++)
-            {   //Output Values
-                Console.WriteLine("{2}[{3}] {0} => {1}", expected[a], actual[a], (expected[a]==actual[a])?"":"* ", a+1);
-            }
-
+            
             if (exactOrder)
             {
+                for (var a = 0; a < actual.Count; a++)
+                {   //Output Values
+                    Console.WriteLine("{2}[{3}] {0} => {1}", expected[a], actual[a], (expected[a] == actual[a]) ? "" : "* ", a + 1);
+                }
                 for (var a = 0; a < actual.Count; a++)
                 {
                     //Validate Values
@@ -48,6 +48,12 @@ namespace AlgorithmsOnGraphs.Tests
             }
             else
             {
+                expected = expected.OrderBy(s => s).ToArray();
+                actual = actual.OrderBy(s => s).ToArray();
+                for (var a = 0; a < actual.Count; a++)
+                {   //Output Values
+                    Console.WriteLine("{2}[{3}] {0} => {1}", expected[a], actual[a], (expected[a] == actual[a]) ? "" : "* ", a + 1);
+                }
                 actual.ShouldAllBeEquivalentTo(expected);
             }
         }

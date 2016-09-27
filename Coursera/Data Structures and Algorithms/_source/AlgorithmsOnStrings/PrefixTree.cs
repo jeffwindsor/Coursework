@@ -6,13 +6,13 @@ namespace AlgorithmsOnStrings
 {
     public class PrefixTree<T>
     {
-        private readonly PrefixTreeNode<T> _root;
+        private readonly Node<T> _root;
         private readonly IPrefixTreeContext<T> _context;
         private int _id = 0;
         public PrefixTree(IPrefixTreeContext<T> context)
         {
             _context = context;
-            _root = new PrefixTreeNode<T>(_id++, _context.AlphabetSize);
+            _root = new Node<T>(_id++, _context.AlphabetSize);
         }
 
         public void Add(IEnumerable<T> values, Action<int,int,T> logAddEdge)
@@ -24,7 +24,7 @@ namespace AlgorithmsOnStrings
                 if (!node.HasChild(valueIndex))
                 {
                     var childId = _id++;
-                    node.SetChild(valueIndex, new PrefixTreeNode<T>(childId,_context.AlphabetSize));
+                    node.SetChild(valueIndex, new Node<T>(childId,_context.AlphabetSize));
                     logAddEdge(node.Id, childId, value);
                 }
                  
@@ -83,11 +83,12 @@ namespace AlgorithmsOnStrings
                 return _inputs[_lineCursor++];
             }
         }
-        private class PrefixTreeNode<TValue>
+
+        private class Node<TValue>
         {
-            private static readonly PrefixTreeNode<TValue> Empty = new PrefixTreeNode<TValue>(-1, 0);
-            private readonly PrefixTreeNode<TValue>[] _children;
-            public PrefixTreeNode(int id, int alphabetSize)
+            private static readonly Node<TValue> Empty = new Node<TValue>(-1, 0);
+            private readonly Node<TValue>[] _children;
+            public Node(int id, int alphabetSize)
             {
                 Id = id;
                 _children = Enumerable.Range(0, alphabetSize).Select(_ => Empty).ToArray();
@@ -98,12 +99,12 @@ namespace AlgorithmsOnStrings
                 return _children[index] != Empty;
             }
 
-            public PrefixTreeNode<TValue> GetChild(int index)
+            public Node<TValue> GetChild(int index)
             {
                 return _children[index];
             }
 
-            public void SetChild(int index, PrefixTreeNode<TValue> child)
+            public void SetChild(int index, Node<TValue> child)
             {
                 _children[index] = child;
             }
@@ -111,12 +112,12 @@ namespace AlgorithmsOnStrings
             public int Id { get; private set; }
         }
     }
-
     public interface IPrefixTreeContext<in T>
     {
         int AlphabetSize { get; }
         int GetValueIndex(T value);
     }
+
     public class NucleotidePrefixTreeContext : IPrefixTreeContext<char>
     {
         public int AlphabetSize { get { return 4; } }

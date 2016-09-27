@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="BaseTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SuffixTreeTests.cs" />
     <Compile Include="TrieWithMatchExtendedTests.cs" />
     <Compile Include="TrieWithMatchTests.cs" />
     <Compile Include="TrieTests.cs" />
