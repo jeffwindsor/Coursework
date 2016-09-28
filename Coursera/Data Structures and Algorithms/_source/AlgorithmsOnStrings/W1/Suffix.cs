@@ -22,7 +22,7 @@ namespace AlgorithmsOnStrings.W1
             var builder = new SuffixTree.Builder(inputs);
             var suffixTree = builder.ToSuffixTree();
 
-            var answers = suffixTree.ToText().ToArray();
+            var answers = suffixTree.ToNodeText().ToArray();
             return answers;
         }
     }

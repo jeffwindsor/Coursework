@@ -10,6 +10,7 @@ namespace AlgorithmsOnStrings.Tests
         [TestCase("Sample1")]
         [TestCase("Sample2")]
         [TestCase("Sample3")]
+        [TestCase("Sample4")]
         public void TestFiles(string file)
         {
             TestFromRelativeFilePath(@"SuffixTree\" + file, Suffix.Answer, false);
@@ -21,7 +22,7 @@ namespace AlgorithmsOnStrings.Tests
             var st = new SuffixTree("abab$");
             st.Merge(0, 2);
             st.Merge(2, 2);
-            var actual = st.ToText();
+            var actual = st.ToNodeText();
             
             actual.ShouldBeEquivalentTo(new [] { "ab"});
         }
@@ -33,7 +34,7 @@ namespace AlgorithmsOnStrings.Tests
             var st = new SuffixTree("ababcd$");
             st.Merge(ls, ll);
             st.Merge(rs, rl);
-            var actual = st.ToText();
+            var actual = st.ToNodeText();
             actual.ShouldBeEquivalentTo(new[] { "ab", "cd"});
         }
 
@@ -44,7 +45,7 @@ namespace AlgorithmsOnStrings.Tests
             var st = new SuffixTree("abzabcd$");
             st.Merge(ls, ll);
             st.Merge(rs, rl);
-            var actual = st.ToText();
+            var actual = st.ToNodeText();
             actual.ShouldBeEquivalentTo(new[] { "ab", "z", "cd" });
         }
     }

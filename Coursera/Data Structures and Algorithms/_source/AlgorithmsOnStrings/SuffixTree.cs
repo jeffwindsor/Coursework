@@ -101,24 +101,31 @@ namespace AlgorithmsOnStrings
         }
 
         public IReadOnlyCollection<Node> Nodes { get { return _nodes; } }
+        public Node Root { get { return _root; } }
+
         private IEnumerable<string> ToDebugText()
         {
             return _nodes.Select(ToDebugText);
         }
-
         private string ToDebugText(Node node)
         {
-            return string.Format("{0} [{1}]", ToText(node),string.Join(", ", node.Children.Select(ToText)));
+            return string.Format("{0} [{1}]", ToNodeText(node),string.Join(", ", node.Children.Select(ToNodeText)));
         }
-        public IEnumerable<string> ToText()
+
+        public IEnumerable<string> ToNodeText()
         {
-            return _nodes.Select(ToText);
+            return _nodes.Select(ToNodeText);
         }
-        public string ToText(Node node)
+        public string ToNodeText(Node node)
         {
             return new string(_text.Skip(node.Start).Take(node.Length).ToArray());
         }
-        
+
+        public string ToText(Node node)
+        {
+
+            return new string(_text.Skip(node.Start).Take(node.Length).ToArray());
+        }
 
         public class Builder
         {
@@ -137,11 +144,11 @@ namespace AlgorithmsOnStrings
             public SuffixTree ToSuffixTree(string text)
             {
                 var result = new SuffixTree(text);
-                Console.WriteLine(string.Join(", ", result.ToDebugText()));
+                //Console.WriteLine(string.Join(", ", result.ToDebugText()));
                 for (var i = 0; i < text.Length; i++)
                 {
                     result.Merge(i, text.Length - i);
-                    Console.WriteLine(string.Join(", ", result.ToDebugText()));
+                    //Console.WriteLine(string.Join(", ", result.ToDebugText()));
                 }
                 return result;
             }
