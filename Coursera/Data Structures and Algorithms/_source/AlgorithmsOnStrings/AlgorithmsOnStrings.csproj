@@ -42,6 +42,8 @@
     <Compile Include="W1\TrieWithMatchExtended.cs" />
     <Compile Include="W1\TrieWithMatch.cs" />
     <Compile Include="W1\Trie.cs" />
+    <Compile Include="W2\BwtInvert.cs" />
+    <Compile Include="W2\Bwt.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
