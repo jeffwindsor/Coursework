@@ -34,7 +34,7 @@ namespace AlgorithmsOnStrings.W1
 
         public static bool IsSharedNode(SuffixTree.Node node)
         {
-
+            throw new NotImplementedException();
         }
     }
 }
