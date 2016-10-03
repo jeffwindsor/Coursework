@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AlgorithmsOnStrings.W1
+namespace AlgorithmsOnStrings.W2
 {
     public class BwtInvert
     {
@@ -26,90 +26,151 @@ namespace AlgorithmsOnStrings.W1
         public static string BurrowsWheelerInversion(string input)
         {
             var first = string.Concat(input.OrderBy(c=>c));
-            var bwi = new BurrowsWheelerInverter(first, input);
-            return bwi.ToOriginalString();
+            var fItems = GetItems(first).ToList();
+            var lItems = GetItems(input).ToList();
+
+            //By String Index
+            var si = from f in fItems
+                     join l in lItems on f.StringIndex equals l.StringIndex
+                     select new Pair { First = f, Last = l };
+            var rows = si.ToDictionary(p => p.First.StringIndex);
+
+            //By Char Occurance
+            var co = from f in fItems
+                     join l in lItems
+                        on new { f.Char, f.Occurance } equals new { l.Char, l.Occurance }
+                     select new Pair { First = f, Last = l };
+            var charOccuranceTwins = co.ToDictionary(p => p.First.CharOccuranceId());
+
+            //Find Result
+            var sb = new System.Text.StringBuilder();
+            var rowId = 0;
+            do
+            {
+                var row = rows[rowId];
+                sb.Append(row.First.Char);
+                //Move Current Row's Last Char Occurance Twin (in First Column)
+                rowId = charOccuranceTwins[row.Last.CharOccuranceId()].First.StringIndex;
+            }
+            while (rowId != 0);
+
+            return new string(sb.ToString().Reverse().ToArray());
         }
 
-        public static string BurrowsWheelerInversionNaive(string input)
+        private static readonly int AlphaFloor = Convert.ToInt32('a') - 1;
+        private static int GetAlphaIndex(char c)
         {
-            var length = input.Length;
-            //Original Matrix = First Column, sorted version of input
-            var matrix = input.ToCharArray()
-                .OrderBy(c => c)
-                .Select(c => c.ToString());
-            for (int i = 1; i < length; i++)
+            return (c == '$') ? 0 : Convert.ToInt32(Char.ToLower(c)) - AlphaFloor;
+        }
+        private static IEnumerable<Item> GetItems(string s)
+        {
+            char[] chars = s.ToCharArray();
+            int[] occurances = Enumerable.Range(0, 27).Select(_ => 0).ToArray();
+            return chars.Select((c, stringIndex) =>
             {
-                matrix = Enumerable
-                    .Zip(matrix, input, (s, c) => string.Format("{0}{1}", c, s))
-                    .OrderBy(s => s);
-            }
-            var result = matrix.First(s => s.EndsWith("$"));
-            return result;
+                var alphaIndex = GetAlphaIndex(c);
+                occurances[alphaIndex] += 1;
+                return new Item { Char = c, StringIndex = stringIndex, Occurance = occurances[alphaIndex] };
+            });
+        }
+        public class Pair
+        {
+            public Item First;
+            public Item Last;
         }
 
-        public class BurrowsWheelerInverter
+        public class Item
         {
-            private readonly Dictionary<int, Pair> _byStringIndex; // index by string index
-            private readonly Dictionary<string, Pair> _byCharOccurance; // index by char then occurance
-            public BurrowsWheelerInverter(string first, string last)
-            {
-                var fItems = GetItems(first).ToList();
-                var lItems = GetItems(last).ToList();
+            public char Char;
+            public int Occurance;
+            public int StringIndex;
+            public string CharOccuranceId() { return string.Format("{0}{1}", Char, Occurance); }
+        }
 
-                //By String Index
-                var si = from f in fItems
-                         join l in lItems on f.StringIndex equals l.StringIndex
-                         select new Pair { First = f, Last = l };
-                _byStringIndex = si.ToDictionary(p => p.First.StringIndex);
+    //public static string BurrowsWheelerInversionNaive(string input)
+    //{
+    //    var length = input.Length;
+    //    //Original Matrix = First Column, sorted version of input
+    //    var matrix = input.ToCharArray()
+    //        .OrderBy(c => c)
+    //        .Select(c => c.ToString());
+    //    for (int i = 1; i < length; i++)
+    //    {
+    //        matrix = Enumerable
+    //            .Zip(matrix, input, (s, c) => string.Format("{0}{1}", c, s))
+    //            .OrderBy(s => s);
+    //    }
+    //    var result = matrix.First(s => s.EndsWith("$"));
+    //    return result;
+    //}
 
-                //By Char Occurance
-                var co = from f in fItems
-                         join l in lItems 
-                            on new { f.Char, f.Occurance } equals new { l.Char, l.Occurance }
-                         select new Pair { First = f, Last = l };
-                _byCharOccurance = co.ToDictionary(p => p.First.CharOccurance());
-            }
-            public string ToOriginalString()
-            {
-                var sb = new System.Text.StringBuilder();
-                var row = _byStringIndex[0];
-                while (row.Last.Char != '$')
-                {
-                    sb.Append(row.First.Char);
-                    row = _byCharOccurance[row.Last.CharOccurance()];
-                }
-                return sb.ToString();
-            }
-            private static readonly int alphaFloor = Convert.ToInt32('a') - 1;
-            private static int GetAlphaIndex(char c)
-            {
-                return (c == '$') ? 0 : Convert.ToInt32(Char.ToLower(c)) - alphaFloor;
-            }
-            private static IEnumerable<Item> GetItems(string s)
-            {
-                char[] chars = s.ToCharArray();
-                int[] occurances = Enumerable.Range(0, 27).Select(_ => 0).ToArray();
-                return chars.Select((c, stringIndex) =>
-                {
-                    var alphaIndex = GetAlphaIndex(c);
-                    occurances[alphaIndex] += 1;
-                    return new Item { Char = c, StringIndex = stringIndex, Occurance = occurances[alphaIndex] };
-                });
-            }
+    //public class BurrowsWheelerInverter
+    //    {
+    //        private readonly Dictionary<int, Pair> _rows; // index by string index
+    //        private readonly Dictionary<string, Pair> _charOccuranceTwins; // index by char then occurance
+    //        public BurrowsWheelerInverter(string first, string last)
+    //        {
+    //            var fItems = GetItems(first).ToList();
+    //            var lItems = GetItems(last).ToList();
+
+    //            //By String Index
+    //            var si = from f in fItems
+    //                     join l in lItems on f.StringIndex equals l.StringIndex
+    //                     select new Pair { First = f, Last = l };
+    //            _rows = si.ToDictionary(p => p.First.StringIndex);
+
+    //            //By Char Occurance
+    //            var co = from f in fItems
+    //                     join l in lItems 
+    //                        on new { f.Char, f.Occurance } equals new { l.Char, l.Occurance }
+    //                     select new Pair { First = f, Last = l };
+    //            _charOccuranceTwins = co.ToDictionary(p => p.First.CharOccuranceId());
+    //        }
+    //        public string ToOriginalString()
+    //        {
+    //            var sb = new System.Text.StringBuilder();
+    //            var rowId = 0;
+    //            do
+    //            {
+    //                var row = _rows[rowId];
+    //                sb.Insert(0,row.First.Char);
+    //                //Find Row Id of Twin in First Column
+    //                rowId = _charOccuranceTwins[row.Last.CharOccuranceId()].First.StringIndex;
+    //            }
+    //            while (rowId != 0);
+
+    //            return  sb.ToString();
+    //        }
+    //        private static readonly int AlphaFloor = Convert.ToInt32('a') - 1;
+    //        private static int GetAlphaIndex(char c)
+    //        {
+    //            return (c == '$') ? 0 : Convert.ToInt32(Char.ToLower(c)) - AlphaFloor;
+    //        }
+    //        private static IEnumerable<Item> GetItems(string s)
+    //        {
+    //            char[] chars = s.ToCharArray();
+    //            int[] occurances = Enumerable.Range(0, 27).Select(_ => 0).ToArray();
+    //            return chars.Select((c, stringIndex) =>
+    //            {
+    //                var alphaIndex = GetAlphaIndex(c);
+    //                occurances[alphaIndex] += 1;
+    //                return new Item { Char = c, StringIndex = stringIndex, Occurance = occurances[alphaIndex] };
+    //            });
+    //        }
             
-            private class Pair
-            {
-                public Item First;
-                public Item Last;
-            }
+    //        private class Pair
+    //        {
+    //            public Item First;
+    //            public Item Last;
+    //        }
 
-            private class Item
-            {
-                public char Char;
-                public int Occurance;
-                public int StringIndex;
-                public string CharOccurance() { return string.Format("{0}{1}", Char, Occurance); }
-            }
-        }
+    //        private class Item
+    //        {
+    //            public char Char;
+    //            public int Occurance;
+    //            public int StringIndex;
+    //            public string CharOccuranceId() { return string.Format("{0}{1}", Char, Occurance); }
+    //        }
+    //    }
     }
 }
