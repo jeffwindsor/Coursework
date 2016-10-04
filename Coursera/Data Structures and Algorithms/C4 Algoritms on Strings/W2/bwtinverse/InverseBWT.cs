@@ -16,8 +16,8 @@ namespace AlgorithmsOnStrings.W2
             foreach (var result in Answer(inputs.ToArray()))
                 Console.WriteLine(result);
         }
-
-         public static IList<string> Answer(IList<string> inputs)
+        
+        public static IList<string> Answer(IList<string> inputs)
         {
             var input = inputs.First();
             var answer = BurrowsWheelerInversion(input);
@@ -25,66 +25,55 @@ namespace AlgorithmsOnStrings.W2
         }
         public static string BurrowsWheelerInversion(string input)
         {
-            var first = string.Concat(input.OrderBy(c=>c));
-            var fItems = GetItems(first).ToList();
-            var lItems = GetItems(input).ToList();
+            var first = input.OrderBy(c => c).ToArray();
+            var last = input.ToCharArray();
 
-            //By String Index
-            var si = from f in fItems
-                     join l in lItems on f.StringIndex equals l.StringIndex
-                     select new Pair { First = f, Last = l };
-            var rows = si.ToDictionary(p => p.First.StringIndex);
+            var indexes = first.ByCharNumber();
+            var numbers = last.ToNumbers();
 
-            //By Char Occurance
-            var co = from f in fItems
-                     join l in lItems
-                        on new { f.Char, f.Occurance } equals new { l.Char, l.Occurance }
-                     select new Pair { First = f, Last = l };
-            var charOccuranceTwins = co.ToDictionary(p => p.First.CharOccuranceId());
-
-            //Find Result
             var sb = new System.Text.StringBuilder();
-            var rowId = 0;
+            var index = 0;
             do
             {
-                var row = rows[rowId];
-                sb.Append(row.First.Char);
-                //Move Current Row's Last Char Occurance Twin (in First Column)
-                rowId = charOccuranceTwins[row.Last.CharOccuranceId()].First.StringIndex;
-            }
-            while (rowId != 0);
-
+                sb.Append(first[index]);
+                index = indexes.NextIndex(last[index], numbers[index]);
+            } while (index != 0);
             return new string(sb.ToString().Reverse().ToArray());
         }
+    }
 
+    public static class BwtInvertExtensions
+    {
+        public static int[] ToNumbers(this char[] input)
+        {
+            var counts = Enumerable.Range(0, 27).Select(_ => -1).ToArray();
+            var result = input.Select(c =>
+            {
+                var i = AlphaIndex(c);
+                counts[i] += 1;
+                return counts[i];
+            });
+            return result.ToArray();
+        }
+        public static List<int>[] ByCharNumber(this char[] input)
+        {
+            var result = Enumerable.Range(0, 27).Select(_ => new List<int>()).ToArray();
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                result[AlphaIndex(input[i])].Add(i);
+            }
+            return result;
+        }
+
+        public static int NextIndex(this List<int>[] cns, char c, int n)
+        {
+            return cns[AlphaIndex(c)][n];
+        }
         private static readonly int AlphaFloor = Convert.ToInt32('a') - 1;
-        private static int GetAlphaIndex(char c)
+        private static int AlphaIndex(char c)
         {
             return (c == '$') ? 0 : Convert.ToInt32(Char.ToLower(c)) - AlphaFloor;
-        }
-        private static IEnumerable<Item> GetItems(string s)
-        {
-            char[] chars = s.ToCharArray();
-            int[] occurances = Enumerable.Range(0, 27).Select(_ => 0).ToArray();
-            return chars.Select((c, stringIndex) =>
-            {
-                var alphaIndex = GetAlphaIndex(c);
-                occurances[alphaIndex] += 1;
-                return new Item { Char = c, StringIndex = stringIndex, Occurance = occurances[alphaIndex] };
-            });
-        }
-        public class Pair
-        {
-            public Item First;
-            public Item Last;
-        }
-
-        public class Item
-        {
-            public char Char;
-            public int Occurance;
-            public int StringIndex;
-            public string CharOccuranceId() { return string.Format("{0}{1}", Char, Occurance); }
         }
     }
 }
