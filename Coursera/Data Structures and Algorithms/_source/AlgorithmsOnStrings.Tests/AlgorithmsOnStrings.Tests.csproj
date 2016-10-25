@@ -59,6 +59,7 @@
     <Compile Include="Quizzes.cs" />
     <Compile Include="SharedStringTests.cs" />
     <Compile Include="BwtTests.cs" />
+    <Compile Include="SuffixArrayTests.cs" />
     <Compile Include="SuffixTreeTests.cs" />
     <Compile Include="TrieWithMatchExtendedTests.cs" />
     <Compile Include="TrieWithMatchTests.cs" />

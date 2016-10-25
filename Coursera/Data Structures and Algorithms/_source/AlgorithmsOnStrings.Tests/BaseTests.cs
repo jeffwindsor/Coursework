@@ -13,7 +13,7 @@ namespace AlgorithmsOnStrings.Tests
 
         private static string CurrentPath()
         {
-            return string.Format(@"{0}\..\..", System.AppDomain.CurrentDomain.BaseDirectory);
+            return string.Format(@"{0}\..\..", AppDomain.CurrentDomain.BaseDirectory);
         }
         private static string CurrentTestPath(string location)
         {
@@ -27,7 +27,7 @@ namespace AlgorithmsOnStrings.Tests
 
         protected static void TestFromFilePath(string path, Func<IList<string>, IList<string>> getActual, bool exactOrder = true)
         {
-            var input = File.ReadAllLines(path + input_ext);
+            var input = File.Exists(path + input_ext) ? File.ReadAllLines(path + input_ext) : File.ReadAllLines(path);
             var expected = File.ReadAllLines(path + answer_ext);
             var actual = getActual(input);
 

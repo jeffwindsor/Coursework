@@ -1,48 +1,46 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AlgorithmsOnStrings
+namespace AlgorithmsOnStrings.W4
 {
+    public class SuffixArrayLong
+    {
+        public static void Main(string[] args)
+        {
+            string s;
+            var inputs = new List<string>();
+            while ((s = Console.ReadLine()) != null)
+                inputs.Add(s);
+
+            foreach (var result in Answer(inputs.ToArray()))
+                Console.WriteLine(result);
+        }
+
+        public static IList<string> Answer(IList<string> inputs)
+        {
+            var text = inputs[0];
+            var orders = SuffixArray.BuildSuffixArray(text, SuffixArray.NucleotideAlphabet);
+
+            //Spaced Values
+            var answer = string.Join(" ", orders.Select(i => i.ToString()));
+            return (string.IsNullOrEmpty(answer))
+                ? Enumerable.Empty<string>().ToArray()
+                : new[] { answer };
+        }
+    }
     public class SuffixArray
     {
-        public const string Token = "$";
-        public const string NucleotideAlphabet = Token + "ACGT";
-        
+        public const string NucleotideAlphabet = "$ACGT";
+
         public string Text { get; private set; }
         public int[] Order { get; private set; }
+
         public SuffixArray(string source, string alphabet = NucleotideAlphabet)
         {
-            Text = (source.EndsWith(Token))?source: source + Token;
-            Order = BuildSuffixArray(Text, alphabet);
+            Text = source;
+            Order = BuildSuffixArray(source, alphabet);
         }
-
-        public IEnumerable<int> Match(string pattern)
-        {
-            var l = 0;
-            var r = Text.Length;
-            while (l < r)
-            {
-                var mid = (l + r)/2;
-                var compare = string.Compare(pattern, Text.Substring(Order[mid]), StringComparison.Ordinal);
-                if ( compare > 0)
-                    l = mid + 1;
-                else
-                    r = mid;
-            }
-            var s = l;
-            r = Text.Length;
-            while (l < r)
-            {
-                var mid = (l + r) / 2;
-                if (Text.Substring(Order[mid]).StartsWith(pattern))
-                    l = mid + 1; 
-                else
-                    r = mid;
-            }
-            return Enumerable.Range(s, r-s).Select(i => Order[i]);
-        }
-
 
         public static int[] BuildSuffixArray(string source, string alphabet)
         {

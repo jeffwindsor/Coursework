@@ -16,7 +16,7 @@ namespace AlgorithmsOnStrings.Tests
         [Test]
         public void Week4_Q1()
         {
-            var actual = SuffixArray.SortCharacters("AACGATAGCGGTAGA$");
+            var actual = SuffixArray.SortCharacters("AACGATAGCGGTAGA$", SuffixArray.NucleotideAlphabet);
             Console.WriteLine(string.Join(",",actual.Select(i=>i.ToString())));
         }
 
@@ -24,7 +24,7 @@ namespace AlgorithmsOnStrings.Tests
         public void Week4_Q2()
         {
             var s = "AACGATAGCGGTAGA$";
-            var order = SuffixArray.SortCharacters(s);
+            var order = SuffixArray.SortCharacters(s, SuffixArray.NucleotideAlphabet);
             var actual = SuffixArray.ComputeCharClasses(s, order);
             Console.WriteLine(string.Join(",", actual.Select(i => i.ToString())));
         }
@@ -33,7 +33,7 @@ namespace AlgorithmsOnStrings.Tests
         public void Week4_Q4()
         {
             var s = "AACGATAGCGGTAGA$";
-            var order = SuffixArray.SortCharacters(s);
+            var order = SuffixArray.SortCharacters(s, SuffixArray.NucleotideAlphabet);
             var classes = SuffixArray.ComputeCharClasses(s, order);
             var actual = SuffixArray.SortDoubled(s, 1, order, classes);
             Console.WriteLine(string.Join(",", actual.Select(i => i.ToString())));
@@ -43,7 +43,7 @@ namespace AlgorithmsOnStrings.Tests
         public void Week4_Q5()
         {
             var s = "AACGATAGCGGTAGA$";
-            var order = SuffixArray.SortCharacters(s);
+            var order = SuffixArray.SortCharacters(s, SuffixArray.NucleotideAlphabet);
             var classes = SuffixArray.ComputeCharClasses(s, order);
             
             var l = 1;
@@ -61,7 +61,7 @@ namespace AlgorithmsOnStrings.Tests
         public void Week4_Q6()
         {
             var s = "AACGATAGCGGTAGA$";
-            var order = SuffixArray.SortCharacters(s);
+            var order = SuffixArray.SortCharacters(s, SuffixArray.NucleotideAlphabet);
             var classes = SuffixArray.ComputeCharClasses(s, order);
 
             var l = 1;
@@ -75,25 +75,6 @@ namespace AlgorithmsOnStrings.Tests
             Console.WriteLine(string.Join(",", order.Select(i => i.ToString())));
         }
 
-        private static int[] ComputePrefix(string pattern)
-        {
-            var P = pattern.ToCharArray();
-            var s = Enumerable.Range(0, pattern.Length).ToArray();
-            var border = 0;
-            for (var i = 1; i < pattern.Length; i++)
-            {
-                while (border > 0 && P[i] != P[border])
-                {
-                    border = s[border - 1];
-                }
-                if (P[i] == P[border])
-                {    border++;}
-                else
-                {   border = 0;}
-
-                s[i] = border;
-            }
-            return s;
-        }
+        
     }
 }

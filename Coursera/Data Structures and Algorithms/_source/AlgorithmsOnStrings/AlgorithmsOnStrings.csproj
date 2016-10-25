@@ -45,6 +45,13 @@
     <Compile Include="W1\Trie.cs" />
     <Compile Include="W2\BwtInvert.cs" />
     <Compile Include="W2\Bwt.cs" />
+    <Compile Include="W4\SuffixTreeFromArray.cs" />
+    <Compile Include="W4\SuffixArrayMatching.cs" />
+    <Compile Include="W4\SuffixArrayLong.cs" />
+    <Compile Include="W4\Kmp.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="W3\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
