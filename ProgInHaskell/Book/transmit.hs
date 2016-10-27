@@ -20,7 +20,7 @@ make8 bits = take 8 (bits ++ repeat 0)
 -- Transmission
 
 encode :: String -> [Bit]
-encode = concat . map (make8 . int2bin . ord)
+encode = concatMap (make8 . int2bin . ord)
 
 chop8 :: [Bit] -> [[Bit]]
 chop8 []   = []
