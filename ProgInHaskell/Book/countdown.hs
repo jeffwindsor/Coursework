@@ -56,11 +56,12 @@ interleave x []     = [[x]]
 interleave x (y:ys) = (x:y:ys) : map (y:) (interleave x ys)
 
 perms :: [a] -> [[a]]
-perms []     = [[]]
-perms (x:xs) = concat (map (interleave x) (perms xs))
+-- perms []     = [[]]
+-- perms (x:xs) = concatMap (interleave x) (perms xs)
+perms = foldr (concatMap . interleave) [[]]
 
 choices :: [a] -> [[a]]
-choices = concat . map perms . subs
+choices = concatMap perms . subs
 
 -- Formalising the problem
 

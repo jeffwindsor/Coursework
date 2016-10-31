@@ -45,10 +45,10 @@ module Chapter7Exercises where
     paired (x,y) = x*y
     unpaired x y = x+y
 
-    curry' :: ((a,b) -> c) -> (a -> b -> c)
+    curry' :: ((a,b) -> c) -> a -> b -> c
     curry' f x y = f (x,y) 
 
-    uncurry' :: (a -> b -> c) -> ((a,b) -> c)
+    uncurry' :: (a -> b -> c) -> (a,b) -> c
     uncurry' f (x,y) = f x y
 
 --6
@@ -94,7 +94,7 @@ module Chapter7Exercises where
     
     removeParity :: [Bit] -> [Bit]
     removeParity (pbit:bits) | pbit == parityBit bits = bits
-                             | otherwise = error "Transmission Error"
+                             | otherwise              = error "Transmission Error"
 
     encode :: String -> [Bit]
     encode = concatMap (addParity . make 8 . int2bin . ord)
@@ -106,7 +106,10 @@ module Chapter7Exercises where
     transmit channel = decode . channel . encode
 
 --8
+    transmitGoodChannel :: String -> String
     transmitGoodChannel = transmit id
+
+    transmitBadChannel :: String -> String
     transmitBadChannel = transmit tail
 
 --9
