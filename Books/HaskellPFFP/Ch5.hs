@@ -53,6 +53,41 @@ functionS (x, y) = y
 --------------------------------------------------
 Given a type, write the function
 --------------------------------------------------
+i :: a -> a
+i a = a
+
+c :: a -> b -> a 
+c a _ = a
+
+c'' :: b -> a -> b 
+c'' b _ = b
+
+c' :: a -> b -> b 
+c' _ b = b 
+
+r :: [a] -> [a] 
+r [xs] = [xs]
+
+co :: (b -> c) -> (a -> b) -> a -> c 
+co bTOc aTOb a = bTOc $ aTOb a 
+
+a :: (a -> c) -> a -> a
+a aTOc a = a                ??? cannot seem to get the c getting: a :: p1 -> p2 -> p2
+
+a' :: (a -> b) -> a -> b 
+a' aTOb a = aTOb a
+
+--------------------------------------------------
+Fix it
+--------------------------------------------------
+1 and 2 - see sing.hs
+3 see arith3broken.hs
+
+
+--------------------------------------------------
+Type-Kwon-Do
+--------------------------------------------------
+see typekwondo.hs
 
 
 -}
