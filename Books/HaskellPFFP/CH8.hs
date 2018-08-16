@@ -1,4 +1,4 @@
-
+import Data.List (intersperse)
 {-
 Intermission: Exercise pg 282
 
@@ -55,7 +55,8 @@ Given the following definitions, tell us what value results from further applica
     String -> String
     frappe = flippy "haha"
 
-1. What is the value of appedCatty "woohoo!" ? Try to determine the answer for yourself, then test in the REPL.
+1. What is the value of appedCatty "woohoo!" ? Try to determine the 
+answer for yourself, then test in the REPL.
     "woops mrow woohoo!"
 2. frappe "1"
     "1 mrow haha"
@@ -70,43 +71,58 @@ Given the following definitions, tell us what value results from further applica
 
 Recursion
 1. WriteoutthestepsforreducingdividedBy 15 2toitsfinalanswer according to the Haskell code.
-2. Write a function that recursively sums all numbers from 1 to n, nbeingtheargument. Sothatifnwas5,you’dadd1+2+3+4+5toget15. Thetypeshouldbe
+2. Write a function that recursively sums all numbers from 1 to n, 
+nbeingtheargument. Sothatifnwas5,you’dadd1+2+3+4+5toget15. Thetypeshouldbe
 -}
 
 sumN :: (Eq a, Num a) => a -> a
 sumN 0 = 0
 sumN n = n + (sumN (n-1))
 
---3. Write a function that multiplies two integral numbers using recursive summation. The type should be 
+--3. Write a function that multiplies two integral numbers using recursive summation
 mult2 :: (Integral a) => a -> a -> a
 mult2 1 y = y
-mult2 x y = (+y) . mult2 (x-1) $ y       -- ???  I DONT UNDERSTAND HOW THE RECURSIVE CALL WORKS WITH THE $ Y
+mult2 x y = (+y) . mult2 (x-1) $ y       
+-- ???  I DONT UNDERSTAND HOW THE RECURSIVE CALL WORKS WITH THE $ Y
 
 --FIX DIVIDEDBY
 data DividedResult = Result Integer | DividedByZero 
-dividedBy :: Integral a => a -> a -> a
+    deriving Show
+
+dividedBy :: Integral a => a -> a -> DividedResult
 dividedBy _ 0 = DividedByZero
-dividedBy numerator denomenator = go (abs numerator) (abs denomenator) 0
-    where go n d count
-           | n < d = result numerator denominator count
-           | otherwise = go (n - d) d (count + 1)
-    where result n d c
-               | n < 0 && d > 0 = Result -c
-               | n >= 0 && d < 0 = Result -c
-               | otherwise Result c
+dividedBy numerator denomenator = 
+        let result = if (numerator < 0 && denomenator > 0) || (numerator > 0 && denomenator < 0) then (Result . negate) else (Result)
+            go n d count
+                | n < d = result count
+                | otherwise = go (n - d) d (count + 1)
+        in go (abs numerator) (abs denomenator) 0
 
-               -- what
 --MC 91
--- mc91 = undefined
+-- TEST WITH : map mc91 [95..110]
+mc91 n 
+    | n > 100   = n - 10
+    | otherwise = mc91 . mc91 $ n + 11
 
+--DIGIT TO WORDS
+intToDigit :: Int -> String 
+intToDigit 0 = "zero"
+intToDigit 1 = "one"
+intToDigit 2 = "two"
+intToDigit 3 = "three"
+intToDigit 4 = "four"
+intToDigit 5 = "five"
+intToDigit 6 = "six"
+intToDigit 7 = "seven"
+intToDigit 8 = "eight"
+intToDigit 9 = "nine"
+intToDigit _ = "???"
 
+digits :: Int -> [Int] 
+digits n = go (abs n) []
+    where go n acc
+            | n < 10    = n : acc
+            | otherwise = go (div n 10) ((mod n 10) : acc) 
 
--- import Data.List (intersperse)
--- digitToWord :: Int -> String 
--- digitToWord n = undefined
-
--- digits :: Int -> [Int] 
--- digits n = undefined
-
--- wordNumber :: Int -> String 
--- wordNumber n = undefined
+wordNumber :: Int -> String
+wordNumber n = concat $ intersperse "-" $ map intToDigit $ digits n
