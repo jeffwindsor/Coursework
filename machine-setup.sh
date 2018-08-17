@@ -37,16 +37,53 @@ git config --global alias.hist "log --graph --max-count=100 --pretty=format:‘%
 
 ###############################################################################
 print_header "Development"
-brew cask install visual-studio-code 
-## Haskell (optional)
+brew cask install visual-studio-code
+### VS_THEMES
+code --install-extension nonylene.dark-molokai-theme
+code --install-extension PKief.material-icon-theme
+code --install-extension teabyii.ayu
+code --install-extension Equinusocio.vsc-material-theme
+### VS_EX : https://github.com/aaron-bond/better-comments
+code --install-extension aaron-bond.better-comments
+### VS_EX : https://github.com/eamodio/vscode-gitlens
+code --install-extension eamodio.gitlens
+### VS_EX : https://github.com/DavidAnson/vscode-markdownlint
+code --install-extension DavidAnson.vscode-markdownlint
+
+print_header "Haskell"
+## << Haskell >>
 brew install haskell-stack
-## Python
+### PRE_REQ : https://github.com/commercialhaskell/intero/blob/master/TOOLING.md#installing 
+stack build intero  
+### VS_EX : https://github.com/JustusAdam/language-haskell
+code --install-extension justusadam.language-haskell
+####VS_EX : https://gitlab.com/vannnns/haskero
+code --install-extension Vans.haskero
+### VS_EX : https://github.com/caneroj1/hoogle-vscode
+code --install-extension jcanero.hoogle-vscode
+
+print_header "Python"
+## << Python >>
 brew install python3 pylint
-## Scala / Java (optional)
-#brew cask install java intellij-idea 
-#brew install scala
-## Javascript (optional)
-#brew install node
+### VS_EXT: https://github.com/Microsoft/vscode-python
+code --install-extension ms-python.python
+
+echo -n "Install Scala (y/n)"
+read scala
+if [ "$scala" == "y" ]; then
+    print_header "Scala / Java"
+    ## Scala / Java (optional)
+    brew cask install java intellij-idea 
+    brew install scala
+fi
+
+echo -n "Install Node (y/n)"
+read js
+if [ "$js" == "y" ]; then
+    print_header "JavaScript"
+    ## Javascript (optional)
+    brew install node
+fi
 
 ###############################################################################
 print_header "iTerm2"
