@@ -1,28 +1,47 @@
 #!/bin/bash
-user_name = "Jeff Windsor"
-user_email = "jeff.windsor@gmail.com"
-
-
 ###############################################################################
-div = "###############################################################################"
-print_header () {
-    echo -e "\033[0;31m${div}\n$1$\n${div}\033[0m"
+## FUNCTIONS
+###############################################################################
+print_header () { print_banner $1 "[1;34m"}
+print_banner () {
+    echo -e "\033$2###############################################################################"
+    echo -e "$1"
+    echo -e "###############################################################################\033[0m"
 }
 
+uname=$(uname);
+case "$uname" in
+    (*Linux*)  
+        installPackageCmd='pacman -S '; 
+        installVizPackageCmd='pacman -S ';
+        ;;
+    (*Darwin*) 
+        installPackageCmd='brew install '; 
+        installVizPackageCmd='"brew cask install" '; 
+        ;;
+esac;
 ###############################################################################
-print_header "HomeBrew" 
-# https://brew.sh/
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-# https://caskroom.github.io/
-brew tap caskroom/cask
+user_name = "Jeff Windsor"
+user_email = "jeff.windsor@gmail.com"
+###############################################################################
+## HOMEBREW FOR MAC
+case "$uname" in
+    (*Darwin*) 
+        print_header "HomeBrew";
+        # https://brew.sh/
+        ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";
+        # https://caskroom.github.io/
+        brew tap caskroom/cask;
+        ;;
+esac;
 
 ###############################################################################
 print_header "Core Utils"
-brew install coreutils wget
+"$installPackageCmd" coreutils wget
 
 ###############################################################################
 print_header "Git"
-brew install git
+"$installPackageCmd" git
 ## Configure Git
 git config --global user.name user_name
 git config --global user.email user_email
@@ -37,7 +56,7 @@ git config --global alias.hist "log --graph --max-count=100 --pretty=format:‘%
 
 ###############################################################################
 print_header "Development"
-brew cask install visual-studio-code
+"$installVizPackageCmd" visual-studio-code
 ### VS_THEMES
 code --install-extension nonylene.dark-molokai-theme
 code --install-extension PKief.material-icon-theme
@@ -52,7 +71,7 @@ code --install-extension DavidAnson.vscode-markdownlint
 
 print_header "Haskell"
 ## << Haskell >>
-brew install haskell-stack
+"$installPackageCmd" haskell-stack
 ### PRE_REQ : https://github.com/commercialhaskell/intero/blob/master/TOOLING.md#installing 
 stack build intero  
 ### VS_EX : https://github.com/JustusAdam/language-haskell
@@ -64,7 +83,7 @@ code --install-extension jcanero.hoogle-vscode
 
 print_header "Python"
 ## << Python >>
-brew install python3 pylint
+"$installPackageCmd" python3 pylint
 ### VS_EXT: https://github.com/Microsoft/vscode-python
 code --install-extension ms-python.python
 
@@ -73,8 +92,8 @@ read scala
 if [ "$scala" == "y" ]; then
     print_header "Scala / Java"
     ## Scala / Java (optional)
-    brew cask install java intellij-idea 
-    brew install scala
+    "$installVizPackageCmd" java intellij-idea 
+    "$installPackageCmd" scala
 fi
 
 echo -n "Install Node (y/n)"
@@ -82,12 +101,12 @@ read js
 if [ "$js" == "y" ]; then
     print_header "JavaScript"
     ## Javascript (optional)
-    brew install node
+    "$installPackageCmd" node
 fi
 
 ###############################################################################
 print_header "iTerm2"
-brew cask install iterm2
+"$installVizPackageCmd" iterm2
 
 ###############################################################################
 print_header "Cloning Useful Github Repos"
@@ -101,7 +120,7 @@ git clone https://github.com/ryanoasis/nerd-fonts.git ~/github/nerd-fonts
 
 ###############################################################################
 print_header "Fish"
-brew install fish
+"$installPackageCmd" fish
 # oh my fish framework
 curl -L https://get.oh-my.fish | fish
 # Make fish the default shell
