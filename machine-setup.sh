@@ -26,20 +26,22 @@ EOF
 ###############################################################################
 ## PRETTY PRINTER
 COLOR_RESET="\e[0m";CHAR_BANNER='#';LINE="\n";
-divider() { seq -s"${1}" 1 $(tput cols) | tr -d '[:digit:]'; }
+to_eol() { seq -s "${1}" $(($2 + 1)) $(tput cols) | tr -d '[:digit:]'; }
+divider(){ to_eol $1 0; }
 foreground(){ printf "\e[38;5;%sm" $1;}
 background(){ printf "\e[48;5;%sm" $1;}
 printc(){ printf "$($1 $2)${3}${COLOR_RESET}"; }
-printcln(){ printf "$(printc $1 $2 "${3}")${LINE}"; }
+printcln(){ LEN=${#3}; printf "$(printc $1 $2 "${3}$(to_eol ' ' ${#3})")${LINE}"; }
 printcln_f(){ printcln "foreground" $1 "${2}"; }
 printcln_b(){ printcln "background" $1 "${2}";}
 
-section(){ div=$(divider '#'); printcln_b 20 "${div}${LINE}${1}${LINE}${div}"; }
-info(){ printcln_f 28 "${1}"; }
-warning(){ printcln_f 226 "${1}"; }
-error(){ printcln_f 196 "${1}"; }
+section(){ div=$(divider '¯'); printc "background" 27 "$(divider '¯')${LINE}${1}${LINE}$(divider '_')"; }
+info(){ printcln_b 28 "${1}"; }
+warning(){ printcln_b 208 "${1}"; }
+error(){ printcln_b 196 "${1}"; }
 detail(){ printcln_f 244 "${1}"; }
 
+# COLOR CHART IF NEEDED
 # for fgbg in 38 48 ; do # Foreground / Background
 #     for color in {0..255} ; do # Colors
 #         # Display the color
