@@ -134,13 +134,15 @@ code --install-extension DavidAnson.vscode-markdownlint
 section "Haskell"
 ###############################################################################
 "$installPackageCmd" haskell-stack
-### PRE_REQ : https://github.com/commercialhaskell/intero/blob/master/TOOLING.md#installing 
-stack build intero  
-### VS_EX : https://github.com/JustusAdam/language-haskell
+## change haskell prpmpt to something cooler - adjust colors to liking
+echo :set prompt "\ESC[44m\STX\ESC[97m\STX λ \ESC[m\STX\ESC[34m \ESC[m\STX" >> .ghci
+
+## VS_EX : https://github.com/JustusAdam/language-haskell
 code --install-extension justusadam.language-haskell
-####VS_EX : https://gitlab.com/vannnns/haskero
+## VS_EX : https://gitlab.com/vannnns/haskero, PRE_REQ : https://github.com/commercialhaskell/intero/blob/master/TOOLING.md#installing 
+stack build intero
 code --install-extension Vans.haskero
-### VS_EX : https://github.com/caneroj1/hoogle-vscode
+## VS_EX : https://github.com/caneroj1/hoogle-vscode
 code --install-extension jcanero.hoogle-vscode
 
 ###############################################################################
