@@ -24,6 +24,15 @@ vscode_user_settings=$(cat <<EOF
 EOF
 )
 ###############################################################################
+## FUNCTIONS
+yes_no(){
+    echo -e "$1 [y/N]: "; 
+    read -t 5 yes_no_input;
+    
+    if [[ -z ${yes_no_input} ]]
+        then yes_no_input="n"
+    fi
+}
 ## PRETTY PRINTER
 COLOR_RESET="\e[0m";CHAR_BANNER='#';LINE="\n";
 to_eol() { seq -s "${1}" $(($2 + 1)) $(tput cols) | tr -d '[:digit:]'; }
@@ -83,11 +92,14 @@ esac;
 
 ###############################################################################
 section "GNU"
+###############################################################################
 "$installPackageCmd" coreutils wget
 
 ###############################################################################
 section "Git"
+###############################################################################
 "$installPackageCmd" git
+
 ## Configure Git
 git config --global user.name user_name
 git config --global user.email user_email
@@ -97,22 +109,13 @@ git config --global alias.b branch
 git config --global alias.type 'cat-file -t'
 git config --global alias.dump 'cat-file -p'
 git config --global alias.hist "log --graph --max-count=100 --pretty=format:‘%C(green)%h%C(reset) | %C(yellow)%d%C(reset) %s %C(cyan)%an : %C(dim)%cr%C(reset)' --abbrev-commit"
-## KEY FOR GITHUB/GITLAB
-ssh-keygen -t rsa
 
-###############################################################################
-section "Cloning Useful Repos to ~/{upstream}"
-git clone https://github.com/mbadolato/iTerm2-Color-Schemes.git ~/github/iTerm2-Color-Schemes
-## online preview : https://fonts.google.com/
-## I like : Fira Mono, Anonymous Pro, UbuntuMono, RobotoMono, SourceCodePro, 
-git clone https://github.com/google/fonts.git ~/github/google-fonts
-## NICE UNICODE ENABLED FONTS FOR SOME FISH PROMTPS
-git clone https://github.com/powerline/fonts.git ~/github/powerline-fonts --depth=1
-git clone https://github.com/ryanoasis/nerd-fonts.git ~/github/nerd-fonts
-
+#https://hub.github.com/
+brew install hub
 
 ###############################################################################
 section "Visual Studio Code"
+###############################################################################
 "$installVizPackageCmd" visual-studio-code
 ### VS_THEMES
 code --install-extension nonylene.dark-molokai-theme
@@ -126,26 +129,10 @@ code --install-extension eamodio.gitlens
 ### VS_EX : https://github.com/DavidAnson/vscode-markdownlint
 code --install-extension DavidAnson.vscode-markdownlint
 
-###############################################################################
-section "iTerm2"
-"$installVizPackageCmd" iterm2
-
-###############################################################################
-section "Fish"
-"$installPackageCmd" fish
-# oh my fish framework
-curl -L https://get.oh-my.fish | fish
-# Make fish the default shell
-sudo echo /usr/local/bin/fish >> /etc/shells
-chsh -s /usr/local/bin/fish
-#reset
-## Themes
-omf install agnoster lambda simple-ass-prompt gi gh
-
 
 ###############################################################################
 section "Haskell"
-## << Haskell >>
+###############################################################################
 "$installPackageCmd" haskell-stack
 ### PRE_REQ : https://github.com/commercialhaskell/intero/blob/master/TOOLING.md#installing 
 stack build intero  
@@ -158,32 +145,80 @@ code --install-extension jcanero.hoogle-vscode
 
 ###############################################################################
 section "Python"
-## << Python >>
+###############################################################################
 "$installPackageCmd" python3 pylint
 ### VS_EXT: https://github.com/Microsoft/vscode-python
 code --install-extension ms-python.python
 
 ###############################################################################
-echo -n "Install Scala (y/n)"
-read scala
-if [ "$scala" == "y" ]; then
-    section "Scala / Java"
-    ## Scala / Java (optional)
-    "$installVizPackageCmd" java intellij-idea 
-    "$installPackageCmd" scala
+section "Scala / Java"
+###############################################################################
+ yes_no "Install Scala and Java"
+if [ "$yes_no_input" == "y" ]; 
+    then
+        "$installVizPackageCmd" java intellij-idea 
+        "$installPackageCmd" scala
 fi
 
 ###############################################################################
-echo -n "Install Node (y/n)"
-read js
-if [ "$js" == "y" ]; then
-    section "JavaScript"
+section "JavaScript"
+###############################################################################
+ yes_no "Install Node"
+if [ "$yes_no_input" == "y" ]; 
+    then
     ## Javascript (optional)
     "$installPackageCmd" node
 fi
 
+###############################################################################
+section "Cloning Useful Repos to ~/{upstream}"
+git clone https://github.com/mbadolato/iTerm2-Color-Schemes.git ~/github/iTerm2-Color-Schemes
+## online preview : https://fonts.google.com/
+## I like : Fira Mono, Anonymous Pro, UbuntuMono, RobotoMono, SourceCodePro, 
+git clone https://github.com/google/fonts.git ~/github/google-fonts
+## NICE UNICODE ENABLED FONTS FOR SOME FISH PROMTPS
+git clone https://github.com/powerline/fonts.git ~/github/powerline-fonts --depth=1
+git clone https://github.com/ryanoasis/nerd-fonts.git ~/github/nerd-fonts
+
+###############################################################################
+section "iTerm2"
+###############################################################################
+"$installVizPackageCmd" iterm2
+
+###############################################################################
+section "Fish"
+###############################################################################
+"$installPackageCmd" fish
+# oh my fish framework
+curl -L https://get.oh-my.fish | fish
+# Make fish the default shell
+sudo echo /usr/local/bin/fish >> /etc/shells
+chsh -s /usr/local/bin/fish
+reset
+## Themes
+omf install agnoster lambda simple-ass-prompt 
+## Plugins
+omf install gi gh
+
+###############################################################################
 section "POST ITEMS"
-info "OMF: if the below does not show icons, switch to a powerline font when using 'agnoster' theme"
+###############################################################################
+info "OMF: if the below does not show icons, switch to a powerline font in iTerm or your prefered terminal when using 'agnoster' theme"
 info "\ue0b0 \u00b1 \ue0a0 \u27a6 \u2718 \u26a1 \u2699"
+echo
 warning "Put the following into the Visual Studio Code User Settings"
-info $vscode_user_settings
+detail $vscode_user_settings
+echo
+
+warning "INSTALL KEY ON GITHUB"
+ yes_no "Generate RSA Key"
+if [ "$yes_no_input" == "y" ]; 
+    then
+    ## KEY FOR GITHUB/GITLAB
+    ssh-keygen -t rsa
+fi
+
+info "Copying rsa key to clipboard"
+pbcopy < ~/.ssh/id_rsa.pub
+info "Goto to https://github.com/settings/profile and paste key"
+echo
