@@ -137,9 +137,9 @@ section "Haskell"
 "$installPackageCmd" haskell-stack
 ## change haskell prpmpt to something cooler - adjust colors to liking
 ## Green imports, White On Blue Prompt
-echo ":set prompt \"\ESC[32m\STX%s\ESC[0m\STX\n\STX\ESC[44m\STX\ESC[97m\STX λ \ESC[m\STX\ESC[34m \ESC[m\STX\"" > ~/.ghci
+#echo ":set prompt \"\ESC[32m\STX%s\ESC[0m\STX\n\STX\ESC[44m\STX\ESC[97m\STX λ \ESC[m\STX\ESC[34m \ESC[m\STX\"" > ~/.ghci
 ## Grey imports, Red and Grey haskel symbol
-#echo ":set prompt \"\ESC[38;5;242m\STX%s\n\ESC[38;5;161m❯\ESC[1;34mλ= \ESC[0m"\" > ~/.ghci
+echo ":set prompt \"\ESC[38;5;242m\STX%s\n\ESC[38;5;161m❯\ESC[1;34mλ= \ESC[0m"\" > ~/.ghci
 
 ## VS_EX : https://github.com/JustusAdam/language-haskell
 code --install-extension justusadam.language-haskell

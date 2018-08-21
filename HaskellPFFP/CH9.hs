@@ -18,5 +18,5 @@ eftInt n m
     | n <= m = n : eftInt (n+1) m
 
 eftChar :: Char -> Char -> [Char] 
-eftChar = undefined
--- ???
+eftChar n m | n > m  = []
+            | n <= m = n : eftChar (succ n) m
