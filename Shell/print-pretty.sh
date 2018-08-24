@@ -1,29 +1,11 @@
 #!/bin/bash
+fg(){ printf "\e[38;5;%sm" $1;} ## $1 COLOR
+bg(){ printf "\e[48;5;%sm" $1;} ## $1 COLOR
+eof(){ printf "\e[0m"; }
+fill() { printf "${1}$(seq -s "${2}" $((${#1} + 1)) $(tput cols) | tr -d '[:digit:]')"; } ## $1 STRING, $REPEAT_CHAR
 
-COLOR_RESET="\e[0m";CHAR_BANNER='#';LINE="\n";
-divider() { seq -s"${1}" 1 $(tput cols) | tr -d '[:digit:]'; }
-foreground(){ printf "\e[38;5;%sm" $1;}
-background(){ printf "\e[48;5;%sm" $1;}
-printc(){ printf "$($1 $2)${3}${COLOR_RESET}"; }
-printcln(){ printf "$(printc $1 $2 "${3}")${LINE}"; }
-printcln_f(){ printcln "foreground" $1 "${2}"; }
-printcln_b(){ printcln "background" $1 "${2}";}
-
-section(){ div=$(divider '#'); printcln_b 20 "${div}${LINE}${1}${LINE}${div}"; }
-info(){ printcln_f 28 "${1}"; }
-warning(){ printcln_f 226 "${1}"; }
-error(){ printcln_f 196 "${1}"; }
-detail(){ printcln_f 244 "${1}"; }
-
-
-
-:'
-## MANUAL TESTS ## 
-section "TEST"
-info "Info"
-warning "Warning"
-error "Error"
-
-println "foreground" $COLOR_SECTION "TEST"
-print "foreground" $COLOR_ERROR "TEST"
-'
+info()   { echo -e "$(bg 28)$(fg 255)$(fill "${1}" " ")$(eof)";  }
+warning(){ echo -e "$(bg 208)$(fg 0)$(fill "${1}" " ")$(eof)";  }
+error()  { echo -e "$(bg 196)$(fg 255)$(fill "${1}" " ")$(eof)";  }
+detail() { echo -e "$(fg 250)$(fill "${1}" " ")$(eof)";  }
+section(){ echo -e "$(bg 27)$(fill "" '¯')\n${1}\n$(fill "" '_')"; }
