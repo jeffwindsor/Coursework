@@ -1,64 +1,60 @@
 #!/bin/bash
 ###############################################################################
 ## single line command for execution:  wget -O - <RAW_URL> | bash
-##
-## PACKAGES - SYNCED FROM http://gitlab.cj.com/cjdev/onboarding/blob/master/machine-setup.md
 ###############################################################################
+user_name="Jeff Windsor"
+user_email="jeff.windsor@gmail.com"
 CASKS=(
-  java8
   tcl #(for gitk to look better in HiDPI mode (e.g., Retina display))
   iterm2
-  firefox
   google-chrome
-  java
-  intellij-idea
-  virtualbox
-  teamviewer
-  dbvisualizer
+  visual-studio-code
+  slack
 )
 ## 1=Display Name of App for prompt,  #2=package name
 CASKS_OPTIONAL=(
-  visual-studio-code
-  atom
-  slack
+  intellij-idea
+  #virtualbox
+  #teamviewer
+  #dbvisualizer
 )
 PACKAGES=(
-  scala
   bash #(unless you want to use a 10-year-old version of Bash)
   coreutils #(gives you the latest version of GNU CoreUtils)
   gti
-  maven
-  node
-  mongodb
-  cassandra #(we need a version of cqlsh that supports cqlversion 3.1.7, so you might not be able to install this via brew)
   tree
-  gnupg@2.0 #(This is needed for file encyption tests in b2b)
-  selenium-server-standalone
-  phantomjs
   wget
-  haskell-stack
-  graphviz
-  openssl
-  python@2
-  awscli
   watch
-  bash-completion
 )
 ## 1=Display Name of App for prompt,  #2=package name
 PACKAGES_OPTIONAL=(
-  "vim --with-override-system-vi"
-  macvim
+  scala
+  haskell-stack
+  python@3
+  graphviz
+  openssl
+  #"vim --with-override-system-vi"
+  #macvim
+  #maven
+  #node
+  #mongodb
+  #cassandra #(we need a version of cqlsh that supports cqlversion 3.1.7, so you might not be able to install this via brew)
+  #gnupg@2.0 #(This is needed for file encyption tests in b2b)
+  #selenium-server-standalone
+  #phantomjs
+  #awscli
+  #bash-completion
 )
 ###############################################################################
 ## HELPER FUNCTIONS
-###############################################################################
+## INLINED FROM PRINT-INFO.SH ###############################################
 to_eol() { printf "${1}$(seq -s "${2}" $((${#1} + 1)) $(tput cols) | tr -d '[:digit:]')"; }
 section(){ printf "\e[48;5;27m$(to_eol "" '¯')\n$(to_eol "${1}" ' ')\n$(to_eol "" '_')\e[0m"; echo;}
 info()   { echo -e "$(bg 28)$(fg 255)$(fill "${1}" " ")$(eof)";  }
 warning(){ echo -e "$(bg 208)$(fg 0)$(fill "${1}" " ")$(eof)";  }
 error()  { echo -e "$(bg 196)$(fg 255)$(fill "${1}" " ")$(eof)";  }
 detail() { echo -e "$(fg 250)$(fill "${1}" " ")$(eof)";  }
-## ASK >> SOURCED FROM https://djm.me/ask
+## INLINED FROM https://djm.me/ask ###############################################
 ask(){
     local prompt default reply
 
@@ -146,18 +142,17 @@ if ! [ -e ~/.profile ]; then
   touch ~/.profile
 fi
 
-#Add a symlink to gpg: Run
-info "Adding a symlink to gpg for Run"
-sudo ln -s /usr/local/opt/gnupg@2.0/bin/gpg /usr/local/bin/gpg
+#Git Setup
+git config --global user.name user_name
+git config --global user.email user_email
+
 
 #Haskell Prompt
-info "Haskell prompt set tp Grey imports, Red and Grey haskel symbol"
+info "Haskell prompt set"
+## Green imports, White On Blue Prompt
+#echo ":set prompt \"\ESC[32m\STX%s\ESC[0m\STX\n\STX\ESC[44m\STX\ESC[97m\STX λ \ESC[m\STX\ESC[34m \ESC[m\STX\"" > ~/.ghci
+## Grey imports, Red and Grey haskel symbol
 echo ":set prompt \"\ESC[38;5;242m\STX%s\n\ESC[38;5;161m❯\ESC[1;34mλ= \ESC[0m"\" > ~/.ghci
-
-#Bash Completion
-echo "\nif [ -f $(brew --prefix)/etc/bash_completion ]; then
-. $(brew --prefix)/etc/bash_completion
-fi" >> ~/.profile
 
 #Bash Git Prompt
 echo "\nif [ -f "$(brew --prefix bash-git-prompt)/share/gitprompt.sh" ]; then
@@ -166,18 +161,6 @@ echo "\nif [ -f "$(brew --prefix bash-git-prompt)/share/gitprompt.sh" ]; then
 fi
 export GIT_PROMPT_ONLY_IN_REPO=1
 export GIT_PROMPT_FETCH_REMOTE_STATUS=0" >> /.profile
-
-#
-info Checkout and setup git Software folder
-git clone git@gitlab.cj.com:cjdev/software.git ~/cj-projects/software
-export cj_softwareHome=$HOME/cj-projects/software
-
-#define shell-visible environment variables
-echo "127.0.0.1             devdb.db.cj.com" | sudo tee -a /etc/hosts
-echo "\nexport DEVDB_HOST=devdb.db.cj.com
-export DEVDB_USERNAME=spud
-export DEVDB_PORT=1521
-export DEVDB_SID=devdb" >> ~/.profile
 
 #Git Config
   echo "\n[color]
@@ -188,8 +171,8 @@ export DEVDB_SID=devdb" >> ~/.profile
     excludesfile = ~/.gitignore
 [alias]
     co = checkout
-    ff = merge --ff-only
-    pff = pull --ff-only
+    m = merge --ff-only
+    p = pull --ff-only
     backup = push --all origin
     sync = fetch upstream
     dlog = log --decorate
@@ -201,17 +184,27 @@ export DEVDB_SID=devdb" >> ~/.profile
 
 if [[ " ${CASKS[@]} " =~ " visual-studio-code " ]]; then
   export PATH="${PATH}:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-  ## VS_EX : https://github.com/JustusAdam/language-haskell
-  code --install-extension justusadam.language-haskell
-  ## VS_EX : https://gitlab.com/vannnns/haskero, PRE_REQ : https://github.com/commercialhaskell/intero/blob/master/TOOLING.md#installing
-  stack build intero
-  code --install-extension Vans.haskero
-  ### VS_EX : https://github.com/aaron-bond/better-comments
   code --install-extension aaron-bond.better-comments
   ### VS_EX : https://github.com/eamodio/vscode-gitlens
   code --install-extension eamodio.gitlens
   ### VS_EX : https://github.com/DavidAnson/vscode-markdownlint
   code --install-extension DavidAnson.vscode-markdownlint
+  ### VS_THEMES
+  code --install-extension nonylene.dark-molokai-theme
+  code --install-extension teabyii.ayu
+  code --install-extension Equinusocio.vsc-material-theme
+  code --install-extension pkief.vscode-material-icon-theme
+
+  if [[ " ${PACKAGES[@]} " =~ " haskell-stack " ]]; then
+    ## VS_EX : https://github.com/JustusAdam/language-haskell
+    code --install-extension justusadam.language-haskell
+    ## VS_EX : https://gitlab.com/vannnns/haskero, PRE_REQ : https://github.com/commercialhaskell/intero/blob/master/TOOLING.md#installing
+    stack build intero
+    code --install-extension Vans.haskero
+    ### VS_EX : https://github.com/aaron-bond/better-comments
+  fi
+
+
 fi
 
 ###############################################################################
